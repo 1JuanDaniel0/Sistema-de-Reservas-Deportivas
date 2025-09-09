@@ -1,0 +1,13 @@
+<!-- fragments/exportar-boton.html -->
+<div th:fragment="botonExportar(tabla)">
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bx bx-export me-1"></i> Exportar
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+            <li><a class="dropdown-item export-opcion" data-formato="pdf" th:data-tabla="${tabla}"><i class="bx bx-file me-1"></i> PDF</a></li>
+            <li><a class="dropdown-item export-opcion" data-formato="xlsx" th:data-tabla="${tabla}"><i class="bx bx-table me-1"></i> Excel</a></li>
+            <li><a class="dropdown-item export-opcion" data-formato="txt" th:data-tabla="${tabla}"><i class="bx bx-file me-1"></i> TXT</a></li>
+        </ul>
+    </div>
+</div>

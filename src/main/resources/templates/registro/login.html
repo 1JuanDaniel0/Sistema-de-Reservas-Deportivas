@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es"
+      class="light-style layout-wide customizer-hide"
+      dir="ltr"
+      data-theme="theme-semi-dark"
+      data-assets-path="/"  data-template="vertical-menu-template-semi-dark"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <title>Municipalidad de San Miguel - Sistema de Reservas de Canchas</title> <meta name="description" content="El dashboard más poderoso y completo construido en Bootstrap 5 para desarrolladores." />
+  <meta name="keywords" content="dashboard, portada Bootstrap 5, diseño Bootstrap 5, administración Bootstrap 5">
+  <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" th:href="@{/css/demo.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/toastr/toastr.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/page-auth.css}">
+  <script th:src="@{/vendor/js/helpers.js}"></script>
+  <script th:src="@{/js/config.js}"></script>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .authentication-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .authentication-inner {
+      height: 100%;
+    }
+
+    .authentication-inner .col-lg-7 {
+      height: 100%;
+    }
+
+    .authentication-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear,
+    input[type="password"]::-webkit-credentials-auto-fill-button,
+    input[type="password"]::-webkit-textfield-decoration-container {
+      display: none !important;
+    }
+    input[type="password"]::after {
+      display: none !important;
+    }
+    .toast-success-solid {
+      background-color: #84ff42 !important;
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="authentication-wrapper authentication-cover">
+  <div class="authentication-inner row m-0">
+    <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center p-0">
+      <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+        <img src="https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/fondo-login.webp" class="img-fluid" alt="Imagen de inicio de sesión" style="height: 100%; object-fit: cover;">
+      </div>
+    </div>
+    <div class="d-flex col-12 col-lg-5 col-xl-4 align-items-center authentication-bg p-sm-5 p-4">
+      <div class="w-px-400 mx-auto">
+        <div class="app-brand mb-5">
+          <a th:href="@{/}" class="app-brand-link gap-2"> <span class="app-brand-logo demo">
+                <img th:src="@{/img/icono.ico}" alt="Logo" style="height: 40px; width: 40px;"> </span>
+            <span class="app-brand-text demo text-body fw-bold">San Miguel</span>
+          </a>
+        </div>
+        <h4 class="mb-2">¡Bienvenido a Municipalidad de San Miguel!</h4>
+        <p class="mb-4">Por favor, inicie sesión en su cuenta y comience a disfrutar del sistema</p>
+
+        <form th:action="@{/login}" method="post">
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo o DNI</label>
+            <input type="text" class="form-control rounded-pill" id="email" name="username" placeholder="Ingrese su correo o DNI" autofocus>
+          </div>
+
+          <div class="mb-3 form-password-toggle">
+            <div class="d-flex justify-content-between">
+              <label class="form-label" for="password">Contraseña</label>
+              <a th:href="@{/olvido}"> <small>¿Olvidó su contraseña?</small>
+              </a>
+            </div>
+            <div class="input-group input-group-merge rounded-pill" data-password="false">
+              <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+              <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+            </div>
+          </div>
+
+          <div th:if="${param.error}" class="alert alert-danger mt-3">
+            Credenciales inválidas. Por favor, intente de nuevo.
+          </div>
+
+          <div class="mb-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="remember-me">
+              <label class="form-check-label" for="remember-me">
+                Recuérdame
+              </label>
+            </div>
+          </div>
+          <button class="btn btn-primary d-grid w-100 rounded-pill" type="submit" style="border-radius: 15px;">
+            Iniciar sesión
+          </button>
+        </form>
+
+        <p class="text-center">
+          <span>¿Nuevo en nuestra plataforma?</span>
+          <a th:href="@{/registro}"> <span>Crear una cuenta</span>
+          </a>
+        </p>
+
+        <div id="registro-toast" class="bs-toast toast toast-ex animate__animated fade toast-success-solid my-2 hide" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
+          <div class="toast-header">
+            <i class="bx bx-check-circle me-2" style="font-weight: 600;"></i>
+            <div class="me-auto" style="font-weight: 600;">Registro exitoso</div>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" style="font-weight: 600;">
+            🎉 ¡Tu cuenta fue creada correctamente! Ahora puedes iniciar sesión.
+          </div>
+        </div>
+        <div id="cambio-contra-toast"
+             class="bs-toast toast toast-ex animate__animated fade toast-success-solid my-2 hide"
+             role="alert"
+             aria-live="assertive"
+             aria-atomic="true"
+             data-bs-delay="4000">
+          <div class="toast-header">
+            <i class="bx bx-check-circle me-2" style="font-weight: 600;"></i>
+            <div class="me-auto" style="font-weight: 600;">Contraseña actualizada</div>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" style="font-weight: 600;">
+            🔒 ¡Tu contraseña fue cambiada correctamente!
+          </div>
+        </div>
+        <div id="error-toast"
+             th:if="${errorMessage}"
+             class="bs-toast toast toast-ex animate__animated fade bg-danger text-white my-2 hide"
+             role="alert"
+             aria-live="assertive"
+             aria-atomic="true"
+             data-bs-delay="4000">
+          <div class="toast-header">
+            <i class="bx bx-x-circle me-2"></i>
+            <div class="me-auto">¡Este enlace ya expiró!</div>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body d-flex justify-content-between align-items-center">
+            <span th:text="${errorMessage}">Ocurrió un error inesperado.</span>
+          </div>
+        </div>
+        <div id="logout-toast"
+             class="bs-toast toast toast-ex animate__animated fade toast-success-solid my-2 hide"
+             role="alert"
+             aria-live="assertive"
+             aria-atomic="true"
+             data-bs-delay="4000">
+          <div class="toast-header">
+            <i class="bx bx-check-circle me-2"></i>
+            <div class="me-auto">Cerraste sesión exitosamente</div>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body d-flex justify-content-between align-items-center" style="font-weight: 600; font-size: 1.2rem;">
+            👋 ¡Hasta pronto! Te esperamos nuevamente
+          </div>
+        </div>
+
+        <!--        <div class="divider my-4">-->
+<!--          <div class="divider-text">o</div>-->
+<!--        </div>-->
+
+<!--        <div class="d-flex justify-content-center">-->
+
+<!--          <a href="javascript:;" class="btn btn-icon btn-label-google-plus me-3">-->
+<!--            <i class="tf-icons bx bxl-google-plus"></i>-->
+<!--          </a>-->
+
+<!--        </div>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/i18n/i18n.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+
+<script th:src="@{/vendor/libs/toastr/toastr.js}"></script>
+
+<script th:src="@{/js/main.js}"></script>
+
+<script th:src="@{/js/ui-toasts.js}"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+
+    const toastRegistro = document.getElementById("registro-toast");
+    const toastCambio = document.getElementById("cambio-contra-toast");
+    const toastLogout = document.getElementById("logout-toast");
+    const toastError = document.getElementById("error-toast");
+
+    const mostrarToast = (toastEl) => {
+      toastEl.classList.remove("hide");
+      toastEl.classList.add("animate__bounceInRight", "show");
+      new bootstrap.Toast(toastEl).show();
+    };
+
+    if (params.has("registroExitoso") && toastRegistro) mostrarToast(toastRegistro);
+    if (params.has("cambioContraOk") && toastCambio) mostrarToast(toastCambio);
+    if (params.has("logout") && toastLogout) mostrarToast(toastLogout);
+    if (toastError) mostrarToast(toastError); // Si hay errorMessage como flashAttr
+
+    // Limpiar la URL de parámetros
+    if (window.history.replaceState) {
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+  });
+</script>
+
+<script>
+  window.onload = function () {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    const savedPassword = localStorage.getItem("rememberedPassword");
+
+    if (savedEmail && savedPassword) {
+      document.getElementById("email").value = savedEmail;
+      document.getElementById("password").value = savedPassword;
+      document.getElementById("remember-me").checked = true;
+    }
+  };
+
+  document.querySelector("form").addEventListener("submit", function () {
+    const remember = document.getElementById("remember-me").checked;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (remember) {
+      localStorage.setItem("rememberedEmail", email);
+      localStorage.setItem("rememberedPassword", password);
+    } else {
+      localStorage.removeItem("rememberedEmail");
+      localStorage.removeItem("rememberedPassword");
+    }
+  });
+</script>
+
+</body>
+</html>

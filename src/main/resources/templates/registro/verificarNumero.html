@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es"
+      class="light-style layout-wide customizer-hide"
+      dir="ltr"
+      data-theme="theme-semi-dark"
+      data-assets-path="/"  data-template="vertical-menu-template-semi-dark"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <title>Verificación de número - Municipalidad de San Miguel</title>
+  <meta name="description" content="Verifique su número de teléfono para recuperar la contraseña." />
+  <meta name="keywords" content="municipalidad, reservas, canchas, verificación, teléfono, DNI">
+  <link rel="canonical" href="https://tusitiomunicipal.com/registro/verificarNumero">
+  <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" th:href="@{/css/demo.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/@form-validation/form-validation.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/page-auth.css}">
+
+  <style>
+    .app-brand-logo img {
+      height: 40px;
+      width: 40px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* Centramos el formulario completamente */
+    .authentication-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+
+    .authentication-inner {
+      width: 100%;
+      max-width: 420px;
+    }
+  </style>
+
+  <script th:src="@{/vendor/js/helpers.js}"></script>
+  <script th:src="@{/vendor/js/template-customizer.js}"></script>
+  <script th:src="@{/js/config.js}"></script>
+</head>
+
+<body th:style="'background-image: url(https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/distritos-vivir-lima-san-miguel-transformed.webp); background-size: cover; background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-color: #f0f0f0;'">
+
+<div class="container-xxl">
+  <div class="authentication-wrapper authentication-basic container-p-y">
+    <div class="authentication-inner">
+
+      <div class="card">
+        <div class="card-body">
+          <div class="app-brand justify-content-center">
+            <a th:href="@{/}" class="app-brand-link gap-2">
+              <span class="app-brand-logo demo">
+                <img th:src="@{/img/icono.ico}" alt="Logo">
+              </span>
+              <span class="app-brand-text demo text-body fw-bold">¿Es tu número? 💬</span>
+            </a>
+          </div>
+
+          <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <p th:text="${errorMessage}"></p>
+          </div>
+          <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <p th:text="${successMessage}"></p>
+          </div>
+
+          <p class="text-start mb-4">
+            Hemos enviado un código de verificación a su móvil. Ingrese el código a continuación.
+            <span class="fw-medium d-block mt-2">[[${identificador != null ? identificador : '******1234'}]]</span>
+          </p>
+          <p class="mb-0 fw-medium">Escriba su código de seguridad de 6 dígitos</p>
+
+          <form id="twoStepsForm" th:action="@{/verificarNumero}" method="POST">
+            <input type="hidden" name="identificador" th:value="${identificador}" />
+
+            <div class="mb-3">
+              <div class="auth-input-wrapper d-flex align-items-center justify-content-sm-between numeral-mask-wrapper">
+                <input type="tel" class="form-control auth-input h-px-50 text-center numeral-mask mx-1 my-2" maxlength="1" autofocus>
+                <input type="tel" class="form-control auth-input h-px-50 text-center numeral-mask mx-1 my-2" maxlength="1">
+                <input type="tel" class="form-control auth-input h-px-50 text-center numeral-mask mx-1 my-2" maxlength="1">
+                <input type="tel" class="form-control auth-input h-px-50 text-center numeral-mask mx-1 my-2" maxlength="1">
+                <input type="tel" class="form-control auth-input h-px-50 text-center numeral-mask mx-1 my-2" maxlength="1">
+                <input type="tel" class="form-control auth-input h-px-50 text-center numeral-mask mx-1 my-2" maxlength="1">
+              </div>
+              <input type="hidden" name="otp" id="otpInputHidden" />
+            </div>
+            <button class="btn btn-primary d-grid w-100 mb-3" type="submit">
+              Verificar mi cuenta
+            </button>
+            <div class="text-center">
+              ¿No recibió el código?
+              <!-- Aquí podrías tener un nuevo endpoint POST para reenviar el OTP
+                   Necesitaría el identificador para saber a quién reenviar. -->
+              <a href="javascript:void(0);"> Reenviar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/i18n/i18n.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
+<script th:src="@{/vendor/libs/@form-validation/popular.js}"></script>
+<script th:src="@{/vendor/libs/@form-validation/bootstrap5.js}"></script>
+<script th:src="@{/vendor/libs/@form-validation/auto-focus.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/pages-auth.js}"></script>
+<script th:src="@{/js/pages-auth-two-steps.js}"></script>
+
+<script>
+  // Script para concatenar los dígitos del OTP en el campo oculto
+  document.getElementById('twoStepsForm').addEventListener('submit', function(event) {
+    const inputs = this.querySelectorAll('.auth-input');
+    let otpCode = '';
+    inputs.forEach(input => {
+      otpCode += input.value;
+    });
+    document.getElementById('otpInputHidden').value = otpCode;
+  });
+</script>
+
+</body>
+</html>

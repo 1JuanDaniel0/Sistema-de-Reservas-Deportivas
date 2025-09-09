@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es" class="light-style layout-compact" dir="ltr" data-theme="theme-semi-dark" data-assets-path="/" data-template="vertical-menu-template-semi-dark" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Verificar Reservas - Municipalidad de San Miguel</title>
+    <meta name="description" content="Verificación de comprobantes de pago para confirmación de reservas" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" th:href="@{/css/demo.css}" />
+    <link rel="stylesheet" th:href="@{/css/offcanvas-style.css}">
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/datatables-bs5/datatables.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/toastr/toastr.css}" />
+    <!-- Page CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/page-profile.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/navbar2-estilo-coordi.css}">
+    <!-- Helpers -->
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
+    <style>
+        .comprobante-preview {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .reserva-urgente {
+            border-left: 4px solid #ff4444 !important;
+            background-color: #fff5f5 !important;
+        }
+        .estado-badge {
+            font-size: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+        }
+        .monto-destacado {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .info-card {
+            border: 1px solid #e3e6f0;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .btn-action {
+            min-width: 100px;
+            border-radius: 15px;
+        }
+        @media (max-width: 768px) {
+            .comprobante-preview {
+                max-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #F5E8C7;">
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <div class="layout-page">
+            <div th:replace="~{fragments/navbar2 :: navbarFragment2}"></div>
+            <div class="content-wrapper">
+                <div class="container-fluid flex-grow-1 container-p-y">
+                    <!-- Mini dashboard de estadísticas -->
+                    <div class="row mb-4">
+                        <div class="col-md-3 col-sm-3">
+                            <div class="card h-100 text-center">
+                                <div class="card-body">
+                                    <div class="avatar mx-auto mb-2">
+                                        <span class="avatar-initial rounded-circle bg-label-warning">
+                                            <i class="bx bx-time-five bx-sm"></i>
+                                        </span>
+                                    </div>
+                                    <h4 class="mb-1 counter" th:attr="data-target=${reservasPendientes ?: 0}">0</h4>
+                                    <p class="mb-0">Pendientes</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <div class="card h-100 text-center">
+                                <div class="card-body">
+                                    <div class="avatar mx-auto mb-2">
+                                        <span class="avatar-initial rounded-circle bg-label-danger">
+                                            <i class="bx bx-alarm-exclamation bx-sm"></i>
+                                        </span>
+                                    </div>
+                                    <h4 class="mb-1 counter" th:attr="data-target=${reservasUrgentes ?: 0}">0</h4>
+                                    <p class="mb-0">Urgentes</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <div class="card h-100 text-center">
+                                <div class="card-body">
+                                    <div class="avatar mx-auto mb-2">
+                                        <span class="avatar-initial rounded-circle bg-label-success">
+                                            <i class="bx bx-check-circle bx-sm"></i>
+                                        </span>
+                                    </div>
+                                    <h4 class="mb-1 counter" th:attr="data-target=${reservasConfirmadasHoy ?: 0}">0</h4>
+                                    <p class="mb-0">Confirmadas Hoy</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <div class="card h-100 text-center">
+                                <div class="card-body">
+                                    <div class="avatar mx-auto mb-2">
+                                        <span class="avatar-initial rounded-circle bg-label-info">
+                                            <i class="bx bx-money bx-sm"></i>
+                                        </span>
+                                    </div>
+                                    <h4 class="mb-1">S/. <span th:text="${#numbers.formatDecimal(montoTotalPendiente, 1, 2)}">0,00</span></h4>
+                                    <p class="mb-0">Monto Pendiente</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Después de las estadísticas, antes de la tabla -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-info">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">
+                                        <i class="bx bx-info-circle me-2 text-info"></i>
+                                        Información importante
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <p class="mb-0">
+                                        <strong>Esta tabla muestra únicamente</strong> las reservas que ya tienen
+                                        <strong>comprobante de pago subido</strong> y están esperando tu verificación.
+                                    </p>
+                                    <small class="text-muted">
+                                        Las reservas sin comprobante no aparecen aquí hasta que el vecino suba su boleta.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tabla de reservas -->
+                    <div class="card">
+                        <div class="card-header border-bottom d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-1">
+                                    <i class="bx bx-check-shield me-2 text-primary"></i>Reservas con Comprobante
+                                </h4>
+                                <p class="text-muted mb-0">Valida comprobantes de pago para confirmar reservas bancarias</p>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-primary" onclick="refrescarPagina()">
+                                    <i class="bx bx-refresh"></i> Actualizar
+                                </button>
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                        <i class="bx bx-filter"></i> Filtros
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" onclick="filtrarPor('todos')">Todas las reservas</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="filtrarPor('pendientes')">Solo pendientes</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="filtrarPor('urgentes')">Urgentes (hoy)</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="filtrarPor('semana')">Esta semana</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="tablaReservas">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>Reserva</th>
+                                        <th>Vecino</th>
+                                        <th>Espacio</th>
+                                        <th>Fecha & Hora</th>
+                                        <th>Monto</th>
+                                        <th>Estado</th>
+                                        <th>Comprobante</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="reserva : ${reservas}"
+                                            th:class="${#temporals.format(reserva.fecha, 'yyyy-MM-dd').equals(#temporals.format(#temporals.createToday(), 'yyyy-MM-dd'))} ? 'reserva-urgente' : ''">
+                                            <!-- Columna Reserva -->
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-sm me-2">
+                                                            <span class="avatar-initial rounded-circle bg-label-primary"><span th:text="${reserva.idReserva}">1</span></span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-0">Reserva #<span th:text="${reserva.idReserva}">001</span></h6>
+                                                        <small class="text-muted"><span th:text="${#temporals.format(reserva.momentoReserva, 'dd/MM/yyyy HH:mm')}">01/12/2024 14:30</span></small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <!-- Columna Vecino -->
+                                            <td>
+                                                <div>
+                                                    <h6 class="mb-0" th:text="${reserva.vecino.nombres + ' ' + reserva.vecino.apellidos}">Juan Pérez</h6>
+                                                    <small class="text-muted"><i class="bx bx-id-card me-1"></i><span th:text="${reserva.vecino.dni}">12345678</span></small>
+                                                    <br>
+                                                    <small class="text-muted"><i class="bx bx-envelope me-1"></i><span th:text="${reserva.vecino.correo}">juan@email.com</span></small>
+                                                </div>
+                                            </td>
+                                            <!-- Columna Espacio -->
+                                            <td>
+                                                <div>
+                                                    <h6 class="mb-0" th:text="${reserva.espacio.nombre}">Cancha de Fútbol A</h6>
+                                                    <small class="text-muted" th:text="${reserva.espacio.idLugar.lugar}">Parque Central</small>
+                                                </div>
+                                            </td>
+                                            <!-- Columna Fecha & Hora -->
+                                            <td>
+                                                <div>
+                                                    <strong th:text="${#temporals.format(reserva.fecha, 'dd/MM/yyyy')}">15/12/2024</strong>
+                                                    <br>
+                                                    <small class="text-muted"><i class="bx bx-time me-1"></i><span th:text="${reserva.horaInicio + ' - ' + reserva.horaFin}">08:00 - 10:00</span></small>
+                                                    <br>
+                                                    <!-- Indicador de urgencia -->
+                                                    <span th:if="${#temporals.format(reserva.fecha, 'yyyy-MM-dd').equals(#temporals.format(#temporals.createToday(), 'yyyy-MM-dd'))}" class="badge bg-danger">🔥 HOY</span>
+                                                    <span th:if="${reserva.fecha.isEqual(#temporals.createToday().plusDays(1))}" class="badge bg-warning">⚠️ MAÑANA</span>
+                                                </div>
+                                            </td>
+                                            <!-- Columna Monto -->
+                                            <td>
+                                                <span class="badge bg-label-info monto-destacado">S/. <span th:text="${reserva.costo}">50.00</span></span>
+                                            </td>
+                                            <!-- Columna Estado -->
+                                            <td>
+                                                <span th:class="'badge estado-badge ' +
+                                                            ${reserva.estado.estado == 'Pendiente de confirmación' ? 'bg-warning' :
+                                                              (reserva.estado.estado == 'Confirmada' ? 'bg-success' : 'bg-secondary')}"
+                                                      th:text="${reserva.estado.estado}">
+                                                        No confirmada
+                                                    </span>
+                                            </td>
+                                            <!-- Columna Comprobante -->
+                                            <td>
+                                                <div th:if="${reserva.capturaKey != null}">
+                                                    <button class="btn btn-outline-primary btn-sm"
+                                                            onclick="verComprobante(this)"
+                                                            th:data-reserva-id="${reserva.idReserva}">
+                                                        <i class="bx bx-image me-1"></i>Ver Comprobante
+                                                    </button>
+                                                    <br>
+                                                    <small class="text-muted mt-1">Archivo subido</small>
+                                                </div>
+                                                <div th:if="${reserva.capturaKey == null}">
+                                                        <span class="badge bg-light text-muted">
+                                                            <i class="bx bx-x"></i> Sin comprobante
+                                                        </span>
+                                                </div>
+                                            </td>
+                                            <!-- Columna Acciones -->
+                                            <td class="text-center">
+                                                <div th:if="${reserva.estado.estado == 'Pendiente de confirmación' && reserva.capturaKey != null}">
+                                                    <div class="btn-group-vertical gy-2">
+                                                        <button class="btn btn-success btn-sm btn-action"
+                                                                data-action="confirmar"
+                                                                th:data-reserva-id="${reserva.idReserva}"
+                                                                th:data-vecino="${reserva.vecino.nombres + ' ' + reserva.vecino.apellidos}">
+                                                            <i class="bx bx-check"></i> Confirmar
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm btn-action"
+                                                                data-action="rechazar"
+                                                                th:data-reserva-id="${reserva.idReserva}"
+                                                                th:data-vecino="${reserva.vecino.nombres + ' ' + reserva.vecino.apellidos}">
+                                                            <i class="bx bx-x"></i> Rechazar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div th:if="${reserva.estado.estado == 'Confirmada'}">
+                                                        <span class="badge bg-success">
+                                                            <i class="bx bx-check-circle"></i> Confirmada
+                                                        </span>
+                                                </div>
+                                                <div th:if="${reserva.capturaKey == null}">
+                                                    <small class="text-muted">
+                                                        <i class="bx bx-time"></i>
+                                                        Esperando comprobante
+                                                    </small>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-backdrop fade"></div>
+            </div>
+        </div>
+        <div class="layout-overlay layout-menu-toggle"></div>
+        <div class="drag-target"></div>
+    </div>
+    <div th:replace="~{fragments/offcanvas-navbar :: offcanvasNavbar}"></div>
+    <!-- Modal para ver comprobante -->
+    <div class="modal fade" id="modalComprobante" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bx bx-image me-2"></i>
+                        Comprobante de Pago - Reserva #<span id="reservaNumero">001</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-3">
+                        <img id="imagenComprobante" src="" alt="Comprobante de pago" class="comprobante-preview">
+                    </div>
+                    <div class="info-card">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>Reserva:</strong> #<span id="infoReservaId">001</span><br>
+                                <strong>Vecino:</strong> <span id="infoVecino">Juan Pérez</span><br>
+                                <strong>Monto:</strong> S/. <span id="infoMonto">50.00</span>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Espacio:</strong> <span id="infoEspacio">Cancha A</span><br>
+                                <strong>Fecha:</strong> <span id="infoFecha">15/12/2024</span><br>
+                                <strong>Hora:</strong> <span id="infoHora">08:00 - 10:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-success" id="btnConfirmarDesdeModal">
+                        <i class="bx bx-check"></i> Confirmar Reserva
+                    </button>
+                    <button type="button" class="btn btn-danger" id="btnRechazarDesdeModal">
+                        <i class="bx bx-x"></i> Rechazar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Scripts -->
+
+<script th:src="@{/js/offcanvas-navbar.js}"></script>
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<script th:src="@{/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+<script th:src="@{/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+<script th:src="@{/vendor/libs/toastr/toastr.js}"></script>
+<script th:src="@{/js/verificar-reservas.js}"></script>
+<!-- Script adicional para mejorar UX -->
+<script>
+    // Mostrar tooltips
+    $(function () {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    });
+
+    // Resaltar filas urgentes con animación sutil
+    $(document).ready(function() {
+        $('.reserva-urgente').each(function() {
+            $(this).addClass('animate__animated animate__pulse animate__slow animate__infinite');
+        });
+    });
+    // Función para export (si se implementa)
+    function exportarReservas() {
+        window.location.href = '/coordinador/exportar-reservas-pendientes';
+    }
+</script>
+</body>
+</html>

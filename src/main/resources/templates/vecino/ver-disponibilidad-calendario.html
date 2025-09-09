@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es"
+      class="light-style layout-compact" dir="ltr" data-theme="theme-semi-dark" data-assets-path="/" data-template="vertical-menu-template-semi-dark" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disponibilidad del espacio</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="keywords" content="reservas, disponibilidad, calendario">
+    <!-- Canonical SEO -->
+    <link rel="canonical" href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" th:href="@{/css/demo.css}" />
+    <link rel="stylesheet" th:href="@{/css/offcanvas-style.css}">
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/fullcalendar/fullcalendar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/quill/editor.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/form-validation/form-validation.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/bootstrap-select/bootstrap-select.css}" />
+    <!-- Page CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/es.js"></script>
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/app-chat.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/chatbot.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/app-calendar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/disponibilidad-calendario.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/toasts-estilos.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/navbar2-estilo.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/sidebar-calendario.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/offcanvas-blur-fix.css}">
+    <!-- Helpers -->
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
+</head>
+<body style="background-color:rgb(216, 248, 255);">
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar  ">
+    <div class="layout-container">
+        <!-- Layout container -->
+        <div class="layout-page">
+            <div th:replace="~{fragments/navbar2 :: navbarFragment2}"></div>
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <div class="container-fluid flex-grow-1 container-p-y">
+                    <!-- Header con información del espacio -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-lg me-3">
+                                            <span class="avatar-initial rounded bg-white text-primary">
+                                                <i class="bx bx-calendar-check bx-md"></i>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h4 class="card-title text-white mb-1" th:text="${espacio.nombre}">Espacio Deportivo</h4>
+                                            <p class="card-text mb-0">Disponibilidad y reservas - <span th:text="${espacio.idLugar.lugar}">Ubicación</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Calendar Wrapper -->
+                    <div class="card app-calendar-wrapper">
+                        <div class="row g-0">
+                            <!-- Calendar Sidebar  -->
+                            <div class="col-lg-3 col-md-4 app-calendar-sidebar" id="app-calendar-sidebar">
+                                <!-- Información del espacio -->
+                                <div class="border-bottom my-sm-0" style="padding: 1.5rem;">
+                                    <div class="text-center mb-3">
+                                        <img class="img-fluid rounded"
+                                             th:src="${espacio.foto1Url}"
+                                             onerror="this.onerror=null;this.src='https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/EspacioRepresentacion.webp';"
+                                             alt="Imagen del espacio"
+                                             style="max-height: 150px; object-fit: cover;" />
+                                    </div>
+                                    <h5 class="text-center mb-2" th:text="${espacio.nombre}">Espacio</h5>
+                                    <p class="text-center text-muted mb-0">Costo por hora:
+                                        <strong th:text="'S/. ' + ${espacio.costo}">S/. 0.00</strong>
+                                    </p>
+                                </div>
+                                <!-- Filtros de Estado -->
+                                <div class="p-4">
+                                    <div class="mb-3">
+                                        <small class="text-small text-muted text-uppercase align-middle">Filtros de Vista</small>
+                                    </div>
+                                    <!-- Control principal -->
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input select-all" type="checkbox" id="selectAll" data-value="all" checked>
+                                        <label class="form-check-label fw-bold" for="selectAll">
+                                            <i class="bx bx-check-circle me-1"></i>Ver Todas
+                                        </label>
+                                    </div>
+                                    <!-- Contenedor de filtros dinámicos -->
+                                    <div class="app-calendar-events-filter">
+                                        <!-- Filtros básicos (se mantendrán para compatibilidad) -->
+                                        <div class="form-check form-check-success mb-2">
+                                            <input class="form-check-input input-filter" type="checkbox" id="select-confirmada" data-value="confirmada" checked>
+                                            <label class="form-check-label" for="select-confirmada">
+                                                <i class="bx bx-check-circle me-1"></i>Mis Reservas Confirmadas
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-warning mb-2">
+                                            <input class="form-check-input input-filter" type="checkbox" id="select-no-confirmada" data-value="no_confirmada" checked>
+                                            <label class="form-check-label" for="select-no-confirmada">
+                                                <i class="bx bx-time-five me-1"></i>Mis Reservas Pendientes
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-secondary mb-2">
+                                            <input class="form-check-input input-filter" type="checkbox" id="select-cancelada" data-value="cancelada" checked>
+                                            <label class="form-check-label" for="select-cancelada">
+                                                <i class="bx bx-x-circle me-1"></i>Mis Reservas Canceladas
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-danger mb-2">
+                                            <input class="form-check-input input-filter" type="checkbox" id="select-reservado" data-value="reservado" checked>
+                                            <label class="form-check-label" for="select-reservado">
+                                                <i class="bx bx-block me-1"></i>Espacios Ocupados
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-info mb-2">
+                                            <input class="form-check-input input-filter" type="checkbox" id="select-mantenimiento" data-value="mantenimiento" checked>
+                                            <label class="form-check-label" for="select-mantenimiento">
+                                                <i class="bx bx-wrench me-1"></i>Mantenimientos
+                                            </label>
+                                        </div>
+                                        <!-- Los filtros adicionales se cargarán dinámicamente aquí -->
+                                    </div>
+                                    <!-- Acciones rápidas -->
+                                    <div class="mt-4">
+                                        <h6 class="mb-3">
+                                            <i class="bx bx-filter-alt me-2"></i>Acciones Rápidas
+                                        </h6>
+                                        <button type="button" class="btn btn-outline-primary btn-sm w-100 mb-2" id="btnShowOnlyMyReservations">
+                                            <i class="bx bx-user me-1"></i>Solo Mis Reservas
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm w-100 mb-2" id="btnShowOnlyAvailability">
+                                            <i class="bx bx-calendar me-1"></i>Solo Disponibilidad
+                                        </button>
+                                        <button type="button" class="btn btn-outline-info btn-sm w-100" id="btnShowAll">
+                                            <i class="bx bx-show me-1"></i>Mostrar Todo
+                                        </button>
+                                    </div>
+                                    <!-- Información adicional -->
+                                    <div class="mt-4">
+                                        <div class="alert alert-info p-2" style="background: rgba(13, 110, 253, 0.1); border: 1px solid rgba(13, 110, 253, 0.25);">
+                                            <small>
+                                                <i class="bx bx-info-circle me-1"></i>
+                                                <strong>Tip:</strong> Haz clic en cualquier día disponible para crear una nueva reserva.
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /Calendar Sidebar -->
+
+                            <!-- Calendar Content -->
+                            <div class="col app-calendar-content">
+                                <div class="card shadow-none border-0">
+                                    <div class="card-body pb-0">
+                                        <!-- Alert Info -->
+                                        <div class="alert alert-primary mb-4" role="alert">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bx bx-info-circle bx-md me-3"></i>
+                                                <div>
+                                                    <h6 class="alert-heading mb-1">Instrucciones</h6>
+                                                    <p class="mb-0">
+                                                        Visualiza la disponibilidad del espacio y tus reservas.
+                                                        <strong>Haz clic en una fecha disponible</strong> para crear una nueva reserva.
+                                                        Las reservas de otros usuarios aparecen como "Ocupado" para proteger la privacidad.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- FullCalendar -->
+                                        <div id="calendar"></div>
+                                    </div>
+                                </div>
+                                <div class="app-overlay"></div>
+
+                                <!-- FullCalendar Offcanvas (mantenido para compatibilidad) -->
+                                <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="addEventSidebar" aria-labelledby="addEventSidebarLabel">
+                                    <div class="offcanvas-header border-bottom">
+                                        <h5 class="offcanvas-title mb-2" id="addEventSidebarLabel">Información de Reserva</h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                        <form class="event-form pt-0" id="eventForm">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="eventTitle">Reserva</label>
+                                                <input type="text" class="form-control" id="eventTitle" name="eventTitle" readonly />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="eventStartDate">Fecha y Hora Inicio</label>
+                                                <input type="text" class="form-control" id="eventStartDate" name="eventStartDate" readonly />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="eventEndDate">Fecha y Hora Fin</label>
+                                                <input type="text" class="form-control" id="eventEndDate" name="eventEndDate" readonly />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="eventLocation">Reservado por</label>
+                                                <input type="text" class="form-control" id="eventLocation" name="eventLocation" readonly />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="eventDescription">Detalles</label>
+                                                <textarea class="form-control" name="eventDescription" id="eventDescription" readonly></textarea>
+                                            </div>
+                                            <div class="mb-3 d-flex justify-content-center">
+                                                <button type="button" class="btn btn-label-secondary btn-cancel" data-bs-dismiss="offcanvas">Cerrar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Calendar Content -->
+                        </div>
+                    </div>
+                </div>
+                <!-- / Content -->
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+    <div class="drag-target"></div>
+
+    <!-- OFFCANVAS CREAR RESERVA (mantenido exactamente igual) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="crearReservaOffcanvas" aria-labelledby="crearReservaOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 id="crearReservaOffcanvasLabel">Crear Reserva</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+        </div>
+        <div class="offcanvas-body">
+            <form id="formCrearReserva">
+                <!-- Campos ocultos necesarios -->
+                <input type="hidden" id="espacioId" th:value="${espacio.idEspacio}" />
+                <input type="hidden" id="espacioCosto" th:value="${espacio.costo}" />
+
+                <div class="mb-3">
+                    <label for="reservaFecha" class="form-label">Fecha</label>
+                    <input type="text" class="form-control" id="reservaFecha" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label for="reservaHoraInicio" class="form-label">Hora de inicio</label>
+                    <select class="form-select" id="reservaHoraInicio" required>
+                        <option value="" disabled selected>Seleccione hora de inicio</option>
+                        <th:block th:each="hora : ${#numbers.sequence(8, 22)}">
+                            <option th:value="${hora}" th:text="${hora + ':00'}">8:00</option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="reservaHoraFin" class="form-label">Hora fin</label>
+                    <select class="form-select" id="reservaHoraFin" required>
+                        <option value="" disabled selected>Seleccione hora fin</option>
+                        <th:block th:each="hora : ${#numbers.sequence(9, 23)}">
+                            <option th:value="${hora}" th:text="${hora + ':00'}">9:00</option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="reservaCosto" class="form-label">Costo total</label>
+                    <div class="input-group">
+                        <span class="input-group-text">S/</span>
+                        <input type="text" class="form-control" id="reservaCosto" placeholder="Se calculará al seleccionar horario" disabled readonly>
+                    </div>
+                    <small class="text-muted" id="detalleHoras"></small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="reservaVecino" class="form-label">Responsable (Vecino)</label>
+                    <input type="text" class="form-control" id="reservaVecino"
+                           th:value="${session.usuario.nombres + ' ' + session.usuario.apellidos}" disabled readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label for="reservaEspacio" class="form-label">Espacio</label>
+                    <input type="text" class="form-control" id="reservaEspacio"
+                           th:value="${espacio.nombre}" disabled readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label for="reservaCoordinador" class="form-label">Coordinador</label>
+                    <select class="form-select w-100" id="reservaCoordinador" name="coordinador" required>
+                        <option value="">Seleccione un coordinador</option>
+                        <th:block th:each="coord : ${coordinadores}">
+                            <option th:value="${coord.idUsuarios}"
+                                    th:text="${coord.nombres + ' ' + coord.apellidos}">Nombre Apellido</option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Tipo de pago</label>
+                    <select class="form-select w-100" id="reservaTipoPago" required>
+                        <option value="">Seleccione tipo de pago</option>
+                        <option value="En línea">Pago en línea</option>
+                        <option value="En banco">Pago en banco</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" id="btnPagarReservar">Seleccione tipo de pago</button>
+            </form>
+        </div>
+    </div>
+    <!-- /OFFCANVAS CREAR RESERVA -->
+    <!-- Offcanvas navbar para móviles -->
+    <div th:replace="~{fragments/offcanvas-navbar :: offcanvasNavbar}"></div>
+    <!-- Chatbot -->
+    <div th:replace="~{fragments/chatbotWidget :: chatbotWidgetFragment}" sec:authorize="hasAuthority('ROLE_Usuario final')"></div>
+</div>
+<!-- / Layout wrapper -->
+
+<!-- Script para inicializar datos de reservas -->
+<script th:inline="javascript">
+    // Variables del servidor pasadas al frontend
+    window.usuarioSesionNombre = /*[[${usuario.nombres + ' ' + usuario.apellidos}]]*/ "Usuario";
+    window.espacioSeleccionadoNombre = /*[[${espacio.nombre}]]*/ "Espacio";
+    window.espacioSeleccionadoCostoHora = /*[[${espacio.costo}]]*/ 0.0;
+
+    // ID del usuario actual para el procesador de eventos
+    window.usuarioActualId = /*[[${usuario.idUsuarios}]]*/ null;
+</script>
+
+<script th:inline="javascript">
+    // Convertir reservas del servidor para JavaScript
+    /*<![CDATA[*/
+    window.reservasDelServidor = /*[[${reservas}]]*/ [];
+
+    // Convertir mantenimientos del servidor para JavaScript
+    window.mantenimientosDelServidor = /*[[${mantenimientos}]]*/ [];
+    /*]]>*/
+</script>
+
+<!-- Core JS -->
+<script th:src="@{/js/offcanvas-navbar.js}"></script>
+<script th:src="@{/js/chatbot.js}"></script>
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<!-- Vendors JS -->
+<script th:src="@{/vendor/libs/fullcalendar/fullcalendar.js}"></script>
+<script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+<script th:src="@{/vendor/libs/form-validation/bootstrap5.js}"></script>
+<script th:src="@{/vendor/libs/form-validation/auto-focus.js}"></script>
+<script th:src="@{/vendor/libs/moment/moment.js}"></script>
+<!-- Main JS -->
+<script th:src="@{/js/main.js}"></script>
+
+<script th:src="@{/js/vecino-calendar-events-processor.js}"></script>
+<script th:src="@{/js/vecino-calendar-filters-manager.js}"></script>
+<script th:src="@{/js/vecino-main-calendar.js}"></script>
+
+<script th:src="@{/js/calendario-logica.js}"></script>
+<script th:src="@{/js/vecino-calendar-fixes.js}"></script>
+
+<!-- Scripts de configuración de acciones rápidas -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configurar botones de acciones rápidas
+        const btnShowOnlyMyReservations = document.getElementById('btnShowOnlyMyReservations');
+        const btnShowOnlyAvailability = document.getElementById('btnShowOnlyAvailability');
+        const btnShowAll = document.getElementById('btnShowAll');
+        if (btnShowOnlyMyReservations) {
+            btnShowOnlyMyReservations.addEventListener('click', () => {
+                if (window.vecinoCalendarManager && window.vecinoCalendarManager.filtersManager) {
+                    window.vecinoCalendarManager.filtersManager.showOnlyMyReservations();
+                }
+            });
+        }
+        if (btnShowOnlyAvailability) {
+            btnShowOnlyAvailability.addEventListener('click', () => {
+                if (window.vecinoCalendarManager && window.vecinoCalendarManager.filtersManager) {
+                    window.vecinoCalendarManager.filtersManager.showOnlyAvailability();
+                }
+            });
+        }
+        if (btnShowAll) {
+            btnShowAll.addEventListener('click', () => {
+                if (window.vecinoCalendarManager && window.vecinoCalendarManager.filtersManager) {
+                    window.vecinoCalendarManager.filtersManager.showAll();
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

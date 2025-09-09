@@ -1,0 +1,194 @@
+/* === WIDGET DE FILTROS MÓVIL === */
+/* Estilos para el botón flotante de filtros */
+.filter-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1050;
+}
+
+.filter-toggle-btn {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.filter-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.filter-toggle-btn.active {
+    background: #dc3545;
+    transform: rotate(45deg);
+}
+
+.filter-toggle-btn i {
+    transition: all 0.3s ease;
+}
+
+.filter-toggle-btn.active i {
+    transform: rotate(-45deg);
+}
+
+/* Panel de filtros móvil */
+.filter-panel {
+    position: fixed;
+    bottom: 90px;
+    left: 20px;
+    width: calc(100vw - 40px);
+    max-width: 400px;
+    max-height: 70vh; /* Altura reducida */
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(100%) scale(0.8);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1049;
+    overflow: hidden;
+}
+
+.filter-panel.show {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.filter-panel-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-panel-body {
+    padding: 15px 20px; /* Padding reducido */
+    max-height: calc(70vh - 200px); /* Ajustado para la nueva altura */
+    overflow-y: auto;
+}
+
+.filter-panel-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    background: #f8f9fa;
+    border-radius: 0 0 15px 15px;
+}
+
+/* Overlay para cerrar */
+.filter-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1048;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.filter-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Solo mostrar en móviles */
+.filter-widget {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .filter-widget {
+        display: block;
+    }
+
+    /* Ocultar sidebar original en móviles */
+    .col-md-3.d-none.d-md-block {
+        display: none !important;
+    }
+
+    /* Ajustar columna principal en móviles */
+    .col-12.col-md-9 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Estilos para el contenido de filtros */
+.filter-section {
+    margin-bottom: 15px; /* Reducido */
+}
+
+.filter-section-title {
+    font-size: 11px; /* Reducido */
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    margin-bottom: 8px; /* Reducido */
+    letter-spacing: 0.5px;
+}
+
+.filter-panel .form-label {
+    font-weight: 500;
+    margin-bottom: 4px; /* Reducido */
+    font-size: 14px;
+}
+
+.btn-filter-action {
+    border-radius: 25px;
+    font-weight: 500;
+    padding: 8px 18px; /* Reducido */
+}
+
+/* Animación de entrada */
+@keyframes bounceIn {
+    0% {
+        transform: translateY(100%) scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-10%) scale(1.05);
+    }
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.filter-panel.bounce-in {
+    animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Custom scrollbar */
+.filter-panel-body::-webkit-scrollbar {
+    width: 4px;
+}
+
+.filter-panel-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+}
+
+.filter-panel-body::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+}
+
+.filter-panel-body::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es" class="light-style layout-compact" dir="ltr" data-theme="theme-semi-dark" data-assets-path="/" data-template="vertical-menu-template-semi-dark" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Mis Pagos - Municipalidad de San Miguel</title>
+    <meta name="description" content="Mira tu historial de pagos desde aquí." />
+    <meta name="keywords" content="pagos, historial, reservas, san miguel, municipalidad">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" th:href="@{/css/demo.css}" />
+    <link rel="stylesheet" th:href="@{/css/offcanvas-style.css}">
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/datatables-bs5/datatables.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}" />
+
+    <!-- Page CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/app-chat.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/chatbot.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/navbar2-estilo.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/vecino-pagos.css}">
+
+    <!-- Helpers -->
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
+</head>
+
+<body style="background-color:rgb(216, 248, 255);">
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <div class="layout-page">
+            <!-- Navbar -->
+            <div th:replace="~{fragments/navbar2 :: navbarFragment2}"></div>
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <div class="container-fluid flex-grow-1 container-p-y">
+                    <!-- Mini dashboard de estadísticas -->
+                    <div class="row" id="statsCards">
+                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="stats-icon me-3">
+                                            <i class="bx bx-receipt"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="card-title text-primary mb-1" id="totalPagosCount">0</h5>
+                                            <p class="card-text mb-0 opacity-75">Total de Pagos</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="stats-icon me-3">
+                                            <i class="bx bx-money"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="card-title text-primary mb-1" id="montoTotalAmount">S/. 0.00</h5>
+                                            <p class="card-text mb-0 opacity-75">Monto Total</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="stats-icon me-3">
+                                            <i class="bx bx-credit-card"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="card-title text-primary mb-1" id="pagosOnlineCount">0</h5>
+                                            <p class="card-text mb-0 opacity-75">Pagos en Línea</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="stats-icon me-3">
+                                            <i class="bx bx-building-house"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="card-title text-primary mb-1" id="pagosBancoCount">0</h5>
+                                            <p class="card-text mb-0 opacity-75">Pagos en Banco</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card principal con todo el contenido -->
+                    <div class="card">
+                        <div class="card-header card-action border-bottom d-flex justify-content-between align-items-center">
+                            <div class="card-action-title">
+                                <h2 class="text-primary mb-1">💰 Mis Pagos</h2>
+                                <p class="text-muted mb-0">Consulta tu historial completo de pagos</p>
+                            </div>
+                            <div class="card-action-element">
+                                <div th:replace="~{fragments/export-dropdown :: exportDropdown('mis-pagos')}"></div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Filters Card -->
+                            <div class=" mt-4">
+                                <h5 class="card-title mb-3">
+                                    <i class="bx bx-filter-alt me-2"></i>Filtros de Búsqueda
+                                </h5>
+                                <form id="filtrosForm">
+                                    <div class="row">
+                                        <!-- Rango de fechas -->
+                                        <div class="col-md-3 mb-3">
+                                            <label for="fechaInicio" class="form-label">Fecha Inicio</label>
+                                            <input type="text" class="form-control" id="fechaInicio" name="fechaInicio" placeholder="Seleccionar fecha...">
+                                        </div>
+
+                                        <div class="col-md-3 mb-3">
+                                            <label for="fechaFin" class="form-label">Fecha Fin</label>
+                                            <input type="text" class="form-control" id="fechaFin" name="fechaFin" placeholder="Seleccionar fecha...">
+                                        </div>
+
+                                        <!-- Tipo de Pago -->
+                                        <div class="col-md-2 mb-3">
+                                            <label for="filtroTipoPago" class="form-label">Tipo de Pago</label>
+                                            <select class="form-select" id="filtroTipoPago" name="tipoPago">
+                                                <option value="">Todos</option>
+                                                <option th:each="tipo : ${tiposPago}" th:value="${tipo}" th:text="${tipo}"></option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Estado -->
+                                        <div class="col-md-2 mb-3">
+                                            <label for="filtroEstado" class="form-label">Estado</label>
+                                            <select class="form-select" id="filtroEstado" name="estado">
+                                                <option value="">Todos</option>
+                                                <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Espacio -->
+                                        <div class="col-md-2 mb-3">
+                                            <label for="filtroEspacio" class="form-label">Espacio</label>
+                                            <select class="form-select" id="filtroEspacio" name="espacio">
+                                                <option value="">Todos</option>
+                                                <option th:each="espacio : ${espaciosUtilizados}"
+                                                        th:value="${espacio.idEspacio}"
+                                                        th:text="${espacio.nombre}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-primary me-2" onclick="aplicarFiltros()">
+                                                <i class="bx bx-search me-1"></i>Buscar
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary me-2" onclick="limpiarFiltros()">
+                                                <i class="bx bx-refresh me-1"></i>Limpiar
+                                            </button>
+                                            <button type="button" class="btn btn-outline-info" onclick="cargarEstadisticas()">
+                                                <i class="bx bx-bar-chart me-1"></i>Actualizar Stats
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- DataTable Card -->
+                            <div class="position-relative">
+                                <!-- Loading overlay -->
+                                <div class="loading-overlay d-none" id="loadingOverlay">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
+                                        </div>
+                                        <p class="mt-2 text-muted">Cargando pagos...</p>
+                                    </div>
+                                </div>
+
+                                <!-- DataTable -->
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover" id="pagosDatatable">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Fecha de Pago</th>
+                                            <th>Espacio</th>
+                                            <th>Lugar</th>
+                                            <th>Fecha Reserva</th>
+                                            <th>Horario</th>
+                                            <th>Tipo de Pago</th>
+                                            <th>Monto</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!-- Los datos se cargarán con AJAX -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Content backdrop -->
+                <div class="content-backdrop fade"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Layout overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    <div class="drag-target"></div>
+
+    <!-- Offcanvas navbar para móviles -->
+    <div th:replace="~{fragments/offcanvas-navbar :: offcanvasNavbar}"></div>
+
+    <!-- Chatbot -->
+    <div th:replace="~{fragments/chatbotWidget :: chatbotWidgetFragment}" sec:authorize="hasAuthority('ROLE_Usuario final')"></div>
+</div>
+
+<!-- Modal Detalle Pago -->
+<div class="modal fade" id="modalDetallePago" tabindex="-1" aria-labelledby="modalDetallePagoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDetallePagoLabel">
+                    <i class="bx bx-receipt me-2"></i>Detalle del Pago
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalDetallePagoBody">
+                <!-- El contenido se cargará dinámicamente -->
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts básicos -->
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+
+<!-- Vendors JS -->
+<script th:src="@{/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+<script th:src="@{/vendor/libs/select2/select2.js}"></script>
+<script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+<script th:src="@{/vendor/libs/moment/moment.js}"></script>
+
+<!-- Main JS -->
+<script th:src="@{/js/main.js}"></script>
+
+<!-- Page specific scripts -->
+<script th:src="@{/js/offcanvas-navbar.js}"></script>
+<script th:src="@{/js/chatbot.js}"></script>
+
+<script th:src="@{/js/vecino-pagos.js}"></script>
+
+</body>
+</html>

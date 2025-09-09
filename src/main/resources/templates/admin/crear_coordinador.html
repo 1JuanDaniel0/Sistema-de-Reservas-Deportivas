@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="es"
+      class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
+      dir="ltr"
+      data-theme="theme-semi-dark"
+      data-assets-path="/"
+      data-template="vertical-menu-template-semi-dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Crear Coordinador</title>
+    <meta name="description" content="Crea un nuevo coordinador desde aquí" />
+    <meta name="keywords" content="coordinador, crear, nuevo, san miguel, espacios" />
+    <!-- Canonical SEO -->
+    <link rel="canonical" href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" th:href="@{/css/demo.css}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/tagify/tagify.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/bootstrap-select/bootstrap-select.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+
+    <!-- Page CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/page-profile.css}" />
+
+    <!-- Helpers -->
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
+
+    <style>
+        /* Fondo degradado profesional */
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                    radial-gradient(circle at 10% 20%, rgba(216, 241, 230, 0.46) 0%, rgba(255, 255, 255, 0.1) 90.2%),
+                    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(201, 215, 255, 0.2) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 15px;
+            box-shadow:
+                    0 10px 20px rgba(0,0,0,0.08),
+                    0 0 0 1px rgba(255,255,255,0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #696cff, #ff4d4d);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .card:hover::before {
+            opacity: 1;
+        }
+        .card:hover {
+            transform: translateY(-5px) scale(1.005);
+            box-shadow:
+                    0 20px 30px rgba(0,0,0,0.12),
+                    0 0 0 1px rgba(255,255,255,0.2);
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid rgba(105,108,255,0.1);
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+        .form-control:focus {
+            transform: translateY(-2px);
+            border-color: rgba(105,108,255,0.5);
+            box-shadow:
+                    0 5px 15px rgba(105,108,255,0.1),
+                    0 0 0 3px rgba(105,108,255,0.1);
+        }
+        .btn {
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #696cff, #8789ff);
+            box-shadow: 0 4px 15px rgba(105,108,255,0.3);
+        }
+        @media (max-width: 768px) {
+            .card {
+                border-radius: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <div th:replace="~{fragments/sidebar-admin :: sidebarAdmin('coordinadores', 'crear-coordinador')}"></div>
+        <!-- Layout container -->
+        <div class="layout-page">
+            <div th:replace="~{fragments/navbar-admin :: navbarAdmin}"></div>
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <div class="container-xxl flex-grow-1 container-p-y">
+                    <div class="row">
+                        <!-- Formulario -->
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                            <div class="card mb-4">
+                                <h3 class="card-header">Registro de Nuevo Coordinador</h3>
+                                <!-- Account -->
+                                <hr class="my-0">
+                                <div class="card-body mb-4">
+                                    <form id="crearCoordinador" th:action="@{/admin/crear-coordinador}" th:object="${coordinador}" method="post" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <!-- DNI y Correo primero -->
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label" for="dni">DNI</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input class="form-control" type="number" id="dni" th:field="*{dni}" required />
+                                                </div>
+                                                <div id="dni-error" class="text-danger small mt-1 d-none"></div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label" for="correo">Correo</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input class="form-control" type="email" id="correo" th:field="*{correo}" required />
+                                                </div>
+                                            </div>
+
+                                            <!-- Nombres y Apellidos después -->
+                                            <div class="mb-3 col-md-6">
+                                                <label for="nombres" class="form-label">Nombres</label>
+                                                <input class="form-control" type="text" id="nombres" th:field="*{nombres}" readonly />
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="apellidos" class="form-label">Apellidos</label>
+                                                <input class="form-control" type="text" id="apellidos" th:field="*{apellidos}" readonly />
+                                            </div>
+
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label" for="contrasena">Contraseña</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input class="form-control" type="password" id="contrasena" th:field="*{contrasena}" required />
+                                                    <span class="input-group-text cursor-pointer" id="togglePassword">
+                                                        <i class="bx bx-hide"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <!-- Select múltiple para lugares -->
+                                            <div class="mb-3 col-md-6">
+                                                <label for="lugaresAsignados" class="form-label">Lugares Asignados</label>
+                                                <!-- En el select, agregar required -->
+                                                <select id="lugaresAsignados" name="lugaresIds" class="select2 form-select" multiple required>
+                                                    <option th:each="lugar : ${lugares}"
+                                                            th:value="${lugar.idLugar}"
+                                                            th:text="${lugar.lugar}">
+                                                    </option>
+                                                </select>
+                                                <small class="form-text text-muted">Seleccione uno o más lugares para asignar al coordinador</small>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <button type="submit" class="btn btn-primary me-2">Crear</button>
+                                            <button type="reset" class="btn btn-label-secondary">Cancelar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /Account -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+    <div class="drag-target"></div>
+</div>
+<!-- / Layout wrapper -->
+
+<!-- Core JS -->
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<!-- Vendors JS -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#lugaresAsignados').select2({
+            placeholder: 'Seleccione los lugares...',
+            allowClear: true,
+            width: '100%'
+        });
+
+        $('button[type="reset"]').on('click', function() {
+            $('#lugaresAsignados').val(null).trigger('change');
+        });
+    });
+</script>
+
+<script th:src="@{/vendor/libs/select2/select2.js}"></script>
+<script th:src="@{/vendor/libs/tagify/tagify.js}"></script>
+<script th:src="@{/vendor/libs/bootstrap-select/bootstrap-select.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/libs/bloodhound/bloodhound.js}"></script>
+<!-- Main JS -->
+<script th:src="@{/js/main.js}"></script>
+<!-- Page JS -->
+<script th:src="@{/js/app-user-view-account.js}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const dniInput = document.getElementById("dni");
+    const nombresInput = document.getElementById("nombres");
+    const apellidosInput = document.getElementById("apellidos");
+    const dniError = document.getElementById("dni-error");
+
+    dniInput.addEventListener("change", function() {
+        const dni = dniInput.value.trim();
+        nombresInput.value = "";
+        apellidosInput.value = "";
+        dniError.classList.add("d-none");
+        if (dni.length !== 8) {
+            dniError.textContent = "El DNI debe tener 8 dígitos.";
+            dniError.classList.remove("d-none");
+            return;
+        }
+        nombresInput.value = "Consultando...";
+        apellidosInput.value = "Consultando...";
+        fetch("/admin/consultar-dni-api?dni=" + dni)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "ok") {
+                    nombresInput.value = data.nombres || "";
+                    apellidosInput.value = data.apellidos || "";
+                    if (!data.nombres || !data.apellidos) {
+                        dniError.textContent = "No se encontraron datos para ese DNI.";
+                        dniError.classList.remove("d-none");
+                    }
+                } else {
+                    nombresInput.value = "";
+                    apellidosInput.value = "";
+                    dniError.textContent = "No se encontraron datos para ese DNI.";
+                    dniError.classList.remove("d-none");
+                }
+            })
+            .catch(() => {
+                nombresInput.value = "";
+                apellidosInput.value = "";
+                dniError.textContent = "Error consultando el DNI.";
+                dniError.classList.remove("d-none");
+            });
+    });
+
+    // Mostrar/ocultar contraseña
+    const passwordInput = document.getElementById("contrasena");
+    const togglePassword = document.getElementById("togglePassword");
+    togglePassword.addEventListener("click", function() {
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePassword.querySelector("i").classList.replace("bx-hide", "bx-show");
+        } else {
+            passwordInput.type = "password";
+            togglePassword.querySelector("i").classList.replace("bx-show", "bx-hide");
+        }
+    });
+});
+</script>
+</body>
+</html>

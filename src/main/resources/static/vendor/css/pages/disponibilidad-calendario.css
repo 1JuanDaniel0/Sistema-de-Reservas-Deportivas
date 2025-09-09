@@ -1,0 +1,24 @@
+.tooltip-fade-reserva {
+    font-size: 0.85rem;
+    background-color: rgba(33, 37, 41, 0.9);
+    border-radius: 8px;
+    padding: 6px 10px;
+    max-width: 220px;
+    white-space: pre-line;
+}
+.tooltip.fade.show {
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+}
+/* Estilo base para los eventos */
+.fc-timegrid-event {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+}
+/* Hover con escala */
+.fc-timegrid-event:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}

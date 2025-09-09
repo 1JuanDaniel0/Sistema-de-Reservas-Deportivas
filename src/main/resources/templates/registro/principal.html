@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html lang="es"
+      class="layout-navbar-fixed layout-wide"
+      dir="ltr"
+      data-skin="default"
+      data-assets-path="/" data-template="front-pages"
+      data-bs-theme="light"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="robots" content="noindex">
+
+    <title>Página Principal - Municipalidad de San Miguel</title>
+
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/app-chat.css}">
+    <link rel="stylesheet" th:href="@{/vendor/principal_files/pickr-themes.css}">
+    <link rel="stylesheet" th:href="@{/vendor/principal_files/core.css}">
+    <link rel="stylesheet" th:href="@{/vendor/principal_files/demo.css}">
+    <link rel="stylesheet" th:href="@{/vendor/principal_files/front-page.css}">
+    <link rel="stylesheet" th:href="@{/css/css2.css}">
+
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/principal_files/nouislider.css}">
+    <link rel="stylesheet" th:href="@{/vendor/principal_files/swiper.css}">
+
+    <link rel="stylesheet" th:href="@{/vendor/principal_files/front-page-landing.css}">
+
+    <link rel="stylesheet" th:href="@{/vendor/css/chatbot.css}">
+    <link rel="stylesheet" th:href="@{/css/offcanvas-style.css}">
+
+    <script th:src="@{/vendor/principal_files/helpers.js}"></script>
+    <script th:src="@{/vendor/principal_files/front-config.js}"></script>
+
+    <style type="text/css">
+        .layout-menu-fixed .layout-navbar-full .layout-menu,
+        .layout-menu-fixed-offcanvas .layout-navbar-full .layout-menu {
+            top: 79.43452453613281px !important;
+        }
+        .layout-page {
+            padding-top: 79.43452453613281px !important;
+        }
+        .content-wrapper {
+            padding-bottom: 0px !important;
+        }
+    </style>
+
+    <style>
+        .text-clamp {
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+        }
+
+        .text-clamp::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            height: 2.5em;
+            width: 100%;
+        }
+    </style>
+
+    <style>
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-bottom-left-radius: 3.5rem;
+            border-bottom-right-radius: 3.5rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.4)); /* Degradado oscuro */
+            z-index: 1;
+        }
+        .landing-hero .container {
+            position: relative;
+            z-index: 1; /* Para que el texto esté por encima */
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.4); /* más transparente */
+            backdrop-filter: blur(8px); /* fondo borroso */
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95); /* fondo sólido al hacer scroll */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .features-icon-box i {
+            transition: transform 0.3s, color 0.3s;
+        }
+        .features-icon-box:hover i {
+            transform: scale(1.2);
+            color: #5a4fcf; /* o el color principal que quieras */
+        }
+        /* Keyframes para el fade */
+        @keyframes fadeInTyping {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .navbar-toggler {
+            transition: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            animation: none !important;
+        }
+    </style>
+</head>
+
+<body style="--bs-scrollbar-width: 15px;">
+
+<div class="navbar scrolled" th:replace="~{fragments/navbar :: navbarFragment}"></div>
+<div data-bs-spy="scroll" class="scrollspy-example">
+    <section id="hero-animation">
+        <div id="landingHero" class="section-py landing-hero position-relative">
+            <div class="overlay"></div>
+            <img src="https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/distritos-vivir-lima-san-miguel-transformed.webp" alt="hero background" class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1"
+                 style="border-bottom-left-radius: 3.5rem; border-bottom-right-radius: 3.5rem;">
+            <div class="container">
+                <div class="text-center position-relative">
+                    <h1 class="text-primary hero-title display-6 fw-extrabold">Complejos Recreacionales y Deportivos</h1>
+                    <div th:if="${usuario != null}" class="text-center mt-4" data-aos="fade-up" data-aos-delay="0">
+                        <h2 class="text-white fw-bold">
+                            <span id="typedSaludo"></span> 👋
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="landingFeatures" class="section-py landing-features">
+        <div class="container">
+
+            <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
+                <!-- Explora la Disponibilidad -->
+                <div class="col-lg-4 col-sm-6 text-center features-icon-box" data-aos="fade-up" data-aos-delay="200">
+                    <div class="mb-4 text-primary">
+                        <i class='bx bx-compass bx-lg'></i>
+                    </div>
+                    <h5 class="mb-2 text-dark">Explora la Disponibilidad</h5>
+                    <p class="features-icon-description mb-0">
+                        Consulta en tiempo real qué espacios están disponibles para ti.
+                    </p>
+                </div>
+
+                <!-- Reserva y Paga -->
+                <div class="col-lg-4 col-sm-6 text-center features-icon-box" data-aos="fade-up" data-aos-delay="400">
+                    <div class="mb-4 text-primary">
+                        <i class='bx bx-credit-card bx-lg'></i>
+                    </div>
+                    <h5 class="mb-2 text-dark">Reserva y Paga</h5>
+                    <p class="features-icon-description mb-0">
+                        Asegura tu espacio en segundos con pagos fáciles y seguros.
+                    </p>
+                </div>
+                <!-- Recibe Confirmación -->
+                <div class="col-lg-4 col-sm-6 text-center features-icon-box" data-aos="fade-up" data-aos-delay="600">
+                    <div class="mb-4 text-primary">
+                        <i class='bx bx-check-shield bx-lg'></i>
+                    </div>
+                    <h5 class="mb-2 text-dark">Recibe Confirmación</h5>
+                    <p class="features-icon-description mb-0">
+                        Te notificamos rápidamente cuando tu reserva esté confirmada.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="landingReviews" class="section-py bg-body landing-reviews pb-0">
+        <div class="container">
+            <div class="row align-items-center gx-0 gy-4 g-lg-5 mb-5 pb-md-5">
+                <div class="col-md-6 col-lg-5 col-xl-3">
+                    <div class="mb-4">
+                        <span class="badge bg-label-primary">Espacios Deportivos</span>
+                    </div>
+                    <h4 class="mb-1">
+                  <span class="position-relative fw-extrabold z-1">Algunos Espacios
+                    <img th:src="@{/vendor/principal_files/section-title-icon.png}" alt="decoración" class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
+                  </span>
+                    </h4>
+                    <p class="mb-5 mb-md-12">
+                        Estas son algunas canchas que<br class="d-none d-xl-block">
+                        puedes encontrar aquí.
+                    </p>
+                    <div class="landing-reviews-btns">
+                        <button id="reviews-previous-btn" class="btn btn-icon btn-label-primary reviews-btn me-3" type="button">
+                            <i class="icon-base bx bx-chevron-left icon-md scaleX-n1-rtl"></i>
+                        </button>
+                        <button id="reviews-next-btn" class="btn btn-icon btn-label-primary reviews-btn" type="button">
+                            <i class="icon-base bx bx-chevron-right icon-md scaleX-n1-rtl"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-7 col-xl-9">
+                    <div class="swiper-reviews-carousel overflow-hidden">
+                        <div class="swiper swiper-initialized swiper-horizontal swiper-backface-hidden" id="swiper-reviews">
+                            <div class="swiper-wrapper" id="swiper-wrapper-c561724af6301e55" aria-live="off" style="transition-duration: 0ms; transform: translate3d(-558px, 0px, 0px); transition-delay: 0ms;">
+
+                                <div th:each="espacio : ${espacios}" class="swiper-slide" role="group" aria-label="3 / 6" style="width: 253px; margin-right: 26px;" data-swiper-slide-index="2">
+                                    <div class="card h-100">
+                                        <img th:src="${espacio.foto1Url}"
+                                             alt="imagen de espacio"
+                                             class="img-fluid"
+                                             onerror="this.onerror=null;this.src='https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/EspacioRepresentacion.webp';"
+                                             style="border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem">
+
+                                        <div class="card-body text-body d-flex flex-column justify-content-between h-100">
+                                            <p th:text="${espacio.descripcion}" class="text-clamp">Descripción espacio</p>
+                                            <div class="text-warning mb-4" th:attr="data-rating=${promediosCalificacion.get(espacio.idEspacio) ?: 0}">
+                                                <!-- Las estrellas se generarán con JavaScript -->
+                                                <span class="stars-container"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-c561724af6301e55"></div>
+                            <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-c561724af6301e55"></div>
+                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="m-0 mt-6 mt-md-12">
+    </section>
+
+
+    <!-- Fun facts: Start -->
+    <section id="landingFunFacts" class="section-py landing-fun-facts">
+        <div class="container">
+            <div class="row gy-6">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card border border-primary shadow-none">
+                        <div class="card-body text-center">
+                            <div class="mb-4 text-primary">
+                                <svg width="64" height="65" viewBox="0 0 64 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.2" d="M10 44.4663V18.4663C10 17.4054 10.4214 16.388 11.1716 15.6379C11.9217 14.8877 12.9391 14.4663 14 14.4663H50C51.0609 14.4663 52.0783 14.8877 52.8284 15.6379C53.5786 16.388 54 17.4054 54 18.4663V44.4663H10Z" fill="currentColor"></path>
+                                    <path d="M10 44.4663V18.4663C10 17.4054 10.4214 16.388 11.1716 15.6379C11.9217 14.8877 12.9391 14.4663 14 14.4663H50C51.0609 14.4663 52.0783 14.8877 52.8284 15.6379C53.5786 16.388 54 17.4054 54 18.4663V44.4663M36 22.4663H28M6 44.4663H58V48.4663C58 49.5272 57.5786 50.5446 56.8284 51.2947C56.0783 52.0449 55.0609 52.4663 54 52.4663H10C8.93913 52.4663 7.92172 52.0449 7.17157 51.2947C6.42143 50.5446 6 49.5272 6 48.4663V44.4663Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                            <h3 class="mb-0"><span th:text="${reservasLinea}">0</span>+</h3>
+                            <p class="fw-medium mb-0">
+                                Reservas<br>
+                                en línea
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card border border-success shadow-none">
+                        <div class="card-body text-center">
+                            <div class="mb-4 text-success">
+                                <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="User">
+                                        <path id="Vector" opacity="0.2" d="M32.4999 8.52881C27.6437 8.52739 22.9012 9.99922 18.899 12.7499C14.8969 15.5005 11.8233 19.4006 10.0844 23.9348C8.34542 28.4691 8.02291 33.4242 9.15945 38.1456C10.296 42.867 12.8381 47.1326 16.4499 50.3788C17.9549 47.4151 20.2511 44.9261 23.0841 43.1875C25.917 41.4489 29.176 40.5287 32.4999 40.5288C30.5221 40.5288 28.5887 39.9423 26.9442 38.8435C25.2997 37.7447 24.018 36.1829 23.2611 34.3556C22.5043 32.5284 22.3062 30.5177 22.6921 28.5779C23.0779 26.6381 24.0303 24.8563 25.4289 23.4577C26.8274 22.0592 28.6092 21.1068 30.549 20.721C32.4888 20.3351 34.4995 20.5331 36.3268 21.29C38.154 22.0469 39.7158 23.3286 40.8146 24.9731C41.9135 26.6176 42.4999 28.551 42.4999 30.5288C42.4999 33.181 41.4464 35.7245 39.571 37.5999C37.6956 39.4752 35.1521 40.5288 32.4999 40.5288C35.8238 40.5287 39.0829 41.4489 41.9158 43.1875C44.7487 44.9261 47.045 47.4151 48.5499 50.3788C52.1618 47.1326 54.7039 42.867 55.8404 38.1456C56.977 33.4242 56.6545 28.4691 54.9155 23.9348C53.1766 19.4006 50.103 15.5005 46.1008 12.7499C42.0987 9.99922 37.3562 8.52739 32.4999 8.52881Z" fill="currentColor"></path>
+                                        <path id="Vector_2" d="M32.5 40.5288C38.0228 40.5288 42.5 36.0517 42.5 30.5288C42.5 25.006 38.0228 20.5288 32.5 20.5288C26.9772 20.5288 22.5 25.006 22.5 30.5288C22.5 36.0517 26.9772 40.5288 32.5 40.5288ZM32.5 40.5288C29.1759 40.5288 25.9168 41.4477 23.0839 43.1866C20.2509 44.9255 17.9548 47.4149 16.45 50.3788M32.5 40.5288C35.8241 40.5288 39.0832 41.4477 41.9161 43.1866C44.7491 44.9255 47.0452 47.4149 48.55 50.3788M56.5 32.5288C56.5 45.7836 45.7548 56.5288 32.5 56.5288C19.2452 56.5288 8.5 45.7836 8.5 32.5288C8.5 19.274 19.2452 8.52881 32.5 8.52881C45.7548 8.52881 56.5 19.274 56.5 32.5288Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                            <h3 class="mb-0"><span th:text="${usuariosRegistrados}">0</span>+</h3>
+                            <p class="fw-medium mb-0">
+                                Usuarios<br>
+                                Registrados
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card border border-info shadow-none">
+                        <div class="card-body text-center">
+                            <div class="mb-4 text-info">
+                                <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.2" d="M46.5001 10.5288H32.5001L20.2251 26.5288L32.5001 56.5288L60.5001 26.5288L46.5001 10.5288Z" fill="currentColor"></path>
+                                    <path d="M18.5 10.5288H46.5L60.5 26.5288L32.5 56.5288L4.5 26.5288L18.5 10.5288Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M33.2934 9.92012C33.1042 9.67343 32.8109 9.52881 32.5 9.52881C32.1891 9.52881 31.8958 9.67343 31.7066 9.92012L19.7318 25.5288H4.5C3.94772 25.5288 3.5 25.9765 3.5 26.5288C3.5 27.0811 3.94772 27.5288 4.5 27.5288H19.5537L31.5745 56.9075C31.7282 57.2833 32.094 57.5288 32.5 57.5288C32.906 57.5288 33.2718 57.2833 33.4255 56.9075L45.4463 27.5288H60.5C61.0523 27.5288 61.5 27.0811 61.5 26.5288C61.5 25.9765 61.0523 25.5288 60.5 25.5288H45.2682L33.2934 9.92012ZM42.7474 25.5288L32.5 12.1717L22.2526 25.5288H42.7474ZM21.7146 27.5288L32.5 53.8881L43.2854 27.5288H21.7146Z" fill="currentColor"></path>
+                                </svg>
+                            </div>
+                            <h3 class="mb-0"><span th:text="${#numbers.formatDecimal(promedioCalificacion ?: 0, 1, 1)}">5.0</span>/5</h3>
+                            <p class="fw-medium mb-0">
+                                Espacios en muy<br>
+                                buen estado
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card border border-warning shadow-none">
+                        <div class="card-body text-center">
+                            <div class="mb-4 text-warning">
+                                <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.2" d="M14.125 50.9038C11.825 48.6038 13.35 43.7788 12.175 40.9538C11 38.1288 6.5 35.6538 6.5 32.5288C6.5 29.4038 10.95 27.0288 12.175 24.1038C13.4 21.1788 11.825 16.4538 14.125 14.1538C16.425 11.8538 21.25 13.3788 24.075 12.2038C26.9 11.0288 29.375 6.52881 32.5 6.52881C35.625 6.52881 38 10.9788 40.925 12.2038C43.85 13.4288 48.575 11.8538 50.875 14.1538C53.175 16.4538 51.65 21.2788 52.825 24.1038C54 26.9288 58.5 29.4038 58.5 32.5288C58.5 35.6538 54.05 38.0288 52.825 40.9538C51.6 43.8788 53.175 48.6038 50.875 50.9038C48.575 53.2038 43.75 51.6788 40.925 52.8538C38.1 54.0288 35.625 58.5288 32.5 58.5288C29.375 58.5288 27 54.0788 24.075 52.8538C21.15 51.6288 16.425 53.2038 14.125 50.9038Z" fill="currentColor"></path>
+                                    <path d="M43.5 26.5288L28.825 40.5288L21.5 33.5288M14.125 50.9038C11.825 48.6038 13.35 43.7788 12.175 40.9538C11 38.1288 6.5 35.6538 6.5 32.5288C6.5 29.4038 10.95 27.0288 12.175 24.1038C13.4 21.1788 11.825 16.4538 14.125 14.1538C16.425 11.8538 21.25 13.3788 24.075 12.2038C26.9 11.0288 29.375 6.52881 32.5 6.52881C35.625 6.52881 38 10.9788 40.925 12.2038C43.85 13.4288 48.575 11.8538 50.875 14.1538C53.175 16.4538 51.65 21.2788 52.825 24.1038C54 26.9288 58.5 29.4038 58.5 32.5288C58.5 35.6538 54.05 38.0288 52.825 40.9538C51.6 43.8788 53.175 48.6038 50.875 50.9038C48.575 53.2038 43.75 51.6788 40.925 52.8538C38.1 54.0288 35.625 58.5288 32.5 58.5288C29.375 58.5288 27 54.0788 24.075 52.8538C21.15 51.6288 16.425 53.2038 14.125 50.9038Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                            <h3 class="mb-0">100%</h3>
+                            <p class="fw-medium mb-0">
+                                Reembolso<br>
+                                Garantizado
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="landingFAQ" class="section-py bg-body landing-faq">
+        <div class="container">
+            <div class="text-center mb-4">
+                <span class="badge bg-label-primary">FAQ</span>
+            </div>
+            <h4 class="text-center mb-1">
+                Preguntas
+                <span class="position-relative fw-extrabold z-1">frecuentes
+                <img th:src="@{/vendor/principal_files/section-title-icon.png}" alt="decoración" class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
+              </span>
+            </h4>
+            <p class="text-center mb-12 pb-md-4">Explora estas preguntas frecuentes para encontrar respuestas a las dudas más comunes.</p>
+            <div class="row gy-12 align-items-center">
+                <div class="col-lg-5">
+                    <div class="text-center">
+                        <img src="https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/faq-foto.webp" alt="faq boy with logos" class="faq-image">
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="accordion" id="accordionExample">
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingOne"> <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne"> ¿Cómo puedo reservar una cancha?</button>
+                            </h2>
+                            <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample"> <div class="accordion-body">Para reservar una cancha, primero debes registrarte en nuestra plataforma. Una vez que tengas una cuenta, inicia sesión, navega a la sección de Canchas, elige la cancha que prefieras, selecciona la fecha y el horario disponible, y confirma tu reserva. Es un proceso rápido y sencillo que puedes hacer desde tu celular o computadora.</div>
+                            </div>
+                        </div>
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">¿Es necesario registrarse para hacer una reserva?</button>
+                            </h2>
+                            <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">Sí, es necesario. El registro nos permite llevar un control de las reservas, garantizar la seguridad de los usuarios, y ofrecerte un historial de tus actividades. Además, con una cuenta puedes cancelar reservas, recibir notificaciones importantes y acceder a reembolsos.</div>
+                            </div>
+                        </div>
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">¿Cómo puedo pagar mi reserva?</button>
+                            </h2>
+                            <div id="accordionThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    Después de seleccionar tu cancha y confirmar la reserva, podrás acceder a las opciones de pago. Aceptamos tarjetas de débito, crédito y otros métodos electrónicos según disponibilidad. Todo el proceso de pago es seguro y respaldado por nuestra pasarela de pago confiable.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionFour">¿Puedo cancelar una reserva?</button>
+                            </h2>
+                            <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">Sí, puedes cancelar tu reserva desde tu perfil, en la sección Mis Reservas. Es importante hacerlo con al menos 2 horas de anticipación para evitar penalizaciones. Si cumples con este plazo, tu dinero será reembolsado o podrá quedar como saldo a favor para futuras reservas.</div>
+                            </div>
+                        </div>
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="false" aria-controls="accordionFive">¿Qué pasa si no asisto a una reserva?</button>
+                            </h2>
+                            <div id="accordionFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">Si no asistes a tu reserva y no la cancelas con anticipación, la cancha quedará bloqueada durante el horario reservado y podrías perder el importe pagado. Recomendamos siempre cancelar si no vas a asistir para que otros usuarios puedan aprovechar ese espacio.</div>
+                            </div>
+                        </div>
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingSix">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionSix" aria-expanded="false" aria-controls="accordionSix">¿Las canchas tienen horarios específicos de atención?</button>
+                            </h2>
+                            <div id="accordionSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">Sí. Cada cancha tiene horarios de apertura y cierre, los cuales puedes consultar desde la sección Canchas o en la sección de Detalles de la cancha que quieras reservar. Al momento de reservar, el sistema solo te mostrará los horarios disponibles según el día y cancha seleccionados.</div>
+                            </div>
+                        </div>
+
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingSeven">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionSeven" aria-expanded="false" aria-controls="accordionSeven">¿Qué hago si una cancha está en mantenimiento?</button>
+                            </h2>
+                            <div id="accordionSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">Las canchas que se encuentren en mantenimiento aparecerán como No disponibles en el sistema. No es posible reservarlas hasta que finalicen las tareas de mantenimiento. Te sugerimos seleccionar otra cancha disponible o consultar más tarde.</div>
+                            </div>
+                        </div>
+
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingEight">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionEight" aria-expanded="false" aria-controls="accordionEight">¿Puedo ver mis reservas anteriores?</button>
+                            </h2>
+                            <div id="accordionEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">Claro. Desde tu perfil puedes acceder al historial de reservas, donde podrás ver fechas, horarios, pagos realizados, estados de las reservas y más. Esto te ayudará a llevar un control de tus actividades dentro de la plataforma.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="contacto" class="section-py landing-contact">
+        <div class="container">
+            <div class="text-center mb-4">
+                <span class="badge bg-label-primary">Contáctanos</span>
+            </div>
+            <h4 class="text-center mb-1">
+              <span class="position-relative fw-extrabold z-1">Encuéntranos
+                <img th:src="@{/vendor/principal_files/section-title-icon.png}" alt="decoración" class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
+              </span>
+                desde aquí
+            </h4>
+            <p class="text-center mb-12 pb-md-4">¿Tienes alguna pregunta? Escríbenos un mensaje</p>
+            <div class="row g-6">
+                <div class="col-lg-5">
+                    <div class="contact-img-box position-relative border p-2 h-100">
+                        <img th:src="@{/vendor/principal_files/contact-border.png}" alt="contact border" class="contact-border-img position-absolute d-none d-lg-block scaleX-n1-rtl">
+                        <img th:src="@{/img/people-working-call-center.jpg}" alt="servicio de contacto" class="contact-img w-100 scaleX-n1-rtl">
+                        <div class="p-4 pb-2 mt-2">
+                            <div class="row g-4">
+                                <div class="col-md-6 col-lg-12 col-xl-7">
+                                    <div class="d-flex align-items-center">
+                                        <div class="badge bg-label-primary rounded p-1_5 me-3"><i class="icon-base bx bx-envelope icon-lg"></i></div>
+                                        <div>
+                                            <p class="mb-0">Correo</p>
+                                            <h6 class="mb-0">
+                                                <a th:href="'mailto:' + ${admin.correo}" class="text-heading" th:text="${admin.correo}">ejemplo@gmail.com</a>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-12 col-xl-5">
+                                    <div class="d-flex align-items-center">
+                                        <div class="badge bg-label-success rounded p-1_5 me-3"><i class="icon-base bx bx-phone-call icon-lg"></i></div>
+                                        <div>
+                                            <p class="mb-0">Teléfono</p>
+                                            <h6 class="mb-0"><a th:href="'tel:' + ${admin.telefono}" class="text-heading" th:text="${admin.telefono}">999 999 999</a></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="mb-2">Envía un mensaje</h4>
+                            <p class="mb-6">
+                                Si te gustaría saber más acerca de nuestros espacios deportivos, métodos de<br class="d-none d-lg-block">
+                                pago, política de reservas y de reembolsos, o alguna otra duda, puedes hacerlo<br class="d-none d-lg-block">
+                                desde aquí.
+                            </p>
+                            <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
+                            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                            <form method="post" th:action="@{/enviar-consulta}">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="contact-form-fullname">Nombre completo</label>
+                                        <input type="text" class="form-control"
+                                               th:value="${usuario != null ? usuario.nombres + ' ' + usuario.apellidos : ''}"
+                                               id="contact-form-fullname"
+                                               name="nombre"
+                                               placeholder="Nombre">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="contact-form-email">Tu Correo</label>
+                                        <input type="email" class="form-control"
+                                               th:value="${usuario != null ? usuario.correo : ''}"
+                                               id="contact-form-email"
+                                               name="correo"
+                                               placeholder="ejemplo@correo.com">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="contact-form-message">Mensaje</label>
+                                        <textarea id="contact-form-message" class="form-control" name="mensaje" rows="11" placeholder="Escríbenos un mensaje"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary">Enviar consulta</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- Offcanvas navbar para móviles -->
+<div th:replace="~{fragments/offcanvas-navbar :: offcanvasNavbar}"></div>
+
+<div th:replace="~{fragments/chatbotWidget :: chatbotWidgetFragment}" sec:authorize="hasAuthority('ROLE_Usuario final')"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/principal_files/popper.js}"></script>
+<script th:src="@{/vendor/principal_files/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/i18n/i18n.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<script th:src="@{/vendor/principal_files/nouislider.js}"></script>
+<script th:src="@{/vendor/principal_files/swiper.js}"></script>
+<script th:src="@{/vendor/principal_files/pickr.js}"></script>
+<script th:src="@{/vendor/principal_files/autocomplete-js.js}"></script>
+<script th:src="@{/vendor/principal_files/dropdown-hover.js}"></script>
+<script th:src="@{/vendor/principal_files/mega-dropdown.js}"></script>
+<script th:src="@{/vendor/principal_files/front-main.js}"></script>
+<script th:src="@{/vendor/principal_files/front-page-landing.js}"></script>
+
+<script th:src="@{/js/offcanvas-navbar.js}"></script>
+<script th:src="@{/js/chatbot.js}"></script>
+
+<script>
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+</script>
+
+<!-- Mostrar este script solo si hay usuario en sesión -->
+<script th:if="${usuario != null}" th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        var nombreUsuario = /*[[${#strings.escapeJavaScript(usuario.nombres)}]]*/ 'Invitado';
+
+        if (nombreUsuario && nombreUsuario !== 'Invitado') {
+            let primerNombre = nombreUsuario.trim().split(" ")[0].toLowerCase();
+            nombreUsuario = primerNombre.charAt(0).toUpperCase() + primerNombre.slice(1);
+        }
+
+        var typed = new Typed("#typedSaludo", {
+            strings: ["¡Hola, " + nombreUsuario + "!"],
+            typeSpeed: 80,
+            backSpeed: 50,
+            showCursor: false,
+            startDelay: 500,
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const starContainers = document.querySelectorAll('.stars-container');
+        starContainers.forEach(container => {
+            const rating = parseFloat(container.parentElement.getAttribute('data-rating')) || 0;
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = (rating % 1) >= 0.5;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            let starsHTML = '';
+            // Estrellas llenas
+            for (let i = 0; i < fullStars; i++) {
+                starsHTML += '<i class="icon-base bx bxs-star"></i>';
+            }
+            // Media estrella
+            if (hasHalfStar) {
+                starsHTML += '<i class="icon-base bx bxs-star-half"></i>';
+            }
+            // Estrellas vacías
+            for (let i = 0; i < emptyStars; i++) {
+                starsHTML += '<i class="icon-base bx bx-star"></i>';
+            }
+            container.innerHTML = starsHTML;
+        });
+    });
+</script>
+</body>
+</html>

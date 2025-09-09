@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Reembolso</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff6b35, #f7941d);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .header .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .content {
+            padding: 30px;
+        }
+        .greeting {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .alert-box {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-left: 4px solid #ff6b35;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .alert-title {
+            font-weight: 600;
+            color: #d63031;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .alert-title::before {
+            content: "⚠️";
+            margin-right: 8px;
+        }
+        .info-grid {
+            display: grid;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        .info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #007bff;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            color: #212529;
+            font-size: 16px;
+        }
+        .urgency-badge {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+        .motivo-box {
+            background: #f1f3f4;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #6c757d;
+        }
+        .motivo-title {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        .motivo-text {
+            color: #6c757d;
+            font-style: italic;
+            line-height: 1.5;
+        }
+        .action-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            margin: 20px auto;
+            display: block;
+            max-width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+            border-top: 1px solid #e9ecef;
+        }
+        .footer strong {
+            color: #495057;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            .content {
+                padding: 20px;
+            }
+            .header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <span class="icon">💰</span>
+        <h1>Nueva Solicitud de Reembolso</h1>
+    </div>
+    <div class="content">
+        <div class="greeting">
+            Hola <strong th:text="${coordinador}">Coordinador</strong>,
+        </div>
+        <div class="alert-box">
+            <div class="alert-title">
+                Solicitud de Reembolso Pendiente
+            </div>
+            <p>Se ha recibido una nueva solicitud de reembolso que requiere tu atención inmediata.</p>
+            <div th:if="${esUrgente}" class="urgency-badge">
+                🔥 URGENTE - Reserva en menos de 24 horas
+            </div>
+        </div>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Vecino Solicitante</div>
+                <div class="info-value" th:text="${vecino}">Juan Pérez García</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Espacio Deportivo</div>
+                <div class="info-value" th:text="${espacio}">Cancha de Fútbol - Parque Central</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Fecha y Hora de Reserva</div>
+                <div class="info-value" th:text="${fechaHora}">25/01/2025 de 14:00 a 16:00</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Monto a Reembolsar</div>
+                <div class="info-value">S/. <span th:text="${monto}">50.00</span></div>
+            </div>
+            <div class="info-item" th:if="${codigoPago}">
+                <div class="info-label">Código de Pago</div>
+                <div class="info-value" th:text="${codigoPago}">OP-123456789</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Fecha de Solicitud</div>
+                <div class="info-value" th:text="${fechaSolicitud}">24/01/2025 15:30</div>
+            </div>
+        </div>
+        <div class="motivo-box">
+            <div class="motivo-title">📝 Motivo de la Solicitud:</div>
+            <div class="motivo-text" th:text="${motivo}">
+                "Por motivos de salud no podré asistir a la reserva programada. Adjunto certificado médico como respaldo."
+            </div>
+        </div>
+        <a href="#" th:href="${linkPlataforma}" class="action-button">
+            🔍 Revisar Solicitud en la Plataforma
+        </a>
+        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196f3;">
+            <strong style="color: #1565c0;">💡 Recordatorio:</strong>
+            <p style="margin: 5px 0; color: #1976d2;">
+                Las solicitudes deben ser revisadas dentro de las próximas 24 horas para brindar una respuesta oportuna al vecino.
+            </p>
+        </div>
+    </div>
+    <div class="footer">
+        <strong>Sistema de Gestión Deportiva</strong><br>
+        Municipalidad de San Miguel<br>
+        Este correo fue enviado automáticamente, no responder a esta dirección.
+    </div>
+</div>
+</body>
+</html>

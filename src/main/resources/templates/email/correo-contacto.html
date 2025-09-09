@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Correo de contacto</title>
+</head>
+<body style="font-family: sans-serif; background-color: #f4f4f4; padding: 20px;">
+<div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden;">
+    <div style="background-color: #004ba0; text-align: center; padding: 20px;">
+        <img src="https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/logo-sanM.png" alt="Logo" style="max-height: 80px;" />
+    </div>
+    <div style="padding: 30px;">
+        <h2>Nuevo mensaje de contacto</h2>
+        <p><strong>Nombre:</strong> <span th:text="${nombre}">Nombre</span></p>
+        <p><strong>Correo:</strong> <span th:text="${correo}">correo@ejemplo.com</span></p>
+        <p><strong>Mensaje:</strong></p>
+        <p th:text="${mensaje}">Contenido del mensaje...</p>
+    </div>
+
+</div>
+</body>
+</html>

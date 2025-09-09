@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Archivo subido</title>
+</head>
+<body>
+<h2>Archivo subido con éxito</h2>
+<a th:href="${url}" th:text="${url}" target="_blank"></a>
+<br>
+<img th:src="${url}" alt="Vista previa" style="max-width: 400px; margin-top: 10px;">
+</body>
+</html>

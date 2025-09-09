@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es"
+      class="light-style layout-wide customizer-hide"
+      dir="ltr"
+      data-theme="theme-semi-dark"
+      data-assets-path="/"  data-template="vertical-menu-template-semi-dark"
+      xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <title>Verifica tu correo electrónico - Municipalidad de San Miguel</title> <meta name="description" content="Verifique su correo electrónico para recuperar la contraseña." /> <meta name="keywords" content="municipalidad, reservas, canchas, verificación, correo"> <link rel="canonical" href="https://tusitiomunicipal.com/registro/verificarEmail"> <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" th:href="@{/css/demo.css}" />
+
+  <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/@form-validation/form-validation.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/page-auth.css}">
+
+  <style>
+    /* Estilo para la imagen de fondo usando th:style en el body */
+    /* Puedes añadir aquí otras reglas CSS si las necesitas solo para esta página */
+
+    /* Estilo para el logo - ajusta según necesites */
+    .app-brand-logo img {
+      height: 40px; /* Tamaño del icono */
+      width: 40px;  /* Tamaño del icono */
+      margin-right: 8px; /* Espacio entre el icono y el texto, ajusta si usas gap-2 */
+      vertical-align: middle; /* Alinea verticalmente con el texto */
+    }
+  </style>
+
+
+  <script th:src="@{/vendor/js/helpers.js}"></script>
+  <script th:src="@{/vendor/js/template-customizer.js}"></script>
+  <script th:src="@{/js/config.js}"></script>
+
+</head>
+
+<body th:style="'background-image: url(https://paz.pe/images/2024/blog/b_012.jpg); background-size: cover; background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-color: #f0f0f0;'">
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5DDHKGP" height="0" width="0" style="display: none; visibility: hidden"></iframe>
+</noscript>
+<div class="authentication-wrapper authentication-basic px-4">
+  <div class="authentication-inner">
+    <div class="card" style="border-radius: 15px">
+      <div class="card-body">
+        <div class="app-brand justify-content-center">
+          <a th:href="@{/}" class="app-brand-link gap-2">
+            <span class="app-brand-logo demo">
+                <img th:src="@{/img/icono.ico}" alt="Logo">
+            </span>
+            <span class="app-brand-text demo text-body fw-bold">Verifica tu correo ✉️</span> </a> </div>
+        <p class="text-start mb-3">
+          Se ha enviado un enlace de activación a tu correo:<br>
+          <span class="fw-medium">[[${identificador != null ? identificador : ''}]]</span><br> Por favor, sigue el enlace para continuar.
+        </p>
+        <a class="btn btn-primary w-100 my-3" style="border-radius: 15px" th:href="@{/login}">Omitir por ahora</a>
+        <form id="reenviarForm" th:action="@{/olvido}" method="post" style="display: none;">
+          <input type="hidden" name="email" th:value="${identificador}" />
+        </form>
+        <p class="text-center">
+          ¿No recibiste el correo?
+          <a href="#" onclick="document.getElementById('reenviarForm').submit();"> Reenviar </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/i18n/i18n.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+
+<script th:src="@{/js/pages-auth.js}"></script>
+</body>
+</html>

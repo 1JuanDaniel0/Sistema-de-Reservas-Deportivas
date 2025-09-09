@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pago Fallido - Municipalidad de San Miguel</title>
+    <link rel="icon" type="image/x-icon" href="/img/icono.ico">
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #fff5f5;
+        }
+        .text-subtle {
+            font-size: 15px;
+            color: #697A8D;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #comprobantePago, #comprobantePago * {
+                visibility: visible;
+            }
+            #comprobantePago {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4 py-12">
+
+    <div class="bg-white shadow-2xl rounded-2xl w-full max-w-5xl overflow-hidden">
+        <div class="flex flex-col md:flex-row pt-10 px-6 md:px-12">
+
+            <!-- IZQUIERDA -->
+            <div class="md:w-1/2 flex flex-col justify-center p-10">
+                <h3 class="text-[#ff3e1d] text-3xl font-extrabold text-center mb-6">¡Pago fallido!</h3>
+                <p class="text-subtle mb-4">
+                    Ocurrió un error al procesar tu pago. No se ha realizado ninguna reserva.
+                    Por favor, verifica tu información o intenta nuevamente.
+                </p>
+                <p class="text-subtle mb-4">
+                    Si el problema persiste, puedes contactar con un coordinador o revisar el estado en tu billetera.
+                </p>
+
+                <p th:if="${mensaje != null}" class="text-subtle" th:text="${mensaje}">
+                    Hubo un error al procesar tu pago. Intenta nuevamente.
+                </p>
+
+            </div>
+
+            <!-- DERECHA -->
+            <div class="md:w-1/2 flex items-center justify-center px-4">
+                <img th:src="@{/img/pagofallido.png}" alt="Pago fallido" class="w-3/4 md:w-full">
+            </div>
+
+        </div>
+
+        <!-- FOOTER BOTONES -->
+        <div class="flex flex-col md:flex-row gap-8 justify-center py-8 border-t border-gray-200 bg-white">
+
+            <!-- Botón Reintentar -->
+            <a th:href="@{/vecino/espacios-disponibles}"
+               class="px-6 py-3 text-sm rounded-full bg-[#ffe1db] text-[#c92a2a] font-medium
+                    hover:bg-[#ff3e1d] hover:text-white hover:scale-105 transition-all duration-300 shadow-md">
+                Volver a Espacios
+            </a>
+
+            <!-- Botón Volver -->
+            <a th:href="@{/}"
+               class="px-6 py-3 text-sm rounded-full bg-[#DCDFE1] text-[#233446] font-medium
+                    hover:bg-[#8592a3] hover:text-white hover:scale-105 transition-all duration-300 shadow-md">
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</body>
+</html>

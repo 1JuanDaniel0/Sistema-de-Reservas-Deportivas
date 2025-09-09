@@ -1,0 +1,118 @@
+/* Estilos para toasts mejorados */
+/* Animación de entrada desde la derecha */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+/* Animación de salida hacia la derecha */
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+/* Container de toasts con mejor espaciado */
+#toast-container {
+    max-width: 400px;
+}
+#toast-container .toast {
+    margin-bottom: 0.75rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+/* Efectos de hover para los toasts */
+#toast-container .toast:hover {
+    transform: translateX(-5px);
+    transition: transform 0.2s ease;
+}
+/* Estilos para el botón de cerrar */
+#toast-container .toast .btn-close {
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s ease;
+}
+#toast-container .toast .btn-close:hover {
+    transform: scale(1.1);
+}
+/* Estilos específicos para cada tipo de toast */
+.toast-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border-left: 4px solid #1e7e34;
+}
+.toast-error {
+    background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+    border-left: 4px solid #bd2130;
+}
+.toast-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    border-left: 4px solid #e0a800;
+    color: #212529 !important;
+}
+.toast-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+    border-left: 4px solid #117a8b;
+    color: white;
+}
+/* Efecto de pulsación para iconos */
+.toast .bx {
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+/* Responsive para dispositivos móviles */
+@media (max-width: 576px) {
+    #toast-container {
+        left: 1rem;
+        right: 1rem;
+        top: 1rem !important;
+        max-width: none;
+    }
+
+    #toast-container .toast {
+        min-width: auto;
+        width: 100%;
+    }
+}
+/* Efectos adicionales para toasts premium */
+.toast-premium {
+    position: relative;
+    overflow: hidden;
+}
+.toast-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 2s infinite;
+}
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}

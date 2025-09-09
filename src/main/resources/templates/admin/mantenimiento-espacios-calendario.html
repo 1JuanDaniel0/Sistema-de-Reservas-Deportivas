@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-semi-dark" data-assets-path="/" data-template="vertical-menu-template-semi-dark" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Mantenimiento - Espacios Deportivos</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="description" content="Calendario para programar mantenimiento de espacios deportivos" />
+    <meta name="keywords" content="calendario, mantenimiento, reservas, espacios, administración">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" th:href="@{/css/demo.css}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/fullcalendar/fullcalendar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/bootstrap-select/bootstrap-select.css}" />
+
+    <!-- Page CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/app-calendar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/toasts-estilos.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/sidebar-calendario.css}" />
+
+    <!-- Helpers -->
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
+</head>
+
+<body style="background-color: #f8f9fa;">
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+
+        <!-- Sidebar -->
+        <div th:replace="~{fragments/sidebar-admin :: sidebarAdmin('mantenimiento', '')}"></div>
+
+        <!-- Layout container -->
+        <div class="layout-page">
+
+            <!-- Navbar -->
+            <div th:replace="~{fragments/navbar-admin :: navbarAdmin}"></div>
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <div class="container-xxl flex-grow-1 container-p-y">
+
+                    <!-- Header -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card bg-linkedin text-white">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-lg me-3">
+                                                <span class="avatar-initial rounded bg-white text-primary">
+                                                    <i class="bx bx-wrench bx-md"></i>
+                                                </span>
+                                        </div>
+                                        <div>
+                                            <h4 class="card-title text-white mb-1">Gestión de Mantenimiento</h4>
+                                            <p class="card-text mb-0">Programa y gestiona el mantenimiento de espacios deportivos</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Calendar Wrapper -->
+                    <div class="card app-calendar-wrapper shadow-lg">
+                        <div class="row g-0">
+                            <!-- Calendar Sidebar -->
+                            <div class="col-lg-3 col-md-4 app-calendar-sidebar maintenance-sidebar" id="app-calendar-sidebar">
+                                <!-- Contenedor scrolleable -->
+                                <div class="sidebar-content">
+                                    <!-- Selector de Espacio Deportivo -->
+                                    <div class="space-selector">
+                                        <h5 class="text-white mb-3">
+                                            <i class="bx bx-buildings me-2"></i>Seleccionar Espacio
+                                        </h5>
+                                        <select id="espacioSelector" class="form-select select2" data-placeholder="Selecciona un espacio...">
+                                            <option th:each="espacio : ${espacios}"
+                                                    th:value="${espacio.idEspacio}"
+                                                    th:text="${espacio.nombre + ' - ' + espacio.idLugar.lugar}"
+                                                    th:selected="${espacio.idEspacio == espacioSeleccionado?.idEspacio}">
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Info de espacio seleccionado -->
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <h6 class="card-title text-white mb-2">
+                                                <i class="bx bx-info-circle me-2"></i>Espacio Actual
+                                            </h6>
+                                            <div id="espacioInfo">
+                                                <p class="mb-1 text-white-50"><strong>Nombre:</strong> <span id="espacioNombre">-</span></p>
+                                                <p class="mb-1 text-white-50"><strong>Lugar:</strong> <span id="espacioLugar">-</span></p>
+                                                <p class="mb-0 text-white-50"><strong>Costo/hora:</strong> S/. <span id="espacioCosto">-</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Filtros -->
+                                    <div class="filter-section">
+                                        <h6 class="text-white mb-3">
+                                            <i class="bx bx-filter me-2"></i>Filtros de Vista
+                                        </h6>
+                                        <!-- Control principal -->
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input select-all" type="checkbox" id="selectAll" data-value="all" checked>
+                                            <label class="form-check-label text-white fw-bold" for="selectAll">
+                                                <i class="bx bx-check-circle me-1"></i>Seleccionar Todo
+                                            </label>
+                                        </div>
+
+                                        <!-- Contador de eventos -->
+                                        <div class="alert alert-info p-2 mb-3" style="background: rgba(255,255,255,0.1); border: none;">
+                                            <small class="text-white">
+                                                <i class="bx bx-info-circle me-1"></i>
+                                                <span id="eventCounter">Cargando eventos...</span>
+                                            </small>
+                                        </div>
+
+                                        <!-- Contenedor de filtros dinámicos -->
+                                        <div class="app-calendar-events-filter">
+                                            <!-- Los filtros se cargarán dinámicamente aquí -->
+                                        </div>
+
+                                        <!-- Acciones de filtros -->
+                                        <div class="mt-3">
+                                            <button type="button" class="btn btn-outline-light btn-sm me-2" id="btnShowOnlyReservas">
+                                                <i class="bx bx-calendar me-1"></i>Solo Reservas
+                                            </button>
+                                            <button type="button" class="btn btn-outline-light btn-sm" id="btnShowOnlyMantenimiento">
+                                                <i class="bx bx-wrench me-1"></i>Solo Mantenimiento
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Acciones rápidas -->
+                                    <div class="mt-4">
+                                        <h6 class="text-white mb-3">
+                                            <i class="bx bx-cog me-2"></i>Acciones Rápidas
+                                        </h6>
+                                        <button type="button" class="btn btn-outline-light btn-sm w-100 mb-2" onclick="calendar.today()">
+                                            <i class="bx bx-calendar-check me-1"></i>Ir a Hoy
+                                        </button>
+                                        <button type="button" class="btn btn-outline-light btn-sm w-100" onclick="calendar.refetchEvents()">
+                                            <i class="bx bx-refresh me-1"></i>Actualizar Vista
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <!-- /Contenedor scrolleable -->
+                            </div>
+                            <!-- /Calendar Sidebar -->
+                            <!-- Calendar Content -->
+                            <div class="col app-calendar-content">
+                                <div class="card shadow-none border-0">
+                                    <div class="card-body pb-0">
+                                        <!-- Alert Info -->
+                                        <div class="alert maintenance-alert mb-4" role="alert">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bx bx-info-circle bx-md me-3"></i>
+                                                <div>
+                                                    <h6 class="alert-heading mb-1">Instrucciones</h6>
+                                                    <p class="mb-0">Haz clic en cualquier día del calendario para programar un nuevo mantenimiento. Las reservas existentes se muestran para evitar conflictos.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- FullCalendar -->
+                                        <div id="calendar"></div>
+                                    </div>
+                                </div>
+                                <div class="app-overlay"></div>
+                            </div>
+                            <!-- /Calendar Content -->
+                        </div>
+                    </div>
+                </div>
+                <!-- / Content -->
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    <div class="drag-target"></div>
+</div>
+<!-- / Layout wrapper -->
+
+<!-- MODAL PROGRAMAR MANTENIMIENTO -->
+<div class="modal fade maintenance-modal" id="modalMantenimiento" tabindex="-1" aria-labelledby="modalMantenimientoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-3">
+                <h5 class="modal-title" style="color: white" id="modalMantenimientoLabel">
+                    <i class="bx bx-wrench me-2"></i>Programar Mantenimiento
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formMantenimiento">
+                    <div class="row">
+                        <!-- Información del Espacio -->
+                        <div class="col-12 mb-4">
+                            <div class="alert alert-info">
+                                <h6 class="alert-heading mb-2">
+                                    <i class="bx bx-buildings me-2"></i>Espacio Seleccionado
+                                </h6>
+                                <p class="mb-1"><strong>Espacio:</strong> <span id="modalEspacioNombre">-</span></p>
+                                <p class="mb-0"><strong>Ubicación:</strong> <span id="modalEspacioLugar">-</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Fechas -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="fechaInicioMantenimiento" placeholder="Fecha de inicio" required>
+                                <label for="fechaInicioMantenimiento">
+                                    <i class="bx bx-calendar me-1"></i>Fecha de Inicio
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="fechaFinMantenimiento" placeholder="Fecha de fin" required>
+                                <label for="fechaFinMantenimiento">
+                                    <i class="bx bx-calendar me-1"></i>Fecha de Fin
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Horas -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="horaInicioMantenimiento" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="08:00">08:00 AM</option>
+                                    <option value="09:00">09:00 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="12:00">12:00 PM</option>
+                                    <option value="13:00">01:00 PM</option>
+                                    <option value="14:00">02:00 PM</option>
+                                    <option value="15:00">03:00 PM</option>
+                                    <option value="16:00">04:00 PM</option>
+                                    <option value="17:00">05:00 PM</option>
+                                    <option value="18:00">06:00 PM</option>
+                                    <option value="19:00">07:00 PM</option>
+                                    <option value="20:00">08:00 PM</option>
+                                    <option value="21:00">09:00 PM</option>
+                                    <option value="22:00">10:00 PM</option>
+                                </select>
+                                <label for="horaInicioMantenimiento">
+                                    <i class="bx bx-time me-1"></i>Hora de Inicio
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="horaFinMantenimiento" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="09:00">09:00 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="12:00">12:00 PM</option>
+                                    <option value="13:00">01:00 PM</option>
+                                    <option value="14:00">02:00 PM</option>
+                                    <option value="15:00">03:00 PM</option>
+                                    <option value="16:00">04:00 PM</option>
+                                    <option value="17:00">05:00 PM</option>
+                                    <option value="18:00">06:00 PM</option>
+                                    <option value="19:00">07:00 PM</option>
+                                    <option value="20:00">08:00 PM</option>
+                                    <option value="21:00">09:00 PM</option>
+                                    <option value="22:00">10:00 PM</option>
+                                    <option value="23:00">11:00 PM</option>
+                                </select>
+                                <label for="horaFinMantenimiento">
+                                    <i class="bx bx-time me-1"></i>Hora de Fin
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Tipo de Mantenimiento -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="tipoMantenimiento" required>
+                                    <option value="">Seleccionar tipo...</option>
+                                    <option value="preventivo">Mantenimiento Preventivo</option>
+                                    <option value="correctivo">Mantenimiento Correctivo</option>
+                                    <option value="limpieza">Limpieza Profunda</option>
+                                    <option value="reparacion">Reparación</option>
+                                    <option value="instalacion">Instalación de Equipos</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                                <label for="tipoMantenimiento">
+                                    <i class="bx bx-wrench me-1"></i>Tipo de Mantenimiento
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Prioridad -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="prioridadMantenimiento" required>
+                                    <option value="">Seleccionar prioridad...</option>
+                                    <option value="baja">Baja</option>
+                                    <option value="media">Media</option>
+                                    <option value="alta">Alta</option>
+                                    <option value="urgente">Urgente</option>
+                                </select>
+                                <label for="prioridadMantenimiento">
+                                    <i class="bx bx-error me-1"></i>Prioridad
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Descripción/Motivo -->
+                        <div class="col-12 mb-3">
+                            <div class="form-floating">
+                                <textarea class="form-control" id="descripcionMantenimiento" style="height: 100px" placeholder="Describe el mantenimiento a realizar..." required></textarea>
+                                <label for="descripcionMantenimiento">
+                                    <i class="bx bx-edit me-1"></i>Descripción del Mantenimiento
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Responsable -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="responsableMantenimiento">
+                                    <option value="">Seleccionar responsable...</option>
+                                    <option th:each="coordinador : ${coordinadores}"
+                                            th:value="${coordinador.idUsuarios}"
+                                            th:text="${coordinador.nombres + ' ' + coordinador.apellidos}">
+                                    </option>
+                                </select>
+                                <label for="responsableMantenimiento">
+                                    <i class="bx bx-user me-1"></i>Responsable Asignado
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Costo Estimado -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="costoMantenimiento" placeholder="0.00" step="0.01" min="0">
+                                <label for="costoMantenimiento">
+                                    <i class="bx bx-money me-1"></i>Costo Estimado (S/.)
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bx bx-x me-1"></i>Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" id="btnGuardarMantenimiento">
+                    <i class="bx bx-save me-1"></i>Programar Mantenimiento
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /MODAL PROGRAMAR MANTENIMIENTO -->
+
+<!-- Script para inicializar datos -->
+<script th:inline="javascript">
+    // Variables del servidor pasadas al frontend
+    window.usuarioAdmin = /*[[${admin.nombres + ' ' + admin.apellidos}]]*/ "Administrador";
+    window.espaciosData = /*[[${espacios}]]*/ [];
+    window.espacioActualId = /*[[${espacioSeleccionado?.idEspacio}]]*/ null;
+
+    // Convertir datos de reservas
+    const reservasDelServidor = /*[[${reservas}]]*/ [];
+    console.log("Reservas del servidor:", reservasDelServidor);
+    window.reservasDelServidor = reservasDelServidor || [];
+
+    // Datos de mantenimientos (por ahora vacío, implementar después)
+    window.mantenimientosDelServidor = /*[[${mantenimientos}]]*/ [];
+
+    // Datos de coordinadores
+    window.coordinadoresData = /*[[${coordinadores}]]*/ [];
+</script>
+
+<!-- Core JS -->
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+
+<!-- Vendors JS -->
+<script th:src="@{/vendor/libs/fullcalendar/fullcalendar.js}"></script>
+<script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+<script th:src="@{/vendor/libs/select2/select2.js}"></script>
+<script th:src="@{/vendor/libs/moment/moment.js}"></script>
+
+<!-- Main JS -->
+<script th:src="@{/js/main.js}"></script>
+
+<!-- Page JS -->
+<script th:src="@{/js/calendar-events-processor.js}"></script>
+<script th:src="@{/js/calendar-filters-manager.js}"></script>
+<!-- INICIALIZACIÓN DEL CALENDADRIO -->
+<script th:src="@{/js/mantenimiento-admin-calendar-nuevo.js}"></script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+/* ===== REEMBOLSOS PENDIENTES - ESTILOS ESPECÍFICOS ===== */
+
+/* --- FILTROS Y BOTONES --- */
+.filter-date-btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    font-size: 0.875rem;
+}
+
+.filter-date-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-date-btn.active {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: white;
+    box-shadow: 0 2px 4px rgba(var(--bs-primary-rgb), 0.25);
+}
+
+/* --- ESTADÍSTICAS RÁPIDAS --- */
+.avatar-initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* --- TABLA DE REEMBOLSOS --- */
+#reembolsosTable {
+    font-size: 0.875rem;
+}
+
+#reembolsosTable thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+    padding: 12px 8px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#reembolsosTable tbody td {
+    padding: 12px 8px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#reembolsosTable tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease;
+}
+
+/* --- BADGES Y ESTADOS --- */
+.badge-urgente {
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+    animation: pulse-urgente 2s infinite;
+}
+
+@keyframes pulse-urgente {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.badge-normal {
+    background-color: #6c757d;
+    color: white;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.badge-pendiente {
+    background-color: #ffc107;
+    color: #000;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.badge-aprobado {
+    background-color: #198754;
+    color: white;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.badge-rechazado {
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+/* --- BOTONES DE ACCIÓN --- */
+.btn-accion {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    font-weight: 500;
+    margin: 0 2px;
+    transition: all 0.2s ease;
+}
+
+.btn-aprobar {
+    background-color: #198754;
+    border-color: #198754;
+    color: white;
+}
+
+.btn-aprobar:hover {
+    background-color: #157347;
+    border-color: #146c43;
+    transform: translateY(-1px);
+}
+
+.btn-rechazar {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.btn-rechazar:hover {
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+    transform: translateY(-1px);
+}
+
+.btn-ver-detalle {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+.btn-ver-detalle:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    transform: translateY(-1px);
+}
+
+/* --- MODAL ESPECÍFICO --- */
+.modal-reembolso .modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: none;
+}
+
+.modal-reembolso .modal-header .btn-close {
+    filter: invert(1);
+}
+
+.modal-reembolso .info-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.modal-reembolso .info-label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.875rem;
+}
+
+.modal-reembolso .info-value {
+    color: #212529;
+    font-size: 0.9rem;
+}
+
+.modal-reembolso .urgente-indicator {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+}
+
+.modal-reembolso .urgente-indicator .text-warning {
+    font-weight: 600;
+}
+
+/* --- IMAGEN DE COMPROBANTE --- */
+.comprobante-container {
+    text-align: center;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 16px 0;
+}
+
+.comprobante-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.comprobante-image:hover {
+    transform: scale(1.05);
+}
+
+.no-comprobante {
+    color: #6c757d;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* --- FORMULARIOS DE RESPUESTA --- */
+.response-form {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 16px;
+}
+
+.response-form .form-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.response-form .form-control {
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+}
+
+.response-form .form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* --- LOADING STATES --- */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 0.25rem solid #f3f3f3;
+    border-top: 0.25rem solid #0d6efd;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 768px) {
+    .filter-date-btn {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+        margin-bottom: 4px;
+    }
+
+    #reembolsosTable {
+        font-size: 0.75rem;
+    }
+
+    #reembolsosTable thead th {
+        padding: 8px 4px;
+        font-size: 0.7rem;
+    }
+
+    #reembolsosTable tbody td {
+        padding: 8px 4px;
+    }
+
+    .btn-accion {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        margin: 1px;
+    }
+
+    .modal-reembolso .modal-dialog {
+        margin: 1rem;
+    }
+
+    .comprobante-image {
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-header {
+        padding: 1rem;
+    }
+
+    .card-header h4 {
+        font-size: 1.25rem;
+    }
+
+    .avatar {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .avatar-initial {
+        font-size: 1rem;
+    }
+
+    .fw-semibold {
+        font-size: 0.875rem;
+    }
+}
+
+/* --- ANIMACIONES Y TRANSICIONES --- */
+.card {
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* --- DATATABLE CUSTOMIZATIONS --- */
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 6px;
+    padding: 4px 8px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 6px;
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border-radius: 6px;
+    margin: 0 2px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: white !important;
+}
+
+/* --- ESTADOS DE ACCIONES --- */
+.processing {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.success-highlight {
+    background-color: #d1edff !important;
+    animation: highlight-fade 3s ease-out;
+}
+
+@keyframes highlight-fade {
+    0% { background-color: #d1edff; }
+    100% { background-color: transparent; }
+}
+
+/* --- NOTIFICACIONES TOAST --- */
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+}
+
+/* --- UTILIDADES ADICIONALES --- */
+.text-truncate-custom {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.border-start-primary {
+    border-left: 4px solid var(--bs-primary) !important;
+}
+
+.border-start-warning {
+    border-left: 4px solid var(--bs-warning) !important;
+}
+
+.border-start-success {
+    border-left: 4px solid var(--bs-success) !important;
+}
+
+.border-start-danger {
+    border-left: 4px solid var(--bs-danger) !important;
+}

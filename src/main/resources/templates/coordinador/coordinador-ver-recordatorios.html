@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reservas por recordar</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="p-4">
+<h2>📅 Recordatorios de reserva</h2>
+
+<h4 class="mt-4">🔔 Para hoy (<span th:text="${hoy}"></span>)</h4>
+<div th:if="${recordatoriosHoy.isEmpty()}">
+    <p>No hay reservas confirmadas para hoy.</p>
+</div>
+<ul class="list-group" th:each="reserva : ${recordatoriosHoy}">
+    <li class="list-group-item">
+        <strong th:text="${reserva.vecino.nombres}">Nombre</strong> reservó
+        <em th:text="${reserva.espacio.nombre}">Espacio</em> en
+        <span th:text="${reserva.espacio.idLugar.lugar}">Lugar</span>,
+        de <span th:text="${#dates.format(reserva.horaInicio, 'HH:mm')}"></span>
+        a <span th:text="${#dates.format(reserva.horaFin, 'HH:mm')}"></span>
+    </li>
+</ul>
+
+<h4 class="mt-4">🔔 Para mañana (<span th:text="${manana}"></span>)</h4>
+<div th:if="${recordatoriosManana.isEmpty()}">
+    <p>No hay reservas confirmadas para mañana.</p>
+</div>
+<ul class="list-group" th:each="reserva : ${recordatoriosManana}">
+    <li class="list-group-item">
+        <strong th:text="${reserva.vecino.nombres}">Nombre</strong> reservó
+        <em th:text="${reserva.espacio.nombre}">Espacio</em> en
+        <span th:text="${reserva.espacio.idLugar.lugar}">Lugar</span>,
+        de <span th:text="${#dates.format(reserva.horaInicio, 'HH:mm')}"></span>
+        a <span th:text="${#dates.format(reserva.horaFin, 'HH:mm')}"></span>
+    </li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,617 @@
+:root {
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --disabled-color: #f5f5f5;
+}
+
+.calendar-header {
+    background: white;
+    border-radius: .5rem;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.nav-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+.calendar-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #697a8d;
+    margin: 0;
+}
+
+.view-selector {
+    display: flex;
+    gap: 10px;
+}
+
+.view-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--primary-color);
+    background: white;
+    color: var(--primary-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.view-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.view-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.calendar-grid {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Vista de Mes */
+.month-view {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.month-header {
+    background: var(--medium-gray);
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.month-day {
+    min-height: 120px;
+    border: 1px solid #dee2e6;
+    padding: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.month-day:hover:not(.disabled) {
+    background: #f0f8ff;
+    transform: scale(1.02);
+}
+
+.month-day.disabled {
+    background: var(--disabled-color);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.month-day.today {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    border-color: var(--primary-color);
+    box-shadow: inset 0 0 0 2px var(--primary-color);
+}
+
+.month-day.other-month {
+    color: #ccc;
+    background: #fafafa;
+}
+
+.day-number {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+/* Vista de Semana */
+.week-view {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr);
+}
+
+.week-header {
+    background: var(--medium-gray);
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.time-slot {
+    background: var(--light-gray);
+    padding: 15px 5px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    border-bottom: 1px solid #dee2e6;
+    color: #6c757d;
+    line-height: 1.2;
+}
+
+.week-day-slot {
+    min-height: 80px;
+    border: 1px solid #dee2e6;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.week-day-slot:hover:not(.disabled) {
+    background: #f0f8ff;
+}
+
+.week-day-slot.disabled {
+    background: var(--disabled-color);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.week-day-slot.today {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+}
+
+/* Vista de Día */
+.day-view {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+}
+
+.day-slot {
+    min-height: 80px;
+    border: 1px solid #dee2e6;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.day-slot:hover:not(.disabled) {
+    background: #f0f8ff;
+}
+
+.day-slot.disabled {
+    background: var(--disabled-color);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.day-slot.current-hour {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    border-color: var(--warning-color);
+}
+
+/* Reservas */
+.reservation {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.reservation:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.reservation.own {
+    background: linear-gradient(135deg, var(--success-color), #20c997);
+    border: 2px solid #1e7e34;
+}
+
+.reservation.own.pending {
+    background: linear-gradient(135deg, var(--warning-color), #fd7e14);
+    border: 2px solid #e0a800;
+    color: #212529;
+}
+
+.reservation.other {
+    background: linear-gradient(135deg, var(--danger-color), #e74c3c);
+    border: 2px solid #c82333;
+}
+
+.reservation.other::before {
+    content: "🔒 ";
+}
+
+.reservation-time {
+    display: block;
+    font-size: 10px;
+    opacity: 0.9;
+    margin-top: 2px;
+}
+
+/* Indicadores */
+.day-indicator {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success-color);
+}
+
+.add-reservation-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.month-day:hover .add-reservation-btn,
+.week-day-slot:hover .add-reservation-btn,
+.day-slot:hover .add-reservation-btn {
+    opacity: 1;
+}
+
+.add-reservation-btn:hover {
+    background: #0056b3;
+    transform: scale(1.1);
+}
+/* Leyenda */
+.legend {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.legend-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.legend-items {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .calendar-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .view-selector {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .month-day {
+        min-height: 80px;
+        font-size: 12px;
+    }
+
+    .week-view {
+        grid-template-columns: 80px repeat(7, 1fr);
+    }
+
+    .day-view {
+        grid-template-columns: 80px 1fr;
+    }
+
+    .time-slot {
+        font-size: 10px;
+        padding: 10px 3px;
+    }
+
+    .legend-items {
+        justify-content: center;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.calendar-grid {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.reservation.new {
+    animation: pulse 2s infinite;
+}
+
+/* Tooltips personalizados */
+.tooltip-fade-reserva {
+    font-size: 0.85rem;
+    background-color: rgba(33, 37, 41, 0.9);
+    border-radius: 8px;
+    padding: 8px 12px;
+    max-width: 280px;
+    white-space: pre-line;
+    color: white;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tooltip.fade.show {
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.tooltip-arrow::before {
+    border-top-color: rgba(33, 37, 41, 0.9) !important;
+}
+
+/* Estilos mejorados para eventos de FullCalendar */
+.fc-timegrid-event {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+    border: none !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.fc-timegrid-event:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+.fc-timegrid-event::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+    pointer-events: none;
+}
+
+/* Eventos propios confirmados */
+.fc-event-success {
+    background: linear-gradient(135deg, var(--success-color), #20c997) !important;
+    border-left: 4px solid #1e7e34 !important;
+}
+
+.fc-event-success:hover {
+    background: linear-gradient(135deg, #1e7e34, #17a2b8) !important;
+}
+
+/* Eventos propios pendientes */
+.fc-event-warning {
+    background: linear-gradient(135deg, var(--warning-color), #fd7e14) !important;
+    border-left: 4px solid #e0a800 !important;
+    color: #212529 !important;
+}
+
+.fc-event-warning:hover {
+    background: linear-gradient(135deg, #e0a800, #dc3545) !important;
+}
+
+/* Eventos de otros usuarios */
+.fc-event-danger {
+    background: linear-gradient(135deg, var(--danger-color), #e74c3c) !important;
+    border-left: 4px solid #c82333 !important;
+}
+
+.fc-event-danger:hover {
+    background: linear-gradient(135deg, #c82333, #bd2130) !important;
+}
+
+/* Estilos específicos para el calendario personalizado */
+.reservation.hoverable {
+    position: relative;
+    cursor: pointer;
+}
+
+.reservation.hoverable:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    z-index: 15;
+}
+
+/* Indicador de reserva propia */
+.reservation.own::after {
+    content: "👤";
+    position: absolute;
+    top: -2px;
+    right: 2px;
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+/* Indicador de reserva de otro usuario */
+.reservation.other::before {
+    content: "🔒";
+    font-size: 10px;
+    margin-right: 4px;
+}
+
+/* Tooltip personalizado para calendario personalizado */
+.custom-tooltip {
+    position: absolute;
+    background: rgba(33, 37, 41, 0.95);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 250px;
+    word-wrap: break-word;
+    white-space: pre-line;
+}
+
+.custom-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(33, 37, 41, 0.95) transparent transparent transparent;
+}
+
+/* Estados especiales */
+.reservation.confirmada {
+    background: linear-gradient(135deg, var(--success-color), #20c997);
+    border-color: #1e7e34;
+}
+
+.reservation.no-confirmada {
+    background: linear-gradient(135deg, var(--warning-color), #fd7e14);
+    border-color: #e0a800;
+    color: #212529;
+}
+
+.reservation.cancelada {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+    border-color: #495057;
+    opacity: 0.7;
+}
+
+/* Efectos de carga para nuevas reservas */
+.reservation.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.reservation.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.calendar-grid {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.reservation.new {
+    animation: pulse 2s infinite;
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.reservation {
+    animation: slideInFromRight 0.3s ease;
+}
+
+/* Media queries para tooltips en móviles */
+@media (max-width: 768px) {
+    .tooltip-fade-reserva,
+    .custom-tooltip {
+        max-width: 200px;
+        font-size: 0.75rem;
+        padding: 6px 8px;
+    }
+
+    .fc-timegrid-event:hover {
+        transform: scale(1.02);
+    }
+
+    .reservation.hoverable:hover {
+        transform: scale(1.03);
+    }
+}

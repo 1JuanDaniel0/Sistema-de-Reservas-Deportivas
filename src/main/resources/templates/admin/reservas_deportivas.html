@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-semi-dark" data-assets-path="/" data-template="vertical-menu-template-semi-dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservas Deportivas - Municipalidad de San Miguel</title>
+  <meta name="description" content="Listado de todas las reservas deportivas" />
+  <meta name="keywords" content="reservas, canchas, espacios deportivos, administrador" />
+  <link rel="canonical" href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com/" />
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+  <!-- Icons -->
+  <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+  <!-- Core CSS -->
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" th:href="@{/css/demo.css}" />
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/form-validation/form-validation.css}" />
+  <!-- Page CSS -->
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/page-profile.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/arreglos-admin.css}">
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+  <!-- Date Range Picker -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+  <!-- Custom CSS for Reservas -->
+  <link rel="stylesheet" th:href="@{/css/reservas-admin.css}">
+  <!-- Helpers -->
+  <script th:src="@{/vendor/js/helpers.js}"></script>
+  <script th:src="@{/js/config.js}"></script>
+</head>
+<body>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <div th:replace="~{fragments/sidebar-admin :: sidebarAdmin('reservas', '')}"></div>
+    <!-- Layout container -->
+    <div class="layout-page">
+      <div th:replace="~{fragments/navbar-admin :: navbarAdmin}"></div>
+      <!-- Content wrapper -->
+      <div class="content-wrapper">
+        <!-- Content -->
+        <div class="container-fluid flex-grow-1 container-p-y">
+          <div class="card">
+            <!-- Header con título y botón de exportar -->
+            <div class="card-header border-bottom d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+              <div class="mb-md-0">
+                <h4 class="mb-1">Gestión de Reservas Deportivas</h4>
+                <p class="text-muted mb-0">Administra y monitorea todas las reservas del sistema</p>
+              </div>
+              <div class="d-flex flex-column flex-sm-row gap-2">
+                <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-export me-1"></i>
+                    <span class="d-none d-sm-inline">Exportar</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="#" id="exportPdf">
+                        <i class="bx bxs-file-pdf me-2 text-danger"></i>
+                        Exportar a PDF
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" id="exportExcel">
+                        <i class="bx bx-file me-2 text-success"></i>
+                        Exportar a Excel
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="card-body pt-4 border-bottom">
+              <div class="row g-3">
+                <!-- Filtros de fecha rápidos -->
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Filtros Rápidos de Fecha</label>
+                  <div class="d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-outline-primary btn-sm filter-date-btn active" data-filter="today">
+                      <i class="bx bx-calendar-check me-1"></i>Hoy
+                    </button>
+                    <button type="button" class="btn btn-outline-primary btn-sm filter-date-btn" data-filter="week">
+                      <i class="bx bx-calendar-week me-1"></i>Esta Semana
+                    </button>
+                    <button type="button" class="btn btn-outline-primary btn-sm filter-date-btn" data-filter="month">
+                      <i class="bx bx-calendar me-1"></i>Este Mes
+                    </button>
+                    <button type="button" class="btn btn-outline-primary btn-sm filter-date-btn" data-filter="year">
+                      <i class="bx bx-calendar-star me-1"></i>Este Año
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm filter-date-btn" data-filter="all">
+                      <i class="bx bx-time me-1"></i>Todas
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Filtros específicos -->
+                <div class="col-md-3 col-sm-6">
+                  <label for="dateRange" class="form-label">Rango de Fechas</label>
+                  <input type="text" class="form-control" id="dateRange" placeholder="Seleccionar rango">
+                </div>
+
+                <!-- ya esta -->
+                <div class="col-md-3 col-sm-6">
+                  <label for="filterEstado" class="form-label">Estado de Reserva</label>
+                  <select class="form-select" id="filterEstado">
+                    <option value="">Todos los estados</option>
+                    <!-- Se llenan dinámicamente -->
+                  </select>
+                </div>
+
+                <!-- ya está -->
+                <div class="col-md-3 col-sm-6">
+                  <label for="filterEspacio" class="form-label">Espacio Deportivo</label>
+                  <select class="form-select" id="filterEspacio">
+                    <option value="">Todos los espacios</option>
+                    <!-- Se llenan dinámicamente -->
+                  </select>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                  <label for="filterTipoPago" class="form-label">Tipo de Pago</label>
+                  <select class="form-select" id="filterTipoPago">
+                    <option value="">Todos los tipos</option>
+                    <option value="En línea">En línea</option>
+                    <option value="En banco">En banco</option>
+                  </select>
+                </div>
+
+                <!-- Botones de acción para filtros -->
+                <div class="col-12">
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-primary" id="applyFilters">
+                      <i class="bx bx-filter-alt me-1"></i>Aplicar Filtros
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="clearFilters">
+                      <i class="bx bx-refresh me-1"></i>Limpiar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Estadísticas rápidas -->
+            <div class="card-body border-bottom">
+              <div class="row g-3">
+                <div class="col-6 col-md-3">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar flex-shrink-0 me-3">
+                      <div class="avatar-initial bg-primary rounded">
+                        <i class="bx bx-calendar-check"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Total Reservas</small>
+                      <div class="fw-semibold" id="totalReservas">-</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar flex-shrink-0 me-3">
+                      <div class="avatar-initial bg-success rounded">
+                        <i class="bx bx-check-circle"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Confirmadas</small>
+                      <div class="fw-semibold" id="reservasConfirmadas">-</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar flex-shrink-0 me-3">
+                      <div class="avatar-initial bg-warning rounded">
+                        <i class="bx bx-time-five"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Pendientes</small>
+                      <div class="fw-semibold" id="reservasPendientes">-</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar flex-shrink-0 me-3">
+                      <div class="avatar-initial bg-info rounded">
+                        <i class="bx bx-money"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Ingresos</small>
+                      <div class="fw-semibold" id="totalIngresos">S/ -</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tabla de reservas -->
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover" id="reservasTable">
+                  <thead class="table-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Fecha/Hora</th>
+                    <th>Vecino</th>
+                    <th>Espacio</th>
+                    <th>Estado</th>
+                    <th>Costo</th>
+                    <th>Tipo Pago</th>
+                    <th>Coordinador</th>
+                    <th>Acciones</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <!-- Los datos se cargarán vía AJAX -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- / Content -->
+        <div class="content-backdrop fade"></div>
+      </div>
+      <!-- / Content wrapper -->
+    </div>
+    <!-- / Layout page -->
+  </div>
+
+  <!-- Modal para ver detalles de reserva -->
+  <div class="modal fade" id="reservaDetalleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Detalles de la Reserva</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="reservaDetalleContent">
+          <!-- Contenido dinámico -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="layout-overlay layout-menu-toggle"></div>
+  <div class="drag-target"></div>
+</div>
+<!-- / Layout wrapper -->
+<!-- Core JS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<!-- Date Range Picker -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+<!-- Main JS -->
+<script th:src="@{/js/main.js}"></script>
+<!-- SweetAlert Config -->
+<script th:src="@{/js/sweetalert-config.js}"></script>
+<!-- Custom JS for Reservas -->
+<script th:src="@{/js/reservas-admin.js}"></script>
+
+</body>
+</html>

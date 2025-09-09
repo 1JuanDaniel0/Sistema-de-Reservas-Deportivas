@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva Confirmada</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            line-height: 1.6;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .header-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px auto;
+            display: block;
+            border-radius: 50%;
+            background: white;
+            padding: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            object-fit: contain;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .header .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .municipio-header {
+            font-size: 14px;
+            margin-top: 5px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .content {
+            padding: 30px;
+            background-color: #f8f9fa;
+        }
+
+        .greeting {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .success-banner {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .success-banner h3 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+        }
+
+        .details-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .details-title {
+            color: #2c3e50;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+
+        .details-table td:first-child {
+            font-weight: 600;
+            color: #495057;
+            width: 35%;
+        }
+
+        .details-table td:last-child {
+            color: #2c3e50;
+        }
+
+        .monto-destacado {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .instructions-card {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .instructions-title {
+            color: #155724;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .instructions-list {
+            margin: 0;
+            padding-left: 20px;
+            color: #155724;
+        }
+
+        .instructions-list li {
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            background: #6c757d;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .signature {
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .municipio-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .header-logo {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 10px;
+                padding: 6px;
+            }
+
+            .details-table td:first-child {
+                width: 40%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <!-- Header -->
+    <div class="header">
+        <img src="https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/icono-sanM.png"
+             alt="Logo Municipalidad de San Miguel"
+             class="header-logo">
+        <h1>¡Reserva Confirmada!</h1>
+        <p class="municipio-header">Municipalidad de San Miguel</p>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <p class="greeting">
+            Estimado/a <strong th:text="${reserva.vecino.nombres + ' ' + reserva.vecino.apellidos}">Juan Pérez</strong>,
+        </p>
+
+        <div class="success-banner">
+            <h3>Su reserva ha sido confirmada</h3>
+            <p>El coordinador ha verificado su comprobante de pago y confirmado su reserva.</p>
+        </div>
+
+        <div class="details-card">
+            <h4 class="details-title">📋 Detalles de la Reserva</h4>
+            <table class="details-table">
+                <tr>
+                    <td><strong>Número de Reserva:</strong></td>
+                    <td>#<span th:text="${reserva.idReserva}">001</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Espacio:</strong></td>
+                    <td th:text="${reserva.espacio.nombre}">Cancha de Fútbol A</td>
+                </tr>
+                <tr>
+                    <td><strong>Lugar:</strong></td>
+                    <td th:text="${reserva.espacio.idLugar.lugar}">Parque Central</td>
+                </tr>
+                <tr>
+                    <td><strong>Fecha:</strong></td>
+                    <td th:text="${#temporals.format(reserva.fecha, 'dd/MM/yyyy')}">15/12/2024</td>
+                </tr>
+                <tr>
+                    <td><strong>Hora:</strong></td>
+                    <td>
+                        <span th:text="${reserva.horaInicio}">08:00</span> -
+                        <span th:text="${reserva.horaFin}">10:00</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Monto Pagado:</strong></td>
+                    <td class="monto-destacado">
+                        S/. <span th:text="${#numbers.formatDecimal(reserva.costo, 1, 2)}">50.00</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="instructions-card">
+            <h4 class="instructions-title">📋 Instrucciones Importantes</h4>
+            <ul class="instructions-list">
+                <li><strong>Presente su DNI</strong> al momento de usar las instalaciones</li>
+                <li><strong>Llegue 10 minutos antes</strong> de su hora reservada</li>
+                <li><strong>Respete el horario asignado</strong> para permitir el uso de otros vecinos</li>
+                <li><strong>Mantenga limpio el espacio</strong> después de su uso</li>
+                <li><strong>Siga las normas de seguridad</strong> del establecimiento</li>
+            </ul>
+        </div>
+
+        <p>Si tiene alguna consulta, puede contactar al coordinador responsable de su zona.</p>
+
+        <div class="signature">
+            <p>Saludos cordiales,<br>
+                <span class="municipio-name">Municipalidad de San Miguel</span><br>
+                <em>Área de Deportes y Recreación</em></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Este es un correo automático, por favor no responder directamente.</p>
+        <p><strong>Municipalidad de San Miguel</strong> • Promoviendo el deporte y la recreación</p>
+    </div>
+</div>
+</body>
+</html>

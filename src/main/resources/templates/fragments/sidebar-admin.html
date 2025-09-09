@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme"
+       th:fragment="sidebarAdmin(grupoActivo, subRuta)">
+    <div class="app-brand demo ">
+        <a th:href="@{/}" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <img th:src="@{/img/icono-sanM.png}" alt="Logo" width="25" height="25">
+            </span>
+            <span class="app-brand-text demo menu-text fw-bold ms-2">San Miguel</span>
+            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+                <i class="bx bx-chevron-left bx-sm align-middle"></i>
+            </a>
+        </a>
+    </div>
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <li class="menu-item" th:classappend="${grupoActivo == 'perfil' ? ' active' : ''}">
+            <a th:href="@{/admin/mi-perfil}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div class="text-truncate">Perfil</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">Análisis y Estadísticas</li>
+        <li class="menu-item" th:classappend="${grupoActivo == 'dashboard' ? ' active open' : ''}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div class="text-truncate">Dashboards</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item" th:classappend="${subRuta == 'dashboard-servicios' ? ' active' : ''}">
+                    <a th:href="@{/admin/dashboard-servicios}" class="menu-link">
+                        <div class="text-truncate">Dashboard de Servicios</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-header small text-uppercase">Mantenimiento</li>
+        <li class="menu-item" th:classappend="${grupoActivo == 'mantenimiento' ? ' active' : ''}">
+            <a th:href="@{/admin/mantenimiento-espacios}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-wrench"></i>
+                <div class="text-truncate">Programar</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">Reservas y Espacios</li>
+        <li class="menu-item" th:classappend="${grupoActivo == 'reservas' ? ' active' : ''}">
+            <a th:href="@{/admin/reservas-deportivas}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
+                <div class="text-truncate">Ver Reservas</div>
+            </a>
+        </li>
+
+        <li class="menu-item" th:classappend="${grupoActivo == 'espacios' ? ' active open' : ''}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-football"></i>
+                <div class="text-truncate">Espacios Deportivos</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item" th:classappend="${subRuta == 'espacios-deportivos' ? ' active' : ''}">
+                    <a th:href="@{/admin/espacios-deportivos}" class="menu-link">Listar</a>
+                </li>
+                <li class="menu-item" th:classappend="${subRuta == 'agregar-servicios' ? ' active' : ''}">
+                    <a th:href="@{/admin/agregar-servicios}" class="menu-link">Crear</a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-header small text-uppercase">Pagos y Reembolsos</li>
+        <li class="menu-item" th:classappend="${grupoActivo == 'pagos' ? ' active open' : ''}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-money"></i>
+                <div class="text-truncate">Pagos</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item" th:classappend="${subRuta == 'registro-pagos' ? ' active' : ''}">
+                    <a th:href="@{/admin/pagos/registro}" class="menu-link">Registro</a>
+                </li>
+                <!--
+                <li class="menu-item" th:classappend="${subRuta == 'agregar-servicios' ? ' active' : ''}">
+                    <a th:href="@{/admin/agregar-servicios}" class="menu-link">Crear</a>
+                </li>
+                -->
+            </ul>
+        </li>
+
+        <li class="menu-item" th:classappend="${grupoActivo == 'reembolsos' ? ' active open' : ''}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-wallet"></i>
+                <div class="text-truncate">Reembolsos</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item" th:classappend="${subRuta == 'reembolsos-pendientes' ? ' active' : ''}">
+                    <a th:href="@{/admin/reembolsos/pendientes}" class="menu-link">Pendientes</a>
+                </li>
+                <li class="menu-item" th:classappend="${subRuta == 'historial-reembolsos' ? ' active' : ''}">
+                    <a th:href="@{/admin/reembolsos/historial}" class="menu-link">Historial</a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-header small text-uppercase">Usuarios</li>
+        <li class="menu-item" th:classappend="${grupoActivo == 'coordinadores' ? ' active open' : ''}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user-plus"></i>
+                <div class="text-truncate">Coordinadores</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item" th:classappend="${subRuta == 'crear-coordinador' ? ' active' : ''}">
+                    <a th:href="@{/admin/crear-coordinador}" class="menu-link">Añadir</a>
+                </li>
+                <li class="menu-item" th:classappend="${subRuta == 'lista-coordinadores' ? ' active' : ''}">
+                    <a th:href="@{/admin/coordinador/lista-coordinadores}" class="menu-link">Listar</a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-header small text-uppercase">Permisos y Roles</li>
+        <li class="menu-item" th:classappend="${grupoActivo == 'roles' ? ' active open' : ''}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-check-shield"></i>
+                <div class="text-truncate">Roles</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item" th:classappend="${subRuta == 'administrar-roles' ? ' active' : ''}">
+                    <a th:href="@{/admin/administrar-roles}" class="menu-link">Administrar</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</aside>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('layout-menu');
+    const layoutPage = document.querySelector('.layout-page');
+    // Hover para abrir/cerrar sidebar y ajustar el layout
+    sidebar.addEventListener('mouseenter', function() {
+        sidebar.classList.add('open');
+        if (layoutPage) layoutPage.classList.add('sidebar-open');
+    });
+    sidebar.addEventListener('mouseleave', function() {
+        sidebar.classList.remove('open');
+        if (layoutPage) layoutPage.classList.remove('sidebar-open');
+    });
+});
+</script>
+
+</body>
+</html>

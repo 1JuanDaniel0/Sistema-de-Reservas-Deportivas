@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de cambio de contraseña</title>
+</head>
+<body style="font-family: sans-serif; background: #f9f9f9; padding: 20px;">
+<div style="max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px;">
+    <h2 style="color: #333;">Tu contraseña fue cambiada</h2>
+    <p>Hola,</p>
+    <p>Este correo es para confirmar que tu contraseña fue cambiada exitosamente.</p>
+    <ul>
+        <li><strong>Correo:</strong> <span th:text="${correo}"></span></li>
+        <li><strong>Fecha:</strong> <span th:text="${fecha}"></span></li>
+        <li><strong>IP:</strong> <span th:text="${ip}"></span></li>
+        <li><strong>Navegador:</strong> <span th:text="${userAgent}"></span></li>
+    </ul>
+    <p>Si tú realizaste este cambio, puedes ignorar este correo.</p>
+    <p style="color: red;">¿No fuiste tú? <a href="mailto:serviciosdeportivossanmiguel@gmail.com">Contáctanos inmediatamente</a>.</p>
+    <p style="font-size: 12px; color: #777;">Municipalidad de San Miguel – Todos los derechos reservados</p>
+</div>
+</body>
+</html>

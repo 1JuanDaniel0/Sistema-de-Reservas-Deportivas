@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es" class="light-style layout-compact" dir="ltr" data-theme="theme-semi-dark" data-assets-path="/" data-template="vertical-menu-template-semi-dark" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Espacios Deportivos - Municipalidad de San Miguel</title>
+  <meta name="description" content="Explora los espacios deportivos disponibles en la Municipalidad de San Miguel." /> <meta name="keywords" content="espacios deportivos, canchas, piscinas, losas, reservas, san miguel, municipalidad">
+  <!-- Canonical SEO -->
+  <link rel="canonical" href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/">
+  <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" th:href="@{/css/demo.css}" />
+  <link rel="stylesheet" th:href="@{/css/offcanvas-style.css}">
+  <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
+  <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}">
+  <link rel="stylesheet" th:href="@{/vendor/libs/tagify/tagify.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/bootstrap-select/bootstrap-select.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/rateyo/rateyo.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/nouislider/nouislider.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/app-chat.css}">
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/page-faq.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/ui-carousel.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/chatbot.css}">
+  <link rel="stylesheet" th:href="@{/vendor/css/filtros.css}">
+  <link rel="stylesheet" th:href="@{/vendor/css/navbar2-estilo.css}">
+  <script th:src="@{/vendor/js/helpers.js}"></script>
+  <script th:src="@{/js/config.js}"></script>
+  <style>
+    .card-descripcion {
+      position: relative;
+      max-height: 100px; /* Ajusta según el alto deseado */
+      overflow: hidden;
+    }
+    .card-descripcion::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px; /* Altura del desvanecimiento */
+      background: linear-gradient(to top, white, transparent);
+      pointer-events: none;
+    }
+    .card-descripcion p {
+      display: -webkit-box;
+      -webkit-line-clamp: 4; /* Cantidad máxima de líneas visibles */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .noUi-horizontal .tooltip-abajo {
+      bottom: auto !important;
+      top: 125% !important;
+      transform: translate(-50%, 0);
+    }
+  </style>
+  <style>
+    /* === ESTILOS RESPONSIVE PARA CARDS === */
+
+    /* Desktop: 3 columnas por defecto */
+    .row .col-12.col-sm-6.col-md-6.col-lg-4 {
+      flex: 0 0 33.333333%;
+      max-width: 33.333333%;
+    }
+
+    /* Tablet: 2 columnas */
+    @media (max-width: 991px) and (min-width: 769px) {
+      .row .col-12.col-sm-6.col-md-6.col-lg-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+      }
+    }
+
+    /* Móvil pequeño: 1 sola columna */
+    @media (max-width: 768px) {
+      .row .col-12.col-sm-6.col-md-6.col-lg-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+
+      /* Centrar la card única en móvil */
+      .container-fluid .row.gx-3.gy-4 {
+        justify-content: center;
+        margin: 0 15px;
+      }
+
+      .container-fluid .row.gx-3.gy-4 > div {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 20px;
+      }
+
+      /* Ajustar padding de las cards en móvil */
+      .card-body {
+        padding: 20px;
+      }
+
+      .card-footer {
+        padding: 20px;
+      }
+
+      /* Mejorar la card única en móvil */
+      .card.h-100 {
+        max-width: 400px;
+        margin: 0 auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      }
+    }
+
+    /* Móvil muy pequeño: optimizaciones adicionales */
+    @media (max-width: 480px) {
+      .container-fluid .row.gx-3.gy-4 {
+        margin: 0 10px;
+      }
+
+      .card.h-100 {
+        max-width: 100%;
+      }
+    }
+
+    /* === PAGINACIÓN RESPONSIVE === */
+
+    /* Desktop: paginación normal */
+    .pagination {
+      font-size: 16px;
+    }
+
+    .page-link {
+      padding: 8px 16px;
+    }
+
+    /* Móvil: paginación más grande y accesible */
+    @media (max-width: 768px) {
+      .pagination {
+        font-size: 18px;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .page-link {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+      }
+
+      .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        font-weight: 600;
+      }
+
+      /* Hacer los botones de navegación más prominentes en móvil */
+      .page-item:first-child .page-link,
+      .page-item:last-child .page-link {
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+        font-weight: 600;
+      }
+    }
+
+    /* === MEJORAS PARA UX MÓVIL === */
+    @media (max-width: 768px) {
+      /* Ajustar el padding del contenedor en móviles */
+      .card-body.d-flex.flex-column.mt-4.px-0.pb-0 .container-fluid {
+        padding: 0 20px;
+      }
+
+      /* Mejorar espaciado de la paginación */
+      .card-footer {
+        padding: 25px 15px;
+      }
+
+      /* Indicador visual de que es una card única */
+      .card.h-100::before {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 20px;
+        opacity: 0.3;
+        z-index: 1;
+      }
+    }
+
+    /* === ANIMACIONES SUAVES === */
+    .card {
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .card.h-100:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      }
+    }
+  </style>
+</head>
+<body style="background-color:rgb(216, 248, 255);">
+<div class="layout-wrapper layout-content-navbar" >
+  <div class="layout-container">
+    <div class="layout-page">
+      <div th:replace="~{fragments/navbar2 :: navbarFragment2}"></div>
+      <div class="content-wrapper">
+        <div class="container-fluid container-p-y">
+          <div class="row h-100 align-items-stretch">
+            <!-- FILTROS -->
+            <div class="col-md-3 d-none d-md-block">
+              <form method="get" th:action="@{/vecino/espacios-disponibles}">
+                <div class="card h-100">
+                  <div class="card-header border-bottom">
+                    <h4 class="mb-0">🔎 Filtros</h4>
+                  </div>
+                  <div class="card-body" style="max-height: 57vh; overflow-y: auto;">
+                    <!-- 🔍 Búsqueda por nombre -->
+                    <div class="mb-4 mt-4">
+                      <small class="text-muted fw-semibold text-uppercase">Búsqueda</small>
+                      <div class="mt-1">
+                        <label for="nombreEspacio" class="form-label mt-2">Nombre del espacio</label>
+                        <div class="input-group input-group-merge rounded-pill">
+                          <span class="input-group-text"><i class="bx bx-search"></i></span>
+                          <input type="text" id="nombreEspacio" name="nombreEspacio"
+                                 class="form-control" placeholder="Ej: San Miguel"
+                                 th:value="${nombreEspacio}" />
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <!-- 📍 Ubicación -->
+                    <div class="mb-4">
+                      <small class="text-muted fw-semibold text-uppercase">Ubicación</small>
+                      <!-- Lugar -->
+                      <div class="mt-1">
+                        <label for="lugar" class="form-label mt-2">Lugar</label>
+                        <select id="lugar" name="lugar" class="form-select select2 unico">
+                          <option value="">Todos</option>
+                          <option th:each="lugarItem : ${lugares}"
+                                  th:value="${lugarItem.idLugar}"
+                                  th:text="${lugarItem.lugar}"
+                                  th:selected="${lugar != null and lugarItem.idLugar == lugar}">
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <hr>
+                    <!-- 🏟️ Características -->
+                    <div class="mb-4">
+                      <small class="text-muted fw-semibold text-uppercase">Características</small>
+                      <!-- Tipo de espacio -->
+                      <div class="mt-1">
+                        <label for="tipo" class="form-label mt-2">Tipo de espacio</label>
+                        <select id="tipo" name="tipo" class="form-select select2 unico">
+                          <option value="">Todas</option>
+                          <option th:each="tipoEspacio : ${tiposEspacio}"
+                                  th:value="${tipoEspacio.nombre}"
+                                  th:text="${tipoEspacio.nombre}"
+                                  th:selected="${tipoEspacio.nombre == tipo}">
+                          </option>
+                        </select>
+                      </div>
+                      <!-- Deporte(s) -->
+                      <div class="mt-1">
+                        <label for="deporte" class="form-label mt-3">Deporte(s)</label>
+                        <select id="deporte" name="deporte" multiple class="select2 form-select multiple">
+                          <option th:each="deporteItem : ${deportes}"
+                                  th:value="${deporteItem.nombre}"
+                                  th:text="${deporteItem.nombre}"
+                                  th:selected="${deporte != null and deporte.contains(deporteItem.nombre)}">
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <hr>
+                    <!-- 💵 Precio -->
+                    <div class="mb-4">
+                      <small class="text-muted fw-semibold text-uppercase">Precio</small>
+                      <div class="mt-1">
+                        <label class="form-label mt-2">Precio por hora (S/)</label>
+                        <div id="slider-precio" class="mt-4 px-2 noUi-primary slider-personalizado"></div>
+                      </div>
+                      <input type="hidden" id="precioMin" name="precioMin" th:value="${precioMin}">
+                      <input type="hidden" id="precioMax" name="precioMax" th:value="${precioMax}">
+                      <input type="hidden" id="maxPrecioDisponible" th:value="${maxPrecioDisponible}">
+                      <small id="rangoPrecioTexto" class="text-muted"></small>
+                    </div>
+                    <hr class="mt-5">
+                    <!-- ⭐ Calificación -->
+                    <div class="mb-3">
+                      <small class="text-muted fw-semibold text-uppercase">Calificación</small>
+                      <div class="mt-1">
+                        <label for="estrellasMin" class="form-label mt-2">Mínimo</label>
+                        <select id="estrellasMin" name="estrellasMin" class="selectpicker w-100" data-style="btn-default">
+                          <option value="">Todas</option>
+                          <option value="5" th:selected="${estrellasMin == 5}">⭐ 5 estrellas</option>
+                          <option value="4" th:selected="${estrellasMin == 4}">⭐ 4 o más</option>
+                          <option value="3" th:selected="${estrellasMin == 3}">⭐ 3 o más</option>
+                          <option value="2" th:selected="${estrellasMin == 2}">⭐ 2 o más</option>
+                          <option value="1" th:selected="${estrellasMin == 1}">⭐ 1 o más</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 🔘 Botones -->
+                  <div class="card-footer border-top">
+                    <div class="d-grid gap-2">
+                      <button type="submit" class="btn btn-primary rounded-pill"><i class="bx bx-filter-alt"></i>&nbsp;Filtrar</button>
+                      <a th:href="@{/vecino/espacios-disponibles}" class="btn btn-outline-secondary rounded-pill"><i class="bx bx-trash"></i>&nbsp;Limpiar</a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!-- /FILTROS -->
+            <!-- CARDS DE ESPACIOS -->
+            <div class="col-12 col-md-9 d-flex flex-column">
+              <div class="card flex-grow-1">
+                <div class="card-header border-bottom">
+                  <h4 class="mb-0">Espacios Deportivos Disponibles</h4>
+                </div>
+                <div class="card-body d-flex flex-column mt-4 px-0 pb-0">
+                  <div class="container-fluid">
+                    <div class="row gx-3 gy-4 justify-content-center">
+                      <div class="col-12 col-sm-6 col-md-6 col-lg-4 d-flex" th:each="espacio : ${espaciosPage}">
+                        <div class="card h-100 d-flex flex-column shadow-sm">
+                          <img class="card-img-top"
+                               th:src="${espacio.foto1Url}"
+                               onerror="this.onerror=null;this.src='https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/EspacioRepresentacion.webp';"
+                               alt="Imagen del espacio" />
+                          <div class="card-body d-flex flex-column pb-0">
+                            <!-- Título -->
+                            <div class="mb-2">
+                              <h5 class="card-title text-truncate" th:text="${espacio.nombre}"></h5>
+                              <div class="w-100 overflow-hidden">
+                                <span class="badge bg-label-primary text-truncate d-inline-block" style="max-width: 100%;" th:text="${espacio.tipoEspacio.nombre}"></span>
+                                <span class="badge bg-label-warning text-truncate d-inline-block" style="max-width: 100%;"
+                                      th:text="'Costo: S/' + ${#numbers.formatDecimal(espacio.costo, 1, 2)} + ' por hora'"></span>
+                              </div>
+                            </div>
+                            <!-- Descripción -->
+                            <div class="mb-2">
+                              <p class="card-text card-descripcion mb-1" th:text="${espacio.descripcion}"></p>
+                              <!-- Calificación promedio -->
+                              <div class="rateyo-readonly mx-auto"
+                                   th:data-rating="${calificacionesMap[espacio.idEspacio] != null ? calificacionesMap[espacio.idEspacio] : 0}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="card-footer pt-3">
+                            <!-- Botones -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-auto">
+                              <a class="btn btn-outline-secondary rounded-pill w-100" th:href="@{|/vecino/detalles-espacio?id=${espacio.idEspacio}|}">
+                                <i class="bx bx-info-circle me-1"></i> Detalles
+                              </a>
+                              <a class="btn btn-primary rounded-pill w-100" th:href="@{|/vecino/disponibilidad-espacio?idEspacio=${espacio.idEspacio}|}">
+                                <i class="bx bx-calendar me-1"></i> Reservar
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Paginación con puntos suspensivos -->
+                <div class="card-footer mt-4 border-top">
+                  <!-- Paginación centrada -->
+                  <div class="d-flex justify-content-center">
+                    <ul class="pagination m-0">
+                      <!-- Botón Anterior -->
+                      <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/vecino/espacios-disponibles(
+          page=${currentPage - 1},
+          nombreEspacio=${nombreEspacio},
+          lugar=${lugar},
+          tipo=${tipo},
+          deporte=${deporte},
+          precioMin=${precioMin},
+          precioMax=${precioMax},
+          estrellasMin=${estrellasMin},
+          isMobile=${isMobile}
+        )}">
+                          <i class="bx bx-chevron-left" th:if="${isMobile}"></i>
+                          <span th:unless="${isMobile}">Anterior</span>
+                          <span th:if="${isMobile}" class="d-none d-sm-inline">Anterior</span>
+                        </a>
+                      </li>
+
+                      <!-- Primera página (siempre visible si no está en el rango y totalPages > 5) -->
+                      <li th:if="${totalPages > 5 && startPage > 1}" class="page-item">
+                        <a th:href="@{/vecino/espacios-disponibles(
+          page=1,
+          nombreEspacio=${nombreEspacio},
+          lugar=${lugar},
+          tipo=${tipo},
+          deporte=${deporte},
+          estrellasMin=${estrellasMin},
+          precioMin=${precioMin},
+          precioMax=${precioMax},
+          isMobile=${isMobile}
+        )}" class="page-link">1</a>
+                      </li>
+
+                      <!-- Puntos suspensivos del inicio (solo si startPage > 2) -->
+                      <li th:if="${totalPages > 5 && startPage > 2}" class="page-item disabled">
+                        <span class="page-link">...</span>
+                      </li>
+
+                      <!-- Números de página en el rango calculado -->
+                      <li class="page-item" th:each="i : ${#numbers.sequence(startPage, endPage)}"
+                          th:classappend="${i == currentPage} ? 'active'">
+                        <a th:href="@{/vecino/espacios-disponibles(
+          page=${i},
+          nombreEspacio=${nombreEspacio},
+          lugar=${lugar},
+          tipo=${tipo},
+          deporte=${deporte},
+          estrellasMin=${estrellasMin},
+          precioMin=${precioMin},
+          precioMax=${precioMax},
+          isMobile=${isMobile}
+        )}" class="page-link" th:text="${i}"></a>
+                      </li>
+
+                      <!-- Puntos suspensivos del final (solo si endPage < totalPages - 1) -->
+                      <li th:if="${totalPages > 5 && endPage < totalPages - 1}" class="page-item disabled">
+                        <span class="page-link">...</span>
+                      </li>
+
+                      <!-- Última página (siempre visible si no está en el rango y totalPages > 5) -->
+                      <li th:if="${totalPages > 5 && endPage < totalPages}" class="page-item">
+                        <a th:href="@{/vecino/espacios-disponibles(
+          page=${totalPages},
+          nombreEspacio=${nombreEspacio},
+          lugar=${lugar},
+          tipo=${tipo},
+          deporte=${deporte},
+          estrellasMin=${estrellasMin},
+          precioMin=${precioMin},
+          precioMax=${precioMax},
+          isMobile=${isMobile}
+        )}" class="page-link" th:text="${totalPages}"></a>
+                      </li>
+
+                      <!-- Botón Siguiente -->
+                      <li class="page-item" th:classappend="${currentPage >= totalPages || totalPages == 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/vecino/espacios-disponibles(
+                            page=${currentPage + 1},
+                            nombreEspacio=${nombreEspacio},
+                            lugar=${lugar},
+                            tipo=${tipo},
+                            deporte=${deporte},
+                            precioMin=${precioMin},
+                            precioMax=${precioMax},
+                            estrellasMin=${estrellasMin},
+                            isMobile=${isMobile}
+                          )}">
+                          <span th:unless="${isMobile}">Siguiente</span>
+                          <span th:if="${isMobile}" class="d-none d-sm-inline">Siguiente</span>
+                          <i class="bx bx-chevron-right" th:if="${isMobile}"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Indicador para móvil (fuera del contenedor flex de la paginación) -->
+                  <div th:if="${isMobile}" class="text-center mt-3">
+                    <small class="text-muted">
+                      <i class="bx bx-mobile-alt me-1"></i>
+                      Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span>
+                    </small>
+                  </div>
+                </div>
+                <!-- /Paginación -->
+                <div class="content-backdrop fade"></div>
+              </div>
+            </div>
+            <!-- CARDS DE ESPACIOS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="layout-overlay layout-menu-toggle"></div>
+  <div class="drag-target"></div>
+  <!-- Widget de filtros móvil -->
+  <div class="filter-widget">
+    <!-- Overlay -->
+    <div class="filter-overlay" id="filterOverlay"></div>
+    <!-- Botón flotante -->
+    <button class="filter-toggle-btn" id="filterToggleBtn">
+      <i class='bx bx-filter-alt'></i>
+    </button>
+    <!-- Panel de filtros -->
+    <div class="filter-panel" id="filterPanel">
+      <div class="filter-panel-header">
+        <h5 class="mb-0" style="color: #fff">
+          <i class='bx bx-filter-alt me-2'></i>
+          Filtros
+        </h5>
+        <button type="button" class="btn-close btn-close-white" id="filterCloseBtn"></button>
+      </div>
+      <form method="get" th:action="@{/vecino/espacios-disponibles}">
+        <div class="filter-panel-body">
+          <!-- 🔍 Búsqueda por nombre -->
+          <div class="filter-section">
+            <div class="filter-section-title">Búsqueda</div>
+            <div class="mb-3">
+              <label for="nombreEspacioMobile" class="form-label">Nombre del espacio</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bx bx-search"></i></span>
+                <input type="text" id="nombreEspacioMobile" name="nombreEspacio"
+                       class="form-control" placeholder="Ej: San Miguel"
+                       th:value="${nombreEspacio}" />
+              </div>
+            </div>
+          </div>
+          <!-- 📍 Ubicación -->
+          <div class="filter-section">
+            <div class="filter-section-title">Ubicación</div>
+            <div class="mb-3">
+              <label for="lugarMobile" class="form-label">Lugar</label>
+              <select id="lugarMobile" name="lugar" class="form-select">
+                <option value="">Todos</option>
+                <option th:each="lugarItem : ${lugares}"
+                        th:value="${lugarItem.idLugar}"
+                        th:text="${lugarItem.lugar}"
+                        th:selected="${lugar != null and lugarItem.idLugar == lugar}">
+                </option>
+              </select>
+            </div>
+          </div>
+          <!-- 🏟️ Características -->
+          <div class="filter-section">
+            <div class="filter-section-title">Características</div>
+            <div class="mb-3">
+              <label for="tipoMobile" class="form-label">Tipo de espacio</label>
+              <select id="tipoMobile" name="tipo" class="form-select">
+                <option value="">Todas</option>
+                <option th:each="tipoEspacio : ${tiposEspacio}"
+                        th:value="${tipoEspacio.nombre}"
+                        th:text="${tipoEspacio.nombre}"
+                        th:selected="${tipoEspacio.nombre == tipo}">
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="deporteMobile" class="form-label">Deporte(s)</label>
+              <select id="deporteMobile" name="deporte" multiple class="form-select">
+                <option th:each="deporteItem : ${deportes}"
+                        th:value="${deporteItem.nombre}"
+                        th:text="${deporteItem.nombre}"
+                        th:selected="${deporte != null and deporte.contains(deporteItem.nombre)}">
+                </option>
+              </select>
+            </div>
+          </div>
+          <!-- 💵 Precio -->
+          <div class="filter-section">
+            <div class="filter-section-title">Precio</div>
+            <div class="mb-3">
+              <label class="form-label">Rango de precio (S/)</label>
+              <div class="row g-2">
+                <div class="col-6">
+                  <input type="number" class="form-control" placeholder="Min"
+                         name="precioMin" th:value="${precioMin}">
+                </div>
+                <div class="col-6">
+                  <input type="number" class="form-control" placeholder="Max"
+                         name="precioMax" th:value="${precioMax}">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ⭐ Calificación -->
+          <div class="filter-section">
+            <div class="filter-section-title">Calificación</div>
+            <div class="mb-3">
+              <label for="estrellasMinMobile" class="form-label">Mínimo</label>
+              <select id="estrellasMinMobile" name="estrellasMin" class="form-select">
+                <option value="">Todas</option>
+                <option value="5" th:selected="${estrellasMin == 5}">⭐ 5 estrellas</option>
+                <option value="4" th:selected="${estrellasMin == 4}">⭐ 4 o más</option>
+                <option value="3" th:selected="${estrellasMin == 3}">⭐ 3 o más</option>
+                <option value="2" th:selected="${estrellasMin == 2}">⭐ 2 o más</option>
+                <option value="1" th:selected="${estrellasMin == 1}">⭐ 1 o más</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="filter-panel-footer">
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-filter-action">
+              <i class="bx bx-filter-alt me-2"></i>Aplicar Filtros
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-filter-action" id="clearFiltersBtn">
+              <i class="bx bx-trash me-2"></i>Limpiar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Botón filtros móviles -->
+  <!-- Offcanvas navbar para móviles -->
+  <div th:replace="~{fragments/offcanvas-navbar :: offcanvasNavbar}"></div>
+  <div th:replace="~{fragments/chatbotWidget :: chatbotWidgetFragment}" sec:authorize="hasAuthority('ROLE_Usuario final')"></div>
+</div>
+<!-- Script para detectar dispositivo y ajustar paginación -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Detectar si es móvil
+    const isMobile = window.innerWidth <= 768;
+
+    // Agregar parámetro isMobile a todos los enlaces de paginación
+    if (isMobile) {
+      const paginationLinks = document.querySelectorAll('.pagination .page-link');
+      paginationLinks.forEach(link => {
+        const url = new URL(link.href, window.location.origin);
+        url.searchParams.set('isMobile', 'true');
+        link.href = url.toString();
+      });
+    }
+  });
+
+  // Recargar con parámetro móvil si cambia el tamaño de ventana
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      const wasMobile = new URLSearchParams(window.location.search).get('isMobile') === 'true';
+      const isMobile = window.innerWidth <= 768;
+
+      if (wasMobile !== isMobile) {
+        const url = new URL(window.location);
+        if (isMobile) {
+          url.searchParams.set('isMobile', 'true');
+          url.searchParams.set('page', '1'); // Reset a página 1 al cambiar a móvil
+        } else {
+          url.searchParams.delete('isMobile');
+        }
+        window.location.href = url.toString();
+      }
+    }, 250);
+  });
+</script>
+<script th:src="@{/js/offcanvas-navbar.js}"></script>
+<script th:src="@{/js/chatbot.js}"></script>
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<script th:src="@{/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+<script th:src="@{/vendor/libs/rateyo/rateyo.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/vendor/libs/select2/select2.js}"></script>
+<script th:src="@{/vendor/libs/bootstrap-select/bootstrap-select.js}"></script>
+<script th:src="@{/vendor/libs/nouislider/nouislider.js}"></script>
+<script th:src="@{/js/forms-sliders.js}"></script>
+<script th:src="@{/js/extended-ui-sweetalert2.js}"></script>
+<script th:src="@{/js/calificacion.js}"></script>
+<script th:src="@{/js/forms-selects.js}"></script>
+<script th:src="@{/js/filtros.js}"></script>
+<script>
+  $(document).ready(function() {
+    $('.select2.unico').select2({
+      placeholder: "Seleccione una opción",
+      allowClear: true
+    });
+    $('.select2.multiple').select2({
+      placeholder: "Seleccione uno o más deportes",
+      allowClear: true
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const slider = document.getElementById('slider-precio');
+    const inputMin = document.getElementById('precioMin');
+    const inputMax = document.getElementById('precioMax');
+    const maxDisponible = parseInt(document.getElementById('maxPrecioDisponible').value) || 50;
+
+    const valorMin = parseInt(inputMin.value) || 0;
+    const valorMax = parseInt(inputMax.value) || 50;
+
+    const rangeMax = Math.max(50, maxDisponible);
+
+    noUiSlider.create(slider, {
+      start: [valorMin, valorMax],
+      connect: true,
+      tooltips: [true, true],
+      range: {
+        min: 0,
+        max: rangeMax
+      },
+      step: 1,
+      format: {
+        to: value => `S/ ${parseInt(value)}`,
+        from: value => Number(value.replace(/[^\d]/g, ''))
+      }
+    });
+
+    slider.noUiSlider.on('update', function (values, handle) {
+      inputMin.value = parseInt(values[0].replace(/[^\d]/g, ''));
+      inputMax.value = parseInt(values[1].replace(/[^\d]/g, ''));
+    });
+
+    // Personalización de tooltip inferior
+    const tooltips = slider.querySelectorAll('.noUi-tooltip');
+    if (tooltips.length === 2) {
+      tooltips[0].classList.add('tooltip-abajo');
+    }
+  });
+</script>
+</body>
+</html>

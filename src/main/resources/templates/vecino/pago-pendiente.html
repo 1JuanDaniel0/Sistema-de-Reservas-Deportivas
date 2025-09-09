@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pago Pendiente - Municipalidad de San Miguel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="/img/icono.ico">
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #fffef5;
+        }
+        .text-subtle {
+            font-size: 15px;
+            color: #697A8D;
+        }
+        .table-grid {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            row-gap: 0.5rem;
+            column-gap: 0.75rem;
+        }
+        .table-label {
+            font-weight: 600;
+            color: #697A8D;
+        }
+        .table-value {
+            color: #697A8D;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4 py-12">
+
+<div class="bg-white shadow-2xl rounded-2xl w-full max-w-5xl overflow-hidden">
+    <div class="flex flex-col md:flex-row py-12 px-6 md:px-12">
+
+        <!-- IZQUIERDA -->
+        <div class="md:w-1/2 flex flex-col justify-center p-10">
+            <h3 class="text-[#f7b924] text-3xl font-extrabold text-center mb-4">¡Pago pendiente!</h3>
+            <p class="text-subtle mb-4">
+                Tu pago está en proceso de validación por MercadoPago.
+                Aún no ha sido confirmado.
+            </p>
+            <p class="text-subtle mb-6">
+                Recibirás una notificación una vez que el pago se confirme. Puedes revisar el estado desde tu billetera.
+            </p>
+
+            <div class="table-grid text-[15px]" th:if="${espacio != null}">
+                <div class="table-label">📍 Espacio</div>
+                <div class="table-value" th:text="${espacio.nombre}">Cancha Municipal</div>
+
+                <div class="table-label">📅 Fecha</div>
+                <div class="table-value" th:text="${#temporals.format(fecha, 'dd ''de'' MMMM ''de'' yyyy')}">02 de julio de 2025</div>
+
+                <div class="table-label">⏰ Horario</div>
+                <div class="table-value">
+                    <span th:text="${#temporals.format(horaInicio, 'h:mm a')}">1:00 p. m.</span> -
+                    <span th:text="${#temporals.format(horaFin, 'h:mm a')}">2:00 p. m.</span>
+                </div>
+            </div>
+
+            <p class="text-center text-red-500 mt-4" th:if="${mensaje != null}" th:text="${mensaje}"></p>
+        </div>
+
+        <!-- DERECHA -->
+        <div class="md:w-1/2 flex items-center justify-center px-4">
+            <img th:src="@{/img/pagopendiente.png}" alt="Pago pendiente" class="w-3/4 md:w-full">
+        </div>
+
+    </div>
+
+    <!-- FOOTER BOTONES -->
+    <div class="flex flex-col md:flex-row gap-6 justify-center py-8 border-t border-gray-200 bg-white">
+
+        <a th:href="@{/vecino/mis-reservas}"
+           class="px-6 py-3 text-sm rounded-full bg-[#fff4d6] text-[#b37500] font-medium
+              hover:bg-[#f7b924] hover:text-white hover:scale-105 transition-all duration-300 shadow-md">
+            Ver mis reservas
+        </a>
+
+        <a th:href="@{/vecino/home}"
+           class="px-6 py-3 text-sm rounded-full bg-[#e2e2e2] text-[#333] font-medium
+              hover:bg-[#bbb] hover:text-white hover:scale-105 transition-all duration-300 shadow-md">
+            Volver al inicio
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

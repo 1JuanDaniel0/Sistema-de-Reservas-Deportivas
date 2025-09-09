@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es"
+      class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
+      dir="ltr"
+      data-theme="theme-semi-dark"
+      data-assets-path="/"
+      data-template="vertical-menu-template-semi-dark"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Mi Perfil</title>
+    <link rel="canonical" href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/">
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" th:href="@{/css/demo.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/datatables-bs5/datatables.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/page-profile.css}" />
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
+    <style>
+        /* Fondo degradado profesional */
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(216, 241, 230, 0.46) 0%, rgba(255, 255, 255, 0.1) 90.2%),
+                linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(201, 215, 255, 0.2) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        /* Card con efecto 3D y gradiente */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 15px;
+            box-shadow:
+                0 10px 20px rgba(0,0,0,0.08),
+                0 0 0 1px rgba(255,255,255,0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #696cff, #ff4d4d);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .card:hover::before {
+            opacity: 1;
+        }
+        .card:hover {
+            transform: translateY(-5px) scale(1.005);
+            box-shadow:
+                0 20px 30px rgba(0,0,0,0.12),
+                0 0 0 1px rgba(255,255,255,0.2);
+        }
+        /* Inputs y botones modernos */
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid rgba(105,108,255,0.1);
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+        .form-control:focus {
+            transform: translateY(-2px);
+            border-color: rgba(105,108,255,0.5);
+            box-shadow:
+                0 5px 15px rgba(105,108,255,0.1),
+                0 0 0 3px rgba(105,108,255,0.1);
+        }
+        .btn {
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #696cff, #8789ff);
+            box-shadow: 0 4px 15px rgba(105,108,255,0.3);
+        }
+        /* Avatar iniciales con sombra */
+        .avatar-initial {
+            box-shadow: 0 5px 15px rgba(105,108,255,0.15);
+            border: 2px solid #fff;
+        }
+        /* Responsive para cards y degradado */
+        @media (max-width: 768px) {
+            .card {
+                border-radius: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <div th:replace="~{fragments/sidebar-admin :: sidebarAdmin('perfil', '')}"></div>
+        <div class="layout-page">
+            <div th:replace="~{fragments/navbar-admin :: navbarAdmin}"></div>
+            <div class="content-wrapper">
+                <div class="container-xxl flex-grow-1 container-p-y">
+                    <div class="row">
+                        <!-- Sidebar del perfil -->
+                        <div class="col-xl-4 col-lg-5 col-md-5">
+                            <!-- Sidebar del perfil -->
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="customer-avatar-section">
+                                        <div class="d-flex align-items-center flex-column">
+                                            <div class="position-relative mb-3">
+                                                <!-- Avatar con marco más elegante -->
+                                                <div class="avatar-wrapper">
+                                                    <img th:if="${session.usuario.rol.idRol == 3 and session.usuario.fotoPerfil != null and !session.usuario.fotoPerfil.isEmpty()}"
+                                                         th:src="${session.usuario.fotoPerfil}"
+                                                         alt="Foto de perfil"
+                                                         class="avatar-img rounded-circle border border-3 border-white shadow-lg"
+                                                         style="width: 120px; height: 120px; object-fit: cover;" />
+
+                                                    <div th:if="${session.usuario.rol.idRol == 3 and (session.usuario.fotoPerfil == null or session.usuario.fotoPerfil.isEmpty())}"
+                                                         class="d-flex align-items-center justify-content-center bg-gradient-primary rounded-circle border border-3 border-white shadow-lg"
+                                                         style="width: 120px; height: 120px; font-size: 42px; font-weight: 600; color: white;">
+                                                        <span th:text="${#strings.substring(session.usuario.nombres, 0, 1).toUpperCase() + #strings.substring(session.usuario.apellidos, 0, 1).toUpperCase()}">
+                                                            NA
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Info del usuario con mejor diseño -->
+                                            <div class="customer-info text-center">
+                                                <h4 class="mb-1 fw-bold" th:text="${session.usuario.nombres + ' ' + session.usuario.apellidos}">
+                                                    Nombre Apellido
+                                                </h4>
+                                                <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+                                                    <span class="badge bg-label-primary fs-7 px-3 py-1">
+                                                        <i class="bx bx-user-check me-1"></i>Administrador
+                                                    </span>
+                                                </div>
+                                                <p class="text-muted mb-0">
+                                                    <i class="bx bx-calendar me-1"></i>
+                                                    Miembro desde <span th:text="${#temporals.format(admin.fechaCreacion.toLocalDateTime(), 'MMMM yyyy', T(java.util.Locale).forLanguageTag('es'))}">marzo 2024</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info-container">
+                                        <div class="d-flex align-items-center justify-content-between pt-4 border-top my-3">
+                                            <small class="fw-normal text-uppercase text-muted">INFORMACIÓN PERSONAL</small>
+                                            <i class="bx bx-user text-muted"></i>
+                                        </div>
+
+                                        <div class="list-group list-group-flush">
+                                            <div class="list-group-item d-flex align-items-center px-0 py-3 border-0">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <div class="avatar-initial rounded bg-label-primary">
+                                                        <i class="bx bx-user text-primary"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">Nombre completo</h6>
+                                                    <small class="text-muted" th:text="${admin.nombres} + ' ' + ${admin.apellidos}">
+                                                        Fernando Godoy
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <div class="list-group-item d-flex align-items-center px-0 py-3 border-0">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <div class="avatar-initial rounded bg-label-info">
+                                                        <i class="bx bx-envelope text-info"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">Correo electrónico</h6>
+                                                    <small class="text-muted" th:text="${admin.correo}">
+                                                        fernando@sanmiguel.gob.pe
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <div class="list-group-item d-flex align-items-center px-0 py-3 border-0">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <div class="avatar-initial rounded bg-label-success">
+                                                        <i class="bx bx-phone text-success"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">Teléfono</h6>
+                                                    <small class="text-muted" th:text="${admin.telefono ?: 'No registrado'}">
+                                                        987654322
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <div class="list-group-item d-flex align-items-center px-0 py-3 border-0">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <div class="avatar-initial rounded bg-label-warning">
+                                                        <i class="bx bx-id-card text-warning"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">DNI</h6>
+                                                    <small class="text-muted" th:text="${admin.dni}">
+                                                        12345678
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Estado del administrador en el sistema -->
+                                            <div class="list-group-item d-flex align-items-center px-0 py-3 border-0">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <div class="avatar-initial rounded"
+                                                         th:classappend="${admin.estado.estado == 'Activo' ? 'bg-label-success' :
+                                                             admin.estado.estado == 'Desactivado' ? 'bg-label-secondary' : 'bg-label-warning'}">
+                                                        <i class="bx"
+                                                           th:classappend="${admin.estado.estado == 'Activo' ? 'bx-check-shield text-success' :
+                                                               admin.estado.estado == 'Desactivado' ? 'bx-shield-x text-secondary' : 'bx-shield-quarter text-warning'}"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">Estado en el sistema</h6>
+                                                    <small class="text-muted">
+                                                        <span th:text="${admin.estado.estado}">Activo</span>
+                                                        <span th:if="${admin.estado.estado == 'Activo'}" class="text-success"> - Operativo</span>
+                                                        <span th:if="${admin.estado.estado == 'Desactivado'}" class="text-secondary"> - No operativo</span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Botón de editar mejorado -->
+                                        <div class="d-grid gap-2 mt-4">
+                                            <button class="rounded-pill btn-primary btn" data-bs-target="#editUser" data-bs-toggle="modal">
+                                                <i class="bx bx-pencil me-2"></i>Editar Perfil
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Sidebar del perfil -->
+                        <div class="col-xl-8 col-lg-7 col-md-7">
+                            <!-- Actividad reciente -->
+                            <div class="row">
+                                <div class="card card-action mb-4">
+                                    <div class="card-header align-items-center">
+                                        <h4 class="card-action-title mb-0"><i class='bx bx-list-ul me-2'></i>Actividad Reciente</h4>
+                                        <div class="card-action-element">
+                                            <div class="dropdown">
+                                                <div th:replace="~{fragments/export-dropdown :: exportDropdown('mi-actividad')}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="timeline ms-2">
+                                            <li th:each="actividad : ${actividades}">
+                                                <div class="timeline-item timeline-item-transparent">
+                                                <span class="timeline-point-wrapper">
+                                                    <span class="timeline-point" th:classappend="${actividad.colorClass}"></span>
+                                                </span>
+                                                    <div class="timeline-event">
+                                                        <div class="timeline-header mb-1">
+                                                            <h6 class="mb-0" th:text="${actividad.descripcion}"></h6>
+                                                            <small class="text-muted d-block" th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}">18/07/2025 14:32</small>
+                                                        </div>
+                                                        <p th:text="${actividad.detalle}"></p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="timeline-end-indicator">
+                                                <i class="bx bx-check-circle"></i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="card mb-4" style="padding: 24px;">
+                                    <div class="card-body">
+                                        <h3 class="mb-4 d-flex align-items-center">
+                                            <i class="bx bx-lock me-2"></i>
+                                            Cambiar Credenciales
+                                        </h3>
+                                        <form id="formRecuperarCredencialesAdmin" th:action="@{/admin/cambiar-credenciales}" method="post" autocomplete="off">
+                                            <div class="row g-3 align-items-end">
+                                                <div class="col-md-6 col-lg-4">
+                                                    <label for="contrasenaActualAdmin" id="contrasenaActualAdminLabel" class="form-label">Contraseña actual</label>
+                                                    <input type="password" class="form-control" id="contrasenaActualAdmin" name="contrasenaActual" placeholder="Ingrese su contraseña actual" required>
+                                                    <div id="mensajeCodigoAdmin" class="form-text text-danger"></div>
+                                                </div>
+                                                <div class="col-12 col-md-3 col-lg-6">
+                                                    <div id="mensajeRecuperacionAdmin" class="form-text"></div>
+                                                </div>
+                                            </div>
+                                            <div id="bloqueCredencialesAdmin" style="display:none;">
+                                                <div class="row g-3">
+                                                    <div class="col-md-6">
+                                                        <label for="nuevoCorreoAdmin" class="form-label">Nuevo correo</label>
+                                                        <input type="email" class="form-control" id="nuevoCorreoAdmin" name="nuevoCorreo" th:value="${session.usuario.correo}" placeholder="Nuevo correo">
+                                                        <div id="errorCorreoAdmin" class="form-text text-danger"></div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="nuevoNumeroAdmin" class="form-label">Nuevo número</label>
+                                                        <input type="text" class="form-control" id="nuevoNumeroAdmin" name="nuevoNumero" th:value="${session.usuario.telefono}" placeholder="Nuevo número">
+                                                        <div id="errorNumeroAdmin" class="form-text text-danger"></div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="nuevoDniAdmin" class="form-label">Nuevo DNI</label>
+                                                        <input type="text" class="form-control" id="nuevoDniAdmin" name="nuevoDni" th:value="${session.usuario.dni}" placeholder="Nuevo DNI">
+                                                        <div id="errorDniAdmin" class="form-text text-danger"></div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="nuevaContrasenaAdmin" class="form-label">Nueva contraseña</label>
+                                                        <input type="password" class="form-control" id="nuevaContrasenaAdmin" name="nuevaContrasena" placeholder="Nueva contraseña">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="confirmarContrasenaAdmin" class="form-label">Confirmar contraseña</label>
+                                                        <input type="password" class="form-control" id="confirmarContrasenaAdmin" name="confirmarContrasena" placeholder="Confirmar contraseña">
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-4">
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-primary w-100" id="btnActualizarCredencialesAdmin"><i class="bx bx-save"></i> Actualizar credenciales</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Contenido -->
+                    </div>
+                </div>
+                <div class="content-backdrop fade"></div>
+            </div>
+        </div>
+        <div class="layout-overlay layout-menu-toggle"></div>
+        <div class="drag-target"></div>
+    </div>
+</div>
+<script th:inline="javascript">
+    window.fotoPerfilActual = /*[[${session.usuario.fotoPerfil}]]*/ null;
+</script>
+<script>
+    window.addEventListener("load", function () {
+        const counters = document.querySelectorAll(".counter");
+        const speed = 200; // aumenta este valor para hacer la animación más lenta
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute("data-target")) || 0;
+            let count = 0;
+            const updateCount = () => {
+                const increment = Math.max(1, Math.floor(target / speed));
+                count += increment;
+                if (count < target) {
+                    counter.innerText = count;
+                    setTimeout(updateCount, 40);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            updateCount();
+        });
+    });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contrasenaLabel = document.getElementById('contrasenaActualAdminLabel')
+    const contrasenaInput = document.getElementById('contrasenaActualAdmin');
+    const bloqueCredenciales = document.getElementById('bloqueCredencialesAdmin');
+    const mensajeCodigo = document.getElementById('mensajeCodigoAdmin');
+    const csrfToken = document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '';
+    const btnActualizar = document.getElementById('btnActualizarCredencialesAdmin');
+
+    // Validación de contraseña actual
+    contrasenaInput.addEventListener('input', function() {
+        const contrasena = this.value.trim();
+        // Si no hay contraseña se oculta el cambio de credenciales
+        if (!contrasena) {
+            bloqueCredenciales.style.display = 'none';
+            mensajeCodigo.textContent = '';
+            return;
+        }
+        // Si se valida, se muestra
+        fetch('/admin/validar-contrasena', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: 'contrasenaActual=' + encodeURIComponent(contrasena)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.valida === true) {
+                bloqueCredenciales.style.display = 'block';
+                mensajeCodigo.textContent = '';
+                contrasenaInput.classList.add('d-none');
+                contrasenaLabel.classList.add('d-none');
+            } else {
+                bloqueCredenciales.style.display = 'none';
+                mensajeCodigo.textContent = 'Contraseña incorrecta';
+            }
+        })
+        .catch(error => {
+            mensajeCodigo.textContent = 'Error al validar la contraseña';
+        });
+    });
+
+    // Validación de correo, número y DNI por AJAX
+    function validarCampo(tipo, valor, idUsuario, callback) {
+        fetch('/admin/validar-campo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: 'tipo=' + encodeURIComponent(tipo) + '&valor=' + encodeURIComponent(valor) + '&idUsuario=' + encodeURIComponent(idUsuario)
+        })
+        .then(response => response.json())
+        .then(data => {
+            callback(data.existe);
+        })
+        .catch(() => {
+            callback(false);
+        });
+    }
+
+    function actualizarEstadoBoton() {
+        const errorCorreo = document.getElementById('errorCorreoAdmin').textContent;
+        const errorNumero = document.getElementById('errorNumeroAdmin').textContent;
+        const errorDni = document.getElementById('errorDniAdmin').textContent;
+        btnActualizar.disabled = !!(errorCorreo || errorNumero || errorDni);
+    }
+
+    const idUsuario = document.querySelector('[name="contrasenaActual"]').form.querySelector('[name="nuevoDni"]').getAttribute('th:value') || '';
+
+    document.getElementById('nuevoCorreoAdmin').addEventListener('blur', function() {
+        const valor = this.value.trim();
+        const errorDiv = document.getElementById('errorCorreoAdmin');
+        if (!valor) {
+            errorDiv.textContent = '';
+            actualizarEstadoBoton();
+            return;
+        }
+        validarCampo('correo', valor, idUsuario, function(existe) {
+            if (existe) {
+                errorDiv.textContent = 'El correo ya está registrado en otro usuario.';
+            } else {
+                errorDiv.textContent = '';
+            }
+            actualizarEstadoBoton();
+        });
+    });
+
+    document.getElementById('nuevoNumeroAdmin').addEventListener('blur', function() {
+        const valor = this.value.trim();
+        const errorDiv = document.getElementById('errorNumeroAdmin');
+        if (!valor) {
+            errorDiv.textContent = '';
+            actualizarEstadoBoton();
+            return;
+        }
+        validarCampo('telefono', valor, idUsuario, function(existe) {
+            if (existe) {
+                errorDiv.textContent = 'El número ya está registrado en otro usuario.';
+            } else {
+                errorDiv.textContent = '';
+            }
+            actualizarEstadoBoton();
+        });
+    });
+
+    document.getElementById('nuevoDniAdmin').addEventListener('blur', function() {
+        const valor = this.value.trim();
+        const errorDiv = document.getElementById('errorDniAdmin');
+        if (!valor) {
+            errorDiv.textContent = '';
+            actualizarEstadoBoton();
+            return;
+        }
+        validarCampo('dni', valor, idUsuario, function(existe) {
+            if (existe) {
+                errorDiv.textContent = 'El DNI ya está registrado en otro usuario.';
+            } else {
+                errorDiv.textContent = '';
+            }
+            actualizarEstadoBoton();
+        });
+    });
+
+    document.getElementById('formRecuperarCredencialesAdmin').onsubmit = function(e) {
+        const pass = document.getElementById('nuevaContrasenaAdmin').value;
+        const conf = document.getElementById('confirmarContrasenaAdmin').value;
+        if (pass && pass !== conf) {
+            alert('Las contraseñas no coinciden.');
+            e.preventDefault();
+        }
+        if (btnActualizar.disabled) {
+            alert('Corrige los errores antes de actualizar credenciales.');
+            e.preventDefault();
+        }
+    };
+});
+</script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/i18n/i18n.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<script th:src="@{/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/app-user-view-account.js}"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93eb1b5819c6bd2f',t:'MTc0NzA2NTM5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

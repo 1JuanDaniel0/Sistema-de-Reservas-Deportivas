@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Notificación de Solicitud</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: auto;
+            font-family: Arial, sans-serif;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .header img {
+            max-height: 60px;
+        }
+        .content {
+            padding: 30px;
+            background-color: #fafafa;
+        }
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .message {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #555;
+        }
+        .footer {
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/logo-sanM.png" alt="Logo San Miguel">
+    </div>
+    <div class="content">
+        <div class="title">Estado de tu solicitud de cancelación</div>
+        <div class="message">
+            Hola <strong th:text="${nombre}"></strong>,<br><br>
+            Tu solicitud de cancelación ha sido
+            <strong th:text="${estado}"></strong>.<br><br>
+            Gracias por utilizar nuestro sistema.<br>
+            Saludos cordiales,<br>
+            <em>Equipo de Coordinación</em>
+        </div>
+    </div>
+    <div class="footer">
+        © 2025 Municipalidad de San Miguel
+    </div>
+</div>
+</body>
+</html>

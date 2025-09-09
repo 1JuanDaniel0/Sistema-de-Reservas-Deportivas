@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Offcanvas Navbar Fragment</title>
+</head>
+<body>
+
+<!-- Offcanvas Mobile Menu -->
+<div class="mobile-offcanvas offcanvas offcanvas-start" tabindex="-1" id="landingNav" aria-labelledby="landingNavLabel" th:fragment="offcanvasNavbar">
+    <div class="mobile-offcanvas-header">
+        <div class="mobile-brand-section">
+            <img th:src="@{/img/icono-sanM.png}" alt="Logo San Miguel" class="mobile-brand-logo">
+            <span class="mobile-brand-text">San Miguel</span>
+        </div>
+        <button type="button" class="mobile-close-btn" data-bs-dismiss="offcanvas" aria-label="Close">
+            <i class="bx bx-x"></i>
+        </button>
+    </div>
+
+    <div class="mobile-offcanvas-body">
+        <div class="mobile-nav-wrapper">
+            <!-- Usuario Final (Vecino) -->
+            <div th:if="${session.usuario?.rol?.rol == 'Usuario final'}" class="mobile-nav-section">
+                <div class="mobile-user-greeting" th:if="${session.usuario != null}">
+                    <div class="mobile-user-avatar">
+                        <img th:if="${session.usuario.fotoPerfil != null}"
+                             th:src="${session.usuario.fotoPerfil}"
+                             class="mobile-avatar-img" />
+                        <span th:unless="${session.usuario.fotoPerfil != null}"
+                              class="mobile-avatar-initials"
+                              th:text="${#strings.substring(session.usuario?.nombres, 0, 1).toUpperCase() + #strings.substring(session.usuario?.apellidos, 0, 1).toUpperCase()}">
+                            NA
+                        </span>
+                    </div>
+                    <div class="mobile-user-info">
+                        <span class="mobile-user-name"
+                              th:with="primerNombre=${session.usuario?.nombres != null ? #strings.listSplit(session.usuario.nombres, ' ')[0] : ''},
+                                       primerApellido=${session.usuario?.apellidos != null ? #strings.listSplit(session.usuario.apellidos, ' ')[0] : ''}"
+                              th:text="${session.usuario?.nombres != null ? 'Hola, ' + primerNombre : 'Hola, Vecino'}">
+                            Hola, Vecino
+                        </span>
+                        <span class="mobile-user-role">Vecino</span>
+                    </div>
+                </div>
+
+                <ul class="mobile-nav-list">
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/}" class="mobile-nav-link">
+                            <i class="bx bx-home mobile-nav-icon"></i>
+                            <span>Inicio</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/vecino/espacios-disponibles}" class="mobile-nav-link">
+                            <i class="bx bx-football mobile-nav-icon"></i>
+                            <span>Canchas</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/vecino/mis-reservas}" class="mobile-nav-link">
+                            <i class="bx bx-calendar mobile-nav-icon"></i>
+                            <span>Mis Reservas</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/vecino/mis-pagos}" class="mobile-nav-link">
+                            <i class="bx bx-credit-card mobile-nav-icon"></i>
+                            <span>Pagos</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/vecino/editar-perfil}" class="mobile-nav-link">
+                            <i class="bx bx-user mobile-nav-icon"></i>
+                            <span>Perfil</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/vecino/seguridad}" class="mobile-nav-link">
+                            <i class="bx bx-shield mobile-nav-icon"></i>
+                            <span>Seguridad</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Coordinador -->
+            <div th:if="${session.usuario?.rol?.rol == 'Coordinador'}" class="mobile-nav-section">
+                <div class="mobile-user-greeting">
+                    <div class="mobile-user-avatar">
+                        <img th:if="${session.usuario.fotoPerfil != null}"
+                             th:src="${session.usuario.fotoPerfil}"
+                             class="mobile-avatar-img" />
+                        <span th:unless="${session.usuario.fotoPerfil != null}"
+                              class="mobile-avatar-initials"
+                              th:text="${#strings.substring(session.usuario?.nombres, 0, 1).toUpperCase() + #strings.substring(session.usuario?.apellidos, 0, 1).toUpperCase()}">
+                            NA
+                        </span>
+                    </div>
+                    <div class="mobile-user-info">
+                        <span class="mobile-user-name"
+                              th:with="primerNombre=${session.usuario?.nombres != null ? #strings.listSplit(session.usuario.nombres, ' ')[0] : ''},
+                                       primerApellido=${session.usuario?.apellidos != null ? #strings.listSplit(session.usuario.apellidos, ' ')[0] : ''}"
+                              th:text="${session.usuario?.nombres != null ? 'Hola, ' + primerNombre : 'Hola, Coordinador'}">
+                            Hola, Coordinador
+                        </span>
+                        <span class="mobile-user-role">Coordinador</span>
+                    </div>
+                </div>
+
+                <ul class="mobile-nav-list">
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/}" class="mobile-nav-link">
+                            <i class="bx bx-home mobile-nav-icon"></i>
+                            <span>Inicio</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/coordinador/espacios}" class="mobile-nav-link">
+                            <i class="bx bx-buildings mobile-nav-icon"></i>
+                            <span>Espacios Deportivos</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/coordinador/asistencia}" class="mobile-nav-link">
+                            <i class="bx bx-calendar-check mobile-nav-icon"></i>
+                            <span>Asistencia</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/coordinador/ver-solicitudes-reembolso}" class="mobile-nav-link">
+                            <i class="bx bx-money mobile-nav-icon"></i>
+                            <span>Reembolsos</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/coordinador/verificar-reservas}" class="mobile-nav-link">
+                            <i class="bx bx-check-double mobile-nav-icon"></i>
+                            <span>Confirmar Reservas</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/coordinador/mi-perfil}" class="mobile-nav-link">
+                            <i class="bx bx-user mobile-nav-icon"></i>
+                            <span>Perfil</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Administrador -->
+            <div th:if="${session.usuario?.rol?.rol == 'Administrador'}" class="mobile-nav-section">
+                <div class="mobile-user-greeting">
+                    <div class="mobile-user-avatar">
+                        <img th:if="${session.usuario.fotoPerfil != null}"
+                             th:src="${session.usuario.fotoPerfil}"
+                             class="mobile-avatar-img" />
+                        <span th:unless="${session.usuario.fotoPerfil != null}"
+                              class="mobile-avatar-initials"
+                              th:text="${#strings.substring(session.usuario?.nombres, 0, 1).toUpperCase() + #strings.substring(session.usuario?.apellidos, 0, 1).toUpperCase()}">
+                            NA
+                        </span>
+                    </div>
+                    <div class="mobile-user-info">
+                        <span class="mobile-user-name"
+                              th:with="primerNombre=${session.usuario?.nombres != null ? #strings.listSplit(session.usuario.nombres, ' ')[0] : ''},
+                                       primerApellido=${session.usuario?.apellidos != null ? #strings.listSplit(session.usuario.apellidos, ' ')[0] : ''}"
+                              th:text="${session.usuario?.nombres != null ? 'Hola, ' + primerNombre : 'Hola, Admin'}">
+                            Hola, Admin
+                        </span>
+                        <span class="mobile-user-role">Administrador</span>
+                    </div>
+                </div>
+
+                <ul class="mobile-nav-list">
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/}" class="mobile-nav-link">
+                            <i class="bx bx-home mobile-nav-icon"></i>
+                            <span>Inicio</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/admin/espacios-deportivos}" class="mobile-nav-link">
+                            <i class="bx bx-buildings mobile-nav-icon"></i>
+                            <span>Espacios Deportivos</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/admin/dasboard-servicios}" class="mobile-nav-link">
+                            <i class="bx bx-bar-chart mobile-nav-icon"></i>
+                            <span>Dashboard</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/admin/mi-perfil}" class="mobile-nav-link">
+                            <i class="bx bx-user mobile-nav-icon"></i>
+                            <span>Perfil</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Usuario NO autenticado -->
+            <div th:if="${session.usuario == null}" class="mobile-nav-section">
+                <div class="mobile-guest-greeting">
+                    <div class="mobile-guest-avatar">
+                        <i class="bx bx-user"></i>
+                    </div>
+                    <div class="mobile-guest-info">
+                        <span class="mobile-guest-title">¡Bienvenido!</span>
+                        <span class="mobile-guest-subtitle">Accede a tu cuenta</span>
+                    </div>
+                </div>
+
+                <ul class="mobile-nav-list">
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/}" class="mobile-nav-link">
+                            <i class="bx bx-home mobile-nav-icon"></i>
+                            <span>Inicio</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a th:href="@{/login}" class="mobile-nav-link">
+                            <i class="bx bx-football mobile-nav-icon"></i>
+                            <span>Ver Canchas</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a href="#landingContact" class="mobile-nav-link mobile-contact-link">
+                            <i class="bx bx-envelope mobile-nav-icon"></i>
+                            <span>Contáctanos</span>
+                            <i class="bx bx-chevron-right mobile-nav-arrow"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Botón de acción principal -->
+            <div class="mobile-action-section">
+                <!-- Si está autenticado -->
+                <div sec:authorize="isAuthenticated()" class="mobile-auth-actions">
+                    <!-- Botón Volver a SuperAdmin (solo si está en modo impersonación) -->
+                    <div th:if="${session.originalSuperAdminId != null}" class="mobile-action-item">
+                        <form th:action="@{/impersonation-logout}" method="post" class="mobile-action-form">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <button type="submit" class="mobile-action-btn mobile-superadmin-btn">
+                                <i class="bx bx-user-check"></i>
+                                <span>Volver a SuperAdmin</span>
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Botón Cerrar Sesión -->
+                    <div class="mobile-action-item">
+                        <form th:action="@{/logout}" method="post" class="mobile-action-form">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <button type="submit" class="mobile-action-btn mobile-logout-btn">
+                                <i class="bx bx-log-out"></i>
+                                <span>Cerrar Sesión</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Si NO está autenticado -->
+                <div sec:authorize="isAnonymous()" class="mobile-guest-actions">
+                    <a th:href="@{/login}" class="mobile-login-btn">
+                        <i class="bx bx-log-in"></i>
+                        <span>Iniciar Sesión / Registro</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

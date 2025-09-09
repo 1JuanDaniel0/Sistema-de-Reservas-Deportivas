@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es"
+      class="light-style layout-compact "
+      dir="ltr"
+      data-theme="theme-semi-dark"
+      data-assets-path="/"
+      data-template="vertical-menu-template-semi-dark"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Mi Cuenta - Seguridad</title>
+    <meta name="description" content="Edita los datos de seguridad de tu cuenta" />
+    <meta name="keywords" content="seguridad, contraseña, cuenta, editar">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+    <link rel="canonical" href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" th:href="@{/css/demo.css}" />
+    <link rel="stylesheet" th:href="@{/css/offcanvas-style.css}">
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/form-validation/form-validation.css}" />
+    <!-- Page CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/page-account-settings.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/app-chat.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/chatbot.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/navbar2-estilo.css}">
+    <!-- Helpers -->
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
+    <style>
+        .swal2-popup.colored-toast {
+            border: 1px solid #0f5132;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear,
+        input[type="password"]::-webkit-credentials-auto-fill-button,
+        input[type="password"]::-webkit-textfield-decoration-container {
+            display: none !important;
+        }
+        input[type="password"]::after {
+            display: none !important;
+        }
+    </style>
+</head>
+<body style="background-color:rgb(216, 248, 255);">
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar  ">
+    <div class="layout-container">
+        <!-- Layout container -->
+        <div class="layout-page">
+            <!-- Navbar -->
+            <div th:replace="~{fragments/navbar2 :: navbarFragment2}"></div>
+            <!-- / Navbar -->
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+                <div class="container-fluid flex-grow-1 container-p-y">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card mb-4">
+                                <h5 class="card-header">Cambiar Contraseña</h5>
+                                <hr class="my-0">
+                                <div class="card-body">
+                                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                                        <span th:text="${error}"></span>
+                                    </div>
+                                    <div th:if="${success}" class="alert alert-success" role="alert">
+                                        <span th:text="${success}"></span>
+                                    </div>
+                                    <form id="formAccountSettings" th:action="@{/vecino/actualizarContrasena}" method="post">
+                                        <div class="row">
+                                            <div class="mb-3 col-md-6 form-password-toggle">
+                                                <label class="form-label" for="currentPassword">Contraseña Actual</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input class="form-control" type="password" name="currentPassword" id="currentPassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="mb-3 col-md-6 form-password-toggle">
+                                                <label class="form-label" for="newPassword">Nueva Contraseña</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input class="form-control" type="password" id="newPassword" name="newPassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                                </div>
+                                                <small id="passwordHelp" class="form-text text-danger" style="display: none;">La contraseña no cumple los requisitos.</small>
+                                                <div class="progress mt-2" style="height: 8px;">
+                                                    <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%; background-color: red;"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3 col-md-6 form-password-toggle">
+                                                <label class="form-label" for="confirmPassword">Confirma tu Nueva Contraseña</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input class="form-control" type="password" name="confirmPassword" id="confirmPassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mb-4">
+                                                <p class="fw-medium mt-2">Requisitos de Contraseña:</p>
+                                                <ul class="ps-3 mb-0">
+                                                    <li class="mb-1">
+                                                        Mínimo 8 caracteres - cuantos más, mejor
+                                                    </li>
+                                                    <li class="mb-1">Al menos una minúscula</li>
+                                                    <li>Al menos un número, símbolo o carácter de espacio en blanco</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-12 mt-1">
+                                                <button type="submit" class="btn btn-primary me-2">Guardar Cambios</button>
+                                                <button type="reset" class="btn btn-label-secondary">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!--/ Change Password -->
+
+                            <!-- Two-steps verification -->
+                            <!--
+                            <div class="card mb-4">
+                                <h5 class="card-header">Two-steps verification</h5>
+                                <div class="card-body">
+                                    <h5 class="mb-3">Two factor authentication is not enabled yet.</h5>
+                                    <p class="w-75">Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to log in.
+                                        <a href="javascript:void(0);">Learn more.</a>
+                                    </p>
+                                    <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#enableOTP">Enable two-factor authentication</button>
+                                </div>
+                            </div>
+                            -->
+                            <!-- Modal -->
+                            <!-- Enable OTP Modal -->
+                            <!--
+                            <div class="modal fade" id="enableOTP" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-simple modal-enable-otp modal-dialog-centered">
+                                    <div class="modal-content p-3 p-md-5">
+                                        <div class="modal-body">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <div class="text-center mb-4">
+                                                <h3 class="mb-5">Enable One Time Password</h3>
+                                            </div>
+                                            <h6>Verify Your Mobile Number for SMS</h6>
+                                            <p>Enter your mobile phone number with country code and we will send you a verification code.</p>
+                                            <form id="enableOTPForm" class="row g-3" onsubmit="return false">
+                                                <div class="col-12">
+                                                    <label class="form-label" for="modalEnableOTPPhone">Phone Number</label>
+                                                    <div class="input-group input-group-merge">
+                                                        <span class="input-group-text">+1</span>
+                                                        <input type="text" id="modalEnableOTPPhone" name="modalEnableOTPPhone" class="form-control phone-number-otp-mask" placeholder="202 555 0111" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+                                                    <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                            <!--/ Enable OTP Modal -->
+                            <!-- /Modal -->
+                            <!--/ Two-steps verification -->
+                        </div>
+                    </div>
+                </div>
+                <!-- / Content -->
+
+                <!-- Footer -->
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    <div class="drag-target"></div>
+    <!-- Offcanvas navbar para móviles -->
+    <div th:replace="~{fragments/offcanvas-navbar :: offcanvasNavbar}"></div>
+    <!-- chatbot -->
+    <div th:replace="~{fragments/chatbotWidget :: chatbotWidgetFragment}" sec:authorize="hasAuthority('ROLE_Usuario final')"></div>
+</div>
+<!-- / Layout wrapper -->
+<script th:src="@{/js/offcanvas-navbar.js}"></script>
+<script th:src="@{/js/chatbot.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<!-- Vendors JS -->
+<script th:src="@{/vendor/libs/form-validation/popular.js}"></script>
+<script th:src="@{/vendor/libs/form-validation/auto-focus.js}"></script>
+<script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
+<script th:src="@{/vendor/libs/cleavejs/cleave-phone.js}"></script>
+<!-- Main JS -->
+<script th:src="@{/js/main.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('newPassword');
+        const passwordHelp = document.getElementById('passwordHelp');
+        const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+        function evaluatePasswordStrength(password) {
+            let score = 0;
+            // Condiciones
+            if (password.length >= 8) score += 1;
+            if (/[a-z]/.test(password)) score += 1;
+            if (/[A-Z]/.test(password)) score += 1;
+            if (/\d/.test(password)) score += 1;
+            if (/[\W_]/.test(password)) score += 1; // Caracter especial
+            return score;
+        }
+        passwordInput.addEventListener('input', function() {
+            const password = passwordInput.value;
+            const strength = evaluatePasswordStrength(password);
+            // Barra de progreso
+            let progress = (strength / 5) * 100;
+            passwordStrengthBar.style.width = progress + "%";
+            if (strength <= 2) {
+                passwordStrengthBar.style.backgroundColor = 'red';
+            } else if (strength === 3 || strength === 4) {
+                passwordStrengthBar.style.backgroundColor = 'orange';
+            } else if (strength === 5) {
+                passwordStrengthBar.style.backgroundColor = 'green';
+            }
+            // Mostrar mensaje si la contraseña es débil
+            if (password.length === 0 || strength < 3) {
+                passwordHelp.style.display = 'block';
+            } else {
+                passwordHelp.style.display = 'none';
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('newPassword');
+        const passwordHelp = document.getElementById('passwordHelp');
+        const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const confirmPasswordHelp = document.createElement('small');
+        confirmPasswordHelp.classList.add('form-text', 'text-danger');
+        confirmPasswordHelp.style.display = 'none';
+        confirmPasswordInput.parentNode.parentNode.appendChild(confirmPasswordHelp);
+        function evaluatePasswordStrength(password) {
+            let score = 0;
+            if (password.length >= 8) score += 1;
+            if (/[a-z]/.test(password)) score += 1;
+            if (/[A-Z]/.test(password)) score += 1;
+            if (/\d/.test(password)) score += 1;
+            if (/[\W_]/.test(password)) score += 1; // Caracter especial
+            return score;
+        }
+        function updatePasswordValidation() {
+            const password = passwordInput.value;
+            const strength = evaluatePasswordStrength(password);
+            // Actualizar barra de fuerza
+            let progress = (strength / 5) * 100;
+            passwordStrengthBar.style.width = progress + "%";
+            if (strength <= 2) {
+                passwordStrengthBar.style.backgroundColor = 'red';
+            } else if (strength === 3 || strength === 4) {
+                passwordStrengthBar.style.backgroundColor = 'orange';
+            } else if (strength === 5) {
+                passwordStrengthBar.style.backgroundColor = 'green';
+            }
+            // Mensaje dinámico
+            if (password.length === 0) {
+                passwordHelp.style.display = 'block';
+                passwordHelp.innerText = 'La contraseña es obligatoria.';
+            } else if (password.length < 8) {
+                passwordHelp.style.display = 'block';
+                passwordHelp.innerText = 'Debe tener mínimo 8 caracteres.';
+            } else if (!(/[a-z]/.test(password)) || (!(/\d/.test(password)) && !(/[\W_]/.test(password)))) {
+                passwordHelp.style.display = 'block';
+                passwordHelp.innerText = 'Debe tener al menos una minúscula y un número o símbolo.';
+            } else {
+                passwordHelp.style.display = 'none';
+            }
+        }
+        function updateConfirmPasswordValidation() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            if (confirmPassword.length === 0) {
+                confirmPasswordHelp.style.display = 'block';
+                confirmPasswordHelp.innerText = 'Confirma tu nueva contraseña.';
+            } else if (password !== confirmPassword) {
+                confirmPasswordHelp.style.display = 'block';
+                confirmPasswordHelp.innerText = 'Las contraseñas no coinciden.';
+            } else {
+                confirmPasswordHelp.style.display = 'none';
+            }
+        }
+        passwordInput.addEventListener('input', function() {
+            updatePasswordValidation();
+            updateConfirmPasswordValidation();
+        });
+        confirmPasswordInput.addEventListener('input', function() {
+            updateConfirmPasswordValidation();
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('formAccountSettings');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita el envío automático
+            Swal.fire({
+                title: '¿Deseas cambiar tu contraseña?',
+                text: "Se actualizará tu contraseña actual.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cambiar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                reverseButtons: true,
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger ms-2'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Ahora sí envía el formulario real
+                }
+            });
+        });
+        // Este es el TOAST cuando ya fue exitoso (después de redirect)
+        const successMessage = /*[[${success}]]*/ '';
+        if (successMessage && successMessage.trim() !== '') {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: successMessage,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: '#d1e7dd',
+                color: '#0f5132',
+                iconColor: '#0f5132',
+                customClass: {
+                    popup: 'colored-toast'
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

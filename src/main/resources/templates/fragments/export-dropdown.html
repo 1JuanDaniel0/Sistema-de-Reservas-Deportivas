@@ -1,0 +1,78 @@
+<!-- export-dropdown.html - Fragmento reutilizable -->
+<div th:fragment="exportDropdown(baseUrl)" class="dropdown">
+    <button class="btn dropdown-toggle rounded-pill btn-primary me-2"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+        <span><i class="bx bx-export me-sm-1"></i>
+            <span class="d-none d-sm-inline-block">Exportar</span>
+        </span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownExport">
+        <li>
+            <a class="dropdown-item export-link"
+               th:href="@{'/export/' + ${baseUrl} + '?formato=pdf'}"
+               data-format="pdf">
+                <span><i class="bx bx-file-blank me-1"></i>PDF</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item export-link"
+               th:href="@{'/export/' + ${baseUrl} + '?formato=xlsx'}"
+               data-format="xlsx">
+                <span><i class="bx bx-file me-1"></i>Excel</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- MODIFICAR en export-dropdown.html para que tome filtros automáticamente: -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const exportLinks = document.querySelectorAll('.export-link');
+
+        exportLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Construir URL con filtros si existe el formulario
+                let finalUrl = this.href;
+                const filtrosForm = document.getElementById('filtrosForm');
+
+                if (filtrosForm) {
+                    const formData = new FormData(filtrosForm);
+                    const params = new URLSearchParams(new URL(this.href).search);
+
+                    // Agregar filtros del formulario
+                    if (formData.get('fechaInicio')) params.append('fechaInicio', formData.get('fechaInicio'));
+                    if (formData.get('fechaFin')) params.append('fechaFin', formData.get('fechaFin'));
+                    if (formData.get('tipoPago')) params.append('tipoPago', formData.get('tipoPago'));
+                    if (formData.get('estado')) params.append('estado', formData.get('estado'));
+                    if (formData.get('espacio')) params.append('espacio', formData.get('espacio'));
+
+                    finalUrl = new URL(this.href).pathname + '?' + params.toString();
+                }
+
+                // Mostrar loading
+                const button = this.closest('.dropdown').querySelector('.dropdown-toggle');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Exportando...';
+                button.disabled = true;
+
+                // Crear enlace temporal para descarga
+                const tempLink = document.createElement('a');
+                tempLink.href = finalUrl;
+                tempLink.style.display = 'none';
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+
+                // Restaurar botón
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }, 2000);
+            });
+        });
+    });
+</script>

@@ -1,0 +1,55 @@
+/* Estilos hover para navbar2 */
+.navbar-nav .nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    padding: 0.5rem 1rem !important;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 239, 184, 0.4);
+    color: #d4a72b !important;
+    transform: translateY(-2px);
+}
+
+.navbar-nav .nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #d4a72b;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::before {
+    width: 80%;
+}
+
+.navbar-nav .nav-link.selected {
+    background-color: rgba(255, 239, 184, 0.6);
+    color: #d4a72b !important;
+    transform: translateY(-2px);
+}
+
+.navbar-nav .nav-link.selected::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 80%;
+    height: 2px;
+    background: #d4a72b;
+    transform: translateX(-50%);
+}
+
+/* Efecto para el dropdown del usuario */
+.dropdown-toggle {
+    transition: all 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+    transform: scale(1.05);
+}

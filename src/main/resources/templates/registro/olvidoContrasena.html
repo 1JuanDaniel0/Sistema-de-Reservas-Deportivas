@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es"
+      class="light-style layout-wide customizer-hide"
+      dir="ltr"
+      data-theme="theme-semi-dark"
+      data-assets-path="/"  data-template="vertical-menu-template-semi-dark"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <title>Recuperar Contraseña - Municipalidad de San Miguel</title>
+  <meta name="description" content="Recupere la contraseña del sistema de reservas de canchas de la Municipalidad de San Miguel." />
+  <meta name="keywords" content="municipalidad, reservas, canchas, recuperar contraseña" />
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+  <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" th:href="@{/css/demo.css}" />
+
+  <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/@form-validation/form-validation.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/page-auth.css}">
+  <!-- Incluye animate.css para las transiciones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <script th:src="@{/vendor/js/helpers.js}"></script>
+  <script th:src="@{/vendor/js/template-customizer.js}"></script>
+  <script th:src="@{/js/config.js}"></script>
+  <style>
+    .app-brand-logo img {
+      height: 40px; /* Tamaño del icono */
+      width: 40px;  /* Tamaño del icono */
+      vertical-align: middle; /* Alinea verticalmente con el texto */
+    }
+    body {
+        background-image: url("https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/fondo-olvido-contra.webp");
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: #f0f0f0; /* Fallback color */
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner py-4">
+
+            <div class="card" style="border-radius: 15px">
+                <div class="card-header text-center mt-3">
+                  <div class="app-brand justify-content-center mb-0">
+                    <a th:href="@{/}" class="app-brand-link gap-2">
+                      <span class="app-brand-logo demo"><img th:src="@{/img/icono.ico}" alt="Logo"></span>
+                      <span class="app-brand-text demo text-body fw-bold" >San Miguel</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="card-body text-center px-4 py-4">
+                    <h4 class="mb-2" id="olvido-title">¿Olvidaste tu contraseña?</h4>
+                    <p class="mb-4" id="olvido-subtitle">Ingresa el correo electrónico asociado a tu cuenta</p>
+
+                    <div th:if="${errorMessage}" class="alert alert-danger text-center" role="alert">
+                        <p th:text="${errorMessage}"></p>
+                    </div>
+
+                    <div class="form-container">
+                        <form id="olvidoForm" action="/olvido" method="post">
+                            <div class="mb-3">
+                                <label id="input-label" class="form-label" for="identificador">Correo electrónico</label>
+                                <input type="email" style="border-radius: 15px;" class="form-control text-center" id="identificador" name="identificador" placeholder="correo@ejemplo.com" required />
+                                <small id="validationMessage" class="text-danger d-block mt-1" style="display: none;"></small>
+                            </div>
+                            <button type="submit" style="border-radius: 15px" class="btn btn-primary d-grid w-100 mb-3" id="submit-btn">
+                                Enviar correo de recuperación
+                            </button>
+
+                            <div class="text-center mb-3 position-relative">
+                                <hr>
+                                <span class="position-absolute bg-white px-2 top-50 start-50 translate-middle text-muted">o</span>
+                            </div>
+
+                            <button type="button" style="border-radius: 15px;" class="btn btn-outline-secondary d-grid w-100" id="toggle-btn">
+                                Usar número de teléfono
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Contenedor de éxito oculto inicialmente -->
+                    <div id="success-container" class="text-center px-2 py-3" style="display: none;">
+                        <button onclick="window.location.href='/login'" class="btn btn-outline-secondary mb-2">Omitir por ahora</button>
+                        <p class="mt-3 mb-0 text-muted">
+                            ¿No recibiste el <span id="tipo-canal">correo</span>?
+                            <a href="#" id="reenviar-btn">Reenviar</a>
+                        </p>
+                    </div>
+                    <div id="otp-container" class="text-center px-2 py-3" style="display: none;">
+                        <h5 class="mb-3">Verificación</h5>
+                        <p>Ingresa el código de 6 dígitos que te enviamos por SMS.</p>
+
+                        <form id="otpForm">
+                            <label class="form-label" for="otpInput"></label>
+                            <input type="text" class="form-control text-center mb-3" style="border-radius: 15px;" id="otpInput" maxlength="6" placeholder="123456" />
+                            <small id="otpError" class="text-danger d-block mb-2" style="display: none;"></small>
+
+                            <button type="submit" class="btn btn-primary w-100">Verificar</button>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                  <div class="text-center">
+                    <a th:href="@{/login}" class="d-flex align-items-center justify-content-center">
+                      <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
+                      Volver a iniciar sesión
+                    </a>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/i18n/i18n.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<!--<script th:src="@{/vendor/libs/@form-validation/popular.js}"></script> <script th:src="@{/vendor/libs/@form-validation/bootstrap5.js}"></script> <script th:src="@{/vendor/libs/@form-validation/auto-focus.js}"></script> <script th:src="@{/js/main.js}"></script>-->
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+        const form = document.getElementById("olvidoForm");
+        const formContainer = document.querySelector(".form-container");
+        const successContainer = document.getElementById("success-container");
+        const otpContainer = document.getElementById("otp-container");
+        const submitBtn = document.getElementById("submit-btn");
+        const validationMsg = document.getElementById("validationMessage");
+        const input = document.getElementById("identificador");
+        const submitOriginalText = submitBtn.innerHTML;
+        const toggleBtn = document.getElementById("toggle-btn");
+        const label = document.getElementById("input-label");
+        const title = document.getElementById("olvido-title");
+        const subtitle = document.getElementById("olvido-subtitle");
+
+        let enviandoFormulario = false;
+        let modoCorreo = sessionStorage.getItem("modoCorreo") !== "false"; // por defecto true
+
+        const aplicarModo = () => {
+            input.type = modoCorreo ? "email" : "text";
+            input.placeholder = modoCorreo ? "correo@ejemplo.com" : "Ej: 912345678";
+            input.value = "";
+            validationMsg.style.display = "none";
+            submitBtn.disabled = false;
+
+            label.textContent = modoCorreo ? "Correo electrónico" : "Número de teléfono";
+            subtitle.textContent = modoCorreo
+                ? "Ingresa el correo electrónico asociado a tu cuenta"
+                : "Ingresa tu número de teléfono registrado";
+
+            submitBtn.textContent = modoCorreo
+                ? "Enviar correo de recuperación"
+                : "Enviar código por SMS";
+
+            toggleBtn.textContent = modoCorreo
+                ? "Usar número de teléfono"
+                : "Usar correo electrónico";
+        };
+
+        const animarCambioModo = () => {
+            [input, label, subtitle, submitBtn].forEach(el => el.classList.add("animate__animated", "animate__fadeOut"));
+
+            setTimeout(() => {
+                modoCorreo = !modoCorreo;
+                sessionStorage.setItem("modoCorreo", modoCorreo);
+                aplicarModo();
+
+                [input, label, subtitle, submitBtn].forEach(el => {
+                    el.classList.remove("animate__fadeOut");
+                    el.classList.add("animate__fadeIn");
+                });
+
+                setTimeout(() => {
+                    [input, label, subtitle, submitBtn].forEach(el => el.classList.remove("animate__animated", "animate__fadeIn"));
+                }, 500);
+            }, 300);
+        };
+
+        aplicarModo();
+
+        if (toggleBtn) toggleBtn.addEventListener("click", animarCambioModo);
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            if (enviandoFormulario) return;
+
+            enviandoFormulario = true;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;Validando...`;
+            validationMsg.style.display = "none";
+
+            const formData = new FormData(form);
+
+            fetch(`/olvido/validar-identificador?valor=${encodeURIComponent(input.value.trim())}`)
+                .then(res => res.text())
+                .then(resultado => {
+                    if (resultado !== "existe") {
+                        validationMsg.textContent = "No existe una cuenta con este identificador.";
+                        validationMsg.style.display = "block";
+                        throw new Error("no_existe");
+                    }
+
+                    submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;Enviando...`;
+
+                    return fetch("/olvido", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest",
+                            [header]: token
+                        },
+                        credentials: "same-origin"
+                    });
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error("Error al enviar");
+                    return res.text();
+                })
+                .then(resultado => {
+                    const limpio = resultado.trim();
+
+                    if (limpio === "ok") {
+                        formContainer.classList.add("animate__animated", "animate__fadeOut");
+
+                        setTimeout(() => {
+                            formContainer.style.display = "none";
+                            document.querySelector(".card-footer")?.style?.setProperty("display", "none");
+
+                            title.textContent = modoCorreo ? "¡Correo enviado!" : "¡Mensaje enviado!";
+                            subtitle.textContent = modoCorreo
+                                ? "Hemos enviado un enlace de recuperación a tu correo. Tienes 30 minutos para restablecer tu contraseña."
+                                : "Hemos enviado un código de verificación a tu teléfono. Tienes 5 minutos para usarlo.";
+
+                            if (modoCorreo) {
+                                successContainer.style.display = "block";
+                                successContainer.classList.add("animate__animated", "animate__fadeIn");
+                                document.getElementById("tipo-canal").textContent = "correo";
+                            } else {
+                                otpContainer.style.display = "block";
+                                otpContainer.classList.add("animate__animated", "animate__fadeIn");
+                            }
+                        }, 500);
+
+                    } else if (limpio === "no_existe") {
+                        validationMsg.textContent = "No existe una cuenta con este identificador.";
+                        validationMsg.style.display = "block";
+                        throw new Error("no_existe");
+
+                    } else if (limpio === "error_envio_sms") {
+                        validationMsg.textContent = "No se pudo enviar el SMS. Intenta más tarde o contacta con soporte.";
+                        validationMsg.style.display = "block";
+                        throw new Error("sms_fallido");
+
+                    } else {
+                        validationMsg.textContent = "Error inesperado al enviar. Intenta nuevamente.";
+                        validationMsg.style.display = "block";
+                        throw new Error("respuesta_inesperada");
+                    }
+                })
+                .catch(error => {
+                    if (error.message !== "no_existe") {
+                        validationMsg.textContent = "Error inesperado al enviar. Intenta nuevamente.";
+                        validationMsg.style.display = "block";
+                    }
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = submitOriginalText;
+                    enviandoFormulario = false;
+                });
+        });
+
+        // Agrega esto dentro del bloque de JS principal
+        const otpForm = document.getElementById("otpForm");
+        const otpInput = document.getElementById("otpInput");
+        const otpError = document.getElementById("otpError");
+
+        if (otpForm) {
+            otpForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                otpError.style.display = "none";
+                const otpCode = otpInput.value.trim();
+                if (otpCode.length !== 6) {
+                    otpError.textContent = "El código debe tener 6 dígitos.";
+                    otpError.style.display = "block";
+                    return;
+                }
+                // Aquí debes enviar el número y el OTP al backend
+                // El número debe ser el que el usuario ingresó antes
+                // Puedes guardar el número en una variable global cuando el usuario lo ingresa
+                const telefono = document.getElementById("identificador").value || sessionStorage.getItem("telefonoRecuperacion");
+                fetch("/olvido/verificar-otp", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        [header]: token
+                    },
+                    body: JSON.stringify({ telefono: telefono, otp: otpCode })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "ok" && data.token) {
+                        // Redirige a nuevaContrasena.html con el token recibido
+                        window.location.href = `/olvido/reestablecer-contrasena?token=${data.token}`;
+                    } else {
+                        let mensaje = "Código incorrecto o expirado.";
+                        if (data.motivo === "expirado") mensaje = "El código ha expirado. Solicita uno nuevo.";
+                        if (data.motivo === "no_otp") mensaje = "No se encontró un código para este número.";
+                        if (data.motivo === "incorrecto") mensaje = "El código ingresado es incorrecto.";
+                        otpError.textContent = mensaje;
+                        otpError.style.display = "block";
+                    }
+                })
+                .catch(() => {
+                    otpError.textContent = "Error al verificar el código. Intenta nuevamente.";
+                    otpError.style.display = "block";
+                });
+            });
+        }
+    });
+</script>
+</body>
+</html>

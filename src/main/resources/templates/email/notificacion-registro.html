@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro Exitoso</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #005baa;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header img {
+            max-height: 80px;
+        }
+
+        .content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .content h2 {
+            color: #333333;
+            margin-top: 0;
+        }
+
+        .content p {
+            color: #555555;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background-color: #f0f0f0;
+            color: #999999;
+            font-size: 13px;
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/logo-sanM.png" alt="Logo Municipalidad San Miguel">
+    </div>
+
+    <div class="content">
+        <h2>🎉 Registro exitoso</h2>
+        <p>
+            Hola <strong th:text="${nombre}">Usuario</strong>,<br><br>
+            Te damos la bienvenida al sistema de reservas de espacios deportivos de la <strong>Municipalidad de San Miguel</strong>.
+        </p>
+        <p>
+            Ya puedes acceder al sistema con tu DNI y contraseña para realizar tus reservas, ver tu historial y más.
+        </p>
+    </div>
+
+    <div class="footer">
+        © 2025 Municipalidad de San Miguel. Todos los derechos reservados.
+    </div>
+</div>
+
+</body>
+</html>

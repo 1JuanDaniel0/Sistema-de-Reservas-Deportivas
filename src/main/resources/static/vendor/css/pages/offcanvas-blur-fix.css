@@ -1,0 +1,142 @@
+.offcanvas-backdrop {
+    transition: opacity 0.15s linear !important;
+}
+
+body:not(.offcanvas-open):not(.modal-open) {
+    overflow: auto !important;
+    padding-right: 0 !important;
+}
+
+.offcanvas-backdrop + .offcanvas-backdrop {
+    display: none !important;
+}
+
+#crearReservaOffcanvas.offcanvas.hiding,
+#crearReservaOffcanvas.offcanvas.hide {
+    transform: translateX(100%) !important;
+}
+
+.app-calendar-wrapper .app-overlay {
+    display: none !important;
+}
+
+.offcanvas.hide ~ .offcanvas-backdrop,
+.offcanvas:not(.show) ~ .offcanvas-backdrop {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+.offcanvas {
+    transition: transform 0.3s ease-in-out !important;
+}
+
+.offcanvas-backdrop {
+    transition: opacity 0.15s linear !important;
+}
+
+html:not(:has(.modal.show)):not(:has(.offcanvas.show)) body {
+    overflow: auto !important;
+    padding-right: 0 !important;
+}
+
+@supports not (selector(:has(*))) {
+    body:not(.modal-open) {
+        overflow: auto !important;
+        padding-right: 0 !important;
+    }
+}
+
+.offcanvas-end {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Animación más suave */
+.offcanvas.offcanvas-end {
+    transform: translateX(100%);
+}
+
+.offcanvas.offcanvas-end.show {
+    transform: translateX(0);
+}
+
+.offcanvas-backdrop {
+    z-index: 1040 !important;
+}
+
+.offcanvas {
+    z-index: 1045 !important;
+}
+
+body.offcanvas-open {
+    overflow: hidden !important;
+}
+
+.offcanvas[data-bs-dismiss="offcanvas"] {
+    pointer-events: auto !important;
+}
+
+.toast-container {
+    z-index: 9999 !important;
+    pointer-events: none;
+}
+
+.toast {
+    pointer-events: auto;
+    max-width: 350px;
+}
+
+.toast {
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.toast.showing {
+    animation: toastSlideIn 0.3s ease-out;
+}
+
+.toast.hide {
+    animation: toastSlideOut 0.3s ease-in;
+}
+
+@keyframes toastSlideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastSlideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .offcanvas-end {
+        width: 100% !important;
+        border-radius: 1rem 1rem 0 0;
+    }
+
+    .toast-container {
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
+    }
+
+    .toast {
+        width: 100%;
+        max-width: none;
+    }
+}

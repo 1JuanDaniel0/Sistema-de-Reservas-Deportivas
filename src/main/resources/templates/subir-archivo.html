@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Subir archivo</title>
+</head>
+<body>
+<h2>Subir imagen o PDF a S3</h2>
+<form th:action="@{/subir-archivo}" method="post" enctype="multipart/form-data">
+    <input type="file" name="archivo" required />
+    <button type="submit">Subir</button>
+</form>
+
+<p th:if="${error}" th:text="${error}"></p>
+</body>
+</html>

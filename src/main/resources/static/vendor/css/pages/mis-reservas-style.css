@@ -1,0 +1,289 @@
+
+/* mis-reservas-style.css */
+.filter-section {
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.filter-tabs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-tab {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 160px;
+    text-align: left;
+    font-size: 13px;
+}
+
+.filter-tab:hover {
+    border-color: #696cff;
+    background-color: #f8f9ff;
+}
+
+.filter-tab.active {
+    border-color: #696cff;
+    background-color: #696cff;
+    color: white;
+}
+
+.filter-tab i {
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+.filter-tab span {
+    font-weight: 500;
+}
+
+.filter-tab .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(0,0,0,0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.filter-tab:not(.active) .count {
+    background: #f0f0f0;
+    color: #555;
+}
+
+.reservas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.reserva-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.30);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #eee;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.reserva-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    border-color: #d7d8ff;
+}
+
+.reserva-image {
+    position: relative;
+    height: 160px;
+    overflow: hidden;
+}
+
+.reserva-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.reserva-date-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: white;
+    border-radius: 8px;
+    padding: 5px 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    min-width: 50px;
+}
+
+.date-day {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    line-height: 1;
+}
+
+.date-month {
+    font-size: 11px;
+    font-weight: 600;
+    color: #696cff;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.reserva-status-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.status-indicator {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reserva-content {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.reserva-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+    line-height: 1.3;
+}
+
+.reserva-meta {
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.reserva-details {
+    margin-bottom: 15px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-item .icon {
+    font-size: 16px;
+    color: #696cff;
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.detail-content {
+    flex: 1;
+}
+
+.detail-label {
+    display: block;
+    font-size: 11px;
+    color: #777;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.detail-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.reserva-rating {
+    margin-bottom: 15px;
+    padding: 8px 0;
+    border-top: 1px solid #f5f5f5;
+}
+
+.reserva-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.reserva-actions .btn {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+}
+
+.empty-state {
+    padding: 40px 20px;
+}
+
+.empty-state-icon {
+    color: #bdbdbd;
+}
+
+.empty-state-icon i {
+    font-size: 60px;
+}
+
+.current-filter-display {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-title h5 {
+    margin-bottom: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.section-title .badge {
+    margin-left: 10px;
+}
+
+@media (max-width: 767px) {
+    .filter-tabs {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        flex-wrap: nowrap;
+    }
+
+    .filter-tab {
+        min-width: 130px;
+    }
+
+    .reservas-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .reservas-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .reservas-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

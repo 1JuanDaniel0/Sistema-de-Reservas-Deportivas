@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es" class="light-style layout-compact" dir="ltr" data-theme="theme-semi-dark" data-assets-path="/" data-template="vertical-menu-template-semi-dark" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Solicitudes de Reembolso</title>
+    <meta name="description" content="Dashboard para coordinadores de la Municipalidad de San Miguel" />
+    <meta name="keywords" content="dashboard, coordinador, asistencia, san miguel"/>
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+    <link rel="preconnect" href="https://fonts.googleapis.com/"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.bootstrap5.min.css">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css"/>
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" th:href="@{/css/demo.css}"/>
+    <link rel="stylesheet" th:href="@{/css/offcanvas-style.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/page-profile.css}"/>
+    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/navbar2-estilo-coordi.css}">
+    <script th:src="@{/js/config.js}"></script>
+    <style>
+        .btn-group + .btn-group {
+            margin-left: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .d-flex.gap-2.flex-wrap {
+                flex-direction: column;
+                gap: 0.5rem !important;
+            }
+            .btn-group {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #F5E8C7;">
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <div class="layout-page">
+            <div th:replace="~{fragments/navbar2 :: navbarFragment2}"></div>
+            <div class="content-wrapper">
+                <div class="container-fluid flex-grow-1 container-p-y">
+                    <!-- Mini dashboard mejorado para solicitudes de reembolso -->
+                    <div class="row">
+                        <!-- Solicitudes Pendientes -->
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="card-icon mb-3">
+                                        <div class="avatar">
+                                            <div class="avatar-initial rounded bg-label-warning">
+                                                <i class='bx bx-time-five bx-sm'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-info">
+                                        <h4 class="card-title mb-2">Pendientes</h4>
+                                        <div class="d-flex align-items-end mb-1 gap-1">
+                                            <h4 class="text-warning mb-0 counter"
+                                                th:attr="data-target=${solicitudesPendientes ?: 0}"
+                                                th:text="0">0</h4>
+                                            <p class="mb-0">solicitudes</p>
+                                        </div>
+                                        <p class="text-muted mb-0 text-truncate">Esperando <strong>revisión</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Solicitudes Procesadas Hoy -->
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="card-icon mb-3">
+                                        <div class="avatar">
+                                            <div class="avatar-initial rounded bg-label-success">
+                                                <i class='bx bx-check-double bx-sm'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-info">
+                                        <h4 class="card-title mb-2">Procesadas Hoy</h4>
+                                        <div class="d-flex align-items-end mb-1 gap-1">
+                                            <h4 class="text-success mb-0 counter"
+                                                th:attr="data-target=${solicitudesProcesadasHoy ?: 0}"
+                                                th:text="0">0</h4>
+                                            <p class="mb-0">solicitudes</p>
+                                        </div>
+                                        <p class="text-muted mb-0 text-truncate">Resueltas en el día</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Monto Total en Reembolsos -->
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="card-icon mb-3">
+                                        <div class="avatar">
+                                            <div class="avatar-initial rounded bg-label-info">
+                                                <i class='bx bx-money bx-sm'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-info">
+                                        <h4 class="card-title mb-2">Monto Pendiente</h4>
+                                        <div class="d-flex align-items-end mb-1 gap-1">
+                                            <h4 class="text-info mb-0">S/.</h4>
+                                            <h4 class="text-info mb-0"
+                                                th:text="${#numbers.formatDecimal(montoTotalPendiente, 1, 2)}">0</h4>
+                                        </div>
+                                        <p class="text-muted mb-0 text-truncate">En solicitudes <strong>pendientes</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Solicitudes Urgentes (menos de 24h) -->
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="card-icon mb-3">
+                                        <div class="avatar">
+                                            <div class="avatar-initial rounded bg-label-danger">
+                                                <i class='bx bx-alarm-exclamation bx-sm'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-info">
+                                        <h4 class="card-title mb-2">Urgentes</h4>
+                                        <div class="d-flex align-items-end mb-1 gap-1">
+                                            <h4 class="text-danger mb-0 counter"
+                                                th:attr="data-target=${solicitudesUrgentes ?: 0}"
+                                                th:text="0">0</h4>
+                                            <p class="mb-0">críticas</p>
+                                        </div>
+                                        <p class="text-muted mb-0 text-truncate">Reserva en <strong>&lt; 24h</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Mini dashboard -->
+                    <!-- Sección mejorada después del mini dashboard -->
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12">
+                            <div class="card mb-4">
+                                <!-- Agregar después de los filtros de estado existentes -->
+                                <div class="card-header border-bottom d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 class="mb-1">Gestión de Solicitudes de Reembolso</h3>
+                                        <p class="text-muted mb-0">Administra las solicitudes de cancelación y reembolso de los vecinos</p>
+                                    </div>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <!-- Filtros de estado -->
+                                        <div class="btn-group" role="group">
+                                            <input type="radio" class="btn-check" name="filtroEstado" id="filtro-todos" value="todos" checked>
+                                            <label class="btn btn-outline-primary btn-sm" for="filtro-todos">Todas</label>
+
+                                            <input type="radio" class="btn-check" name="filtroEstado" id="filtro-pendientes" value="Pendiente">
+                                            <label class="btn btn-outline-warning btn-sm" for="filtro-pendientes">Pendientes</label>
+
+                                            <input type="radio" class="btn-check" name="filtroEstado" id="filtro-urgentes" value="urgentes">
+                                            <label class="btn btn-outline-danger btn-sm" for="filtro-urgentes">Urgentes</label>
+
+                                            <input type="radio" class="btn-check" name="filtroEstado" id="filtro-procesadas" value="procesadas">
+                                            <label class="btn btn-outline-success btn-sm" for="filtro-procesadas">Procesadas</label>
+                                        </div>
+
+                                        <!-- NUEVOS: Filtros de tiempo -->
+                                        <div class="btn-group" role="group">
+                                            <input type="radio" class="btn-check" name="filtroTiempo" id="tiempo-todos" value="todos" checked>
+                                            <label class="btn btn-outline-secondary btn-sm" for="tiempo-todos">Todo</label>
+
+                                            <input type="radio" class="btn-check" name="filtroTiempo" id="tiempo-hoy" value="hoy">
+                                            <label class="btn btn-outline-info btn-sm" for="tiempo-hoy">Hoy</label>
+
+                                            <input type="radio" class="btn-check" name="filtroTiempo" id="tiempo-semana" value="semana">
+                                            <label class="btn btn-outline-info btn-sm" for="tiempo-semana">Esta semana</label>
+
+                                            <input type="radio" class="btn-check" name="filtroTiempo" id="tiempo-mes" value="mes">
+                                            <label class="btn btn-outline-info btn-sm" for="tiempo-mes">Este mes</label>
+                                        </div>
+
+                                        <!-- Botón de exportar -->
+                                        <button class="btn btn-group btn-primary btn-sm" id="exportarExcel">
+                                            <i class="bx bx-download"></i> Exportar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body mt-4">
+                                    <!-- Estadísticas dinámicas antes de la tabla -->
+                                    <div class="row mb-4 text-center">
+                                        <div class="col-md-4">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <span class="avatar-initial rounded-circle bg-label-warning">
+                                                        <i class="bx bx-time-five"></i>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">Tiempo promedio de respuesta</small>
+                                                    <h6 class="mb-0">
+                                                        <span th:text="${tiempoPromedioRespuesta}">0</span> horas
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <span class="avatar-initial rounded-circle bg-label-success">
+                                                        <i class="bx bx-check-circle"></i>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">Tasa de aprobación</small>
+                                                    <h6 class="mb-0">
+                                                        <span th:text="${tasaAprobacion}">87</span>%
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <span class="avatar-initial rounded-circle bg-label-info">
+                                                        <i class="bx bx-money"></i>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">Total reembolsado este mes</small>
+                                                    <h6 class="mb-0">
+                                                        S/. <span th:text="${#numbers.formatDecimal(totalReembolsadoMes, 1, 2)}">2,450.00</span>
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="py-0">
+                                    <!-- Tabla actualizada con las nuevas columnas -->
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover" id="tablaReembolsos">
+                                            <thead class="table-light">
+                                            <tr>
+                                                <th><i class="bx bx-user me-1"></i>Vecino</th>
+                                                <th><i class="bx bx-map me-1"></i>Espacio</th>
+                                                <th class="text-center"><i class="bx bx-calendar me-1"></i>Reserva</th>
+                                                <th class="text-center"><i class="bx bx-money me-1"></i>Monto</th>
+                                                <th><i class="bx bx-message-dots me-1"></i>Motivo Solicitud</th>
+                                                <th class="text-center"><i class="bx bx-time me-1"></i>Solicitado</th>
+                                                <th class="text-center">Estado</th>
+                                                <th class="text-center"><i class="bx bx-clock me-1"></i>Tiempo Respuesta</th>
+                                                <th><i class="bx bx-note me-1"></i>Motivo Respuesta</th>
+                                                <th class="text-center">Acciones</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="solicitud : ${solicitudes}">
+                                                <!-- Columna 0: Vecino -->
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar avatar-xs me-2">
+                                                            <span class="avatar-initial rounded-circle bg-label-primary"
+                                                                  th:text="${solicitud.reserva.vecino.nombres.substring(0,1).toUpperCase()}">J</span>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-0" th:text="${solicitud.reserva.vecino.nombres} + ' ' + ${solicitud.reserva.vecino.apellidos}"></h6>
+                                                            <small class="text-muted" th:text="${solicitud.reserva.vecino.dni}"></small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <!-- Columna 1: Espacio -->
+                                                <td>
+                                                    <div>
+                                                        <h6 class="mb-0" th:text="${solicitud.reserva.espacio.nombre}"></h6>
+                                                        <small class="text-muted" th:text="${solicitud.reserva.espacio.idLugar.lugar}"></small>
+                                                    </div>
+                                                </td>
+                                                <!-- Columna 2: Reserva -->
+                                                <td class="text-center">
+                                                    <div>
+                                                        <strong th:text="${#temporals.format(solicitud.reserva.fecha, 'dd/MM/yyyy')}"></strong>
+                                                        <br>
+                                                        <small class="text-muted">
+                                                            <i class="bx bx-time-five"></i>
+                                                            <span th:text="${solicitud.reserva.horaInicio} + ' - ' + ${solicitud.reserva.horaFin}"></span>
+                                                        </small>
+                                                    </div>
+                                                </td>
+                                                <!-- Columna 3: Monto -->
+                                                <td class="text-center">
+                                                    <span class="badge bg-label-info">
+                                                        S/. <span th:text="${solicitud.reserva.costo}"></span>
+                                                    </span>
+                                                </td>
+                                                <!-- Columna 4: Motivo Solicitud -->
+                                                <td style="max-width: 250px;">
+                                                    <div class="text-truncate" th:text="${solicitud.motivo}" th:title="${solicitud.motivo}"></div>
+                                                    <button class="btn btn-link btn-sm p-0 text-primary mt-1 ver-motivo-completo"
+                                                            th:data-motivo="${solicitud.motivo}">
+                                                        <small>Ver completo</small>
+                                                    </button>
+                                                </td>
+                                                <!-- Columna 5: Fecha Solicitud -->
+                                                <td class="text-center">
+                                                    <div>
+                                                        <small th:text="${#temporals.format(solicitud.fechaSolicitud, 'dd/MM/yyyy')}"></small>
+                                                        <br>
+                                                        <small class="text-muted" th:text="${#temporals.format(solicitud.fechaSolicitud, 'HH:mm')}"></small>
+                                                    </div>
+                                                    <!-- Indicador de urgencia - VERSIÓN CORREGIDA -->
+                                                    <div th:if="${solicitud.estado == 'Pendiente'}">
+                                                        <small class="badge bg-danger" th:if="${solicitud.esUrgente()}">
+                                                            🔥 URGENTE
+                                                        </small>
+                                                    </div>
+                                                </td>
+                                                <!-- Columna 6: Estado -->
+                                                <td class="text-center">
+                                                    <span th:class="'badge ' +
+                                                            ${solicitud.estado == 'Rechazado' ? 'bg-danger' :
+                                                              (solicitud.estado == 'Aprobado' ? 'bg-success' : 'bg-warning')}"
+                                                          th:text="${solicitud.estado}">
+                                                    </span>
+                                                </td>
+                                                <!-- Columna 7: Tiempo Respuesta -->
+                                                <td class="text-center">
+                                                    <div th:if="${solicitud.tiempoRespuesta != null}">
+                                                        <small th:text="${#temporals.format(solicitud.tiempoRespuesta, 'dd/MM/yyyy')}"></small>
+                                                        <br>
+                                                        <small class="text-muted" th:text="${#temporals.format(solicitud.tiempoRespuesta, 'HH:mm')}"></small>
+                                                    </div>
+                                                    <span th:if="${solicitud.tiempoRespuesta == null}" class="text-muted">-</span>
+                                                </td>
+                                                <!-- Columna 8: Motivo Respuesta -->
+                                                <td style="max-width: 200px;">
+                                                    <div th:if="${solicitud.motivoRespuesta != null}">
+                                                        <div class="text-truncate" th:text="${solicitud.motivoRespuesta}"
+                                                             th:title="${solicitud.motivoRespuesta}"></div>
+                                                        <button class="btn btn-link btn-sm p-0 text-primary mt-1 ver-motivo-respuesta"
+                                                                th:data-motivo-respuesta="${solicitud.motivoRespuesta}">
+                                                            <small>Ver completo</small>
+                                                        </button>
+                                                    </div>
+                                                    <span th:if="${solicitud.motivoRespuesta == null}" class="text-muted">-</span>
+                                                </td>
+                                                <!-- Columna 9: Acciones -->
+                                                <td class="text-center">
+                                                    <div th:if="${solicitud.estado == 'Pendiente'}" class="btn-group">
+                                                        <button class="btn btn-info btn-sm"
+                                                                title="Ver detalles completos"
+                                                                th:data-id="${solicitud.id}"
+                                                                onclick="verDetallesSolicitud(this)">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                        <button class="btn btn-success btn-sm btn-aprobar"
+                                                                th:data-id="${solicitud.id}"
+                                                                th:data-tipo-pago="${solicitud.reserva.tipoPago}"
+                                                                title="Aprobar reembolso">
+                                                            <i class="bx bx-check"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm btn-rechazar"
+                                                                th:data-id="${solicitud.id}"
+                                                                title="Rechazar solicitud">
+                                                            <i class="bx bx-x"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div th:if="${solicitud.estado != 'Pendiente'}">
+                                                        <span class="badge bg-light text-muted">
+                                                            <i class="bx bx-check-circle"></i> Procesada
+                                                        </span>
+                                                        <br>
+                                                        <small class="text-muted">
+                                                            <span th:text="${#temporals.format(solicitud.tiempoRespuesta, 'dd/MM HH:mm')}"></span>
+                                                        </small>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Información adicional al pie de la tabla -->
+                                    <div class="row mt-4">
+                                        <div class="col-md-6">
+                                            <div class="alert alert-primary d-flex align-items-center">
+                                                <i class="bx bx-info-circle me-2"></i>
+                                                <small>
+                                                    <strong>Recordatorio:</strong> Las solicitudes urgentes (menos de 24h) deben procesarse con prioridad.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="alert alert-warning d-flex align-items-center">
+                                                <i class="bx bx-time-five me-2"></i>
+                                                <small>
+                                                    <strong>Meta:</strong> Responder todas las solicitudes en menos de 24 horas.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal adicional para motivo de respuesta completo -->
+                    <div class="modal fade" id="modalMotivoRespuesta" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        <i class="bx bx-note me-2"></i>Motivo de la Respuesta
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-info d-flex align-items-start">
+                                        <i class="bx bx-info-circle me-2 mt-1"></i>
+                                        <div>
+                                            <strong>Motivo proporcionado por el coordinador:</strong>
+                                            <p id="motivoRespuestaTexto" class="mb-0 mt-2"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal para ver detalles completos -->
+                    <div class="modal fade" id="modalDetallesSolicitud" tabindex="-1">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        <i class="bx bx-detail me-2"></i>Detalles de la Solicitud
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6 class="text-primary">Información del Vecino</h6>
+                                            <div class="mb-3">
+                                                <label class="form-label">Nombre completo:</label>
+                                                <p id="detalleNombreVecino" class="mb-1"></p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">DNI:</label>
+                                                <p id="detalleDniVecino" class="mb-1"></p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Correo:</label>
+                                                <p id="detalleCorreoVecino" class="mb-1"></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6 class="text-primary">Información de la Reserva</h6>
+                                            <div class="mb-3">
+                                                <label class="form-label">Espacio:</label>
+                                                <p id="detalleEspacio" class="mb-1"></p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Fecha y hora:</label>
+                                                <p id="detalleFechaHora" class="mb-1"></p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Monto:</label>
+                                                <p id="detalleMonto" class="mb-1"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h6 class="text-primary">Motivo de la Solicitud</h6>
+                                            <div class="alert alert-light">
+                                                <p id="detalleMotivoCompleto" class="mb-0"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="detalleCodigoPago" style="display: none;">
+                                        <div class="col-12">
+                                            <h6 class="text-primary">Código de Pago</h6>
+                                            <p id="detalleCodigoTexto" class="badge bg-info"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-success" id="aprobarDesdeModal">
+                                        <i class="bx bx-check me-1"></i>Aprobar
+                                    </button>
+                                    <button type="button" class="btn btn-danger" id="rechazarDesdeModal">
+                                        <i class="bx bx-x me-1"></i>Rechazar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal para motivo completo -->
+                    <div class="modal fade" id="modalMotivoCompleto" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Motivo de la Solicitud</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="motivoCompletoTexto"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Elementos ocultos para capturar mensajes flash -->
+                <div style="display: none;">
+                    <span id="mensajeExito" th:if="${msg != null and !#strings.isEmpty(msg)}" th:text="${msg}"></span>
+                    <span id="mensajeError" th:if="${error != null and !#strings.isEmpty(error)}" th:text="${error}"></span>
+                </div>
+
+                <div class="content-backdrop fade"></div>
+            </div>
+        </div>
+        <div class="layout-overlay layout-menu-toggle"></div>
+        <div class="drag-target"></div>
+        <!-- OFFCANVAS PARA MOVILES -->
+        <div th:replace="~{fragments/offcanvas-navbar :: offcanvasNavbar}"></div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+
+<!-- DATATABLES -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- DATATABLES BUTTONS (para exportación) -->
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+
+<!-- SCRIPTS DE APLICACIÓN -->
+<script th:src="@{/vendor/js/menu.js}"></script>
+<script th:src="@{/js/offcanvas-navbar.js}"></script>
+
+<!-- SCRIPTS ESPECÍFICOS DE LA PÁGINA -->
+<script th:src="@{/js/reembolsos-datatables.js}"></script>
+<script th:src="@{/js/adicional-reembolsos.js}"></script>
+
+<!-- CONTADOR DEL DASHBOARD -->
+<script>
+    window.addEventListener("load", function () {
+        const counters = document.querySelectorAll(".counter");
+        const speed = 200;
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute("data-target")) || 0;
+            let count = 0;
+            const updateCount = () => {
+                const increment = Math.max(1, Math.floor(target / speed));
+                count += increment;
+                if (count < target) {
+                    counter.innerText = count;
+                    setTimeout(updateCount, 40);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            updateCount();
+        });
+    });
+</script>
+
+<!-- MANEJO DE MENSAJES FLASH CON SWEETALERT -->
+<script>
+    $(document).ready(function() {
+        // ========== FUNCIÓN PRINCIPAL PARA DETECTAR MENSAJES FLASH ==========
+        function mostrarMensajesFlash() {
+            const mensajeExito = $('#mensajeExito').text().trim();
+            const mensajeError = $('#mensajeError').text().trim();
+
+            if (mensajeExito) {
+                // Determinar el tipo de éxito basado en el contenido
+                if (mensajeExito.includes('reembolso procesado')) {
+                    Swal.fire({
+                        title: '¡Reembolso Procesado!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="bx bx-check-circle text-success" style="font-size: 4rem;"></i>
+                                </div>
+                                <p class="mb-2">${mensajeExito}</p>
+                                <div class="alert alert-success mt-3">
+                                    <small>
+                                        <strong>✅ Reembolso automático exitoso</strong><br>
+                                        📧 Vecino notificado por correo<br>
+                                        💰 Fondos disponibles en 5-10 días hábiles
+                                    </small>
+                                </div>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonText: '¡Perfecto!',
+                        confirmButtonColor: '#28a745',
+                        timer: 8000,
+                        timerProgressBar: true,
+                        allowOutsideClick: true,
+                        showClass: {
+                            popup: 'animate__animated animate__bounceIn'
+                        }
+                    });
+                } else if (mensajeExito.includes('rechazada')) {
+                    Swal.fire({
+                        title: 'Solicitud Rechazada',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="bx bx-x-circle text-warning" style="font-size: 4rem;"></i>
+                                </div>
+                                <p class="mb-2">${mensajeExito}</p>
+                                <div class="alert alert-info mt-3">
+                                    <small>
+                                        📧 Vecino notificado del rechazo por correo
+                                    </small>
+                                </div>
+                            </div>
+                        `,
+                        icon: 'info',
+                        confirmButtonText: 'Entendido',
+                        confirmButtonColor: '#17a2b8',
+                        timer: 6000,
+                        timerProgressBar: true
+                    });
+                } else {
+                    // Mensaje de éxito genérico
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: mensajeExito,
+                        icon: 'success',
+                        confirmButtonText: 'Perfecto',
+                        confirmButtonColor: '#28a745',
+                        timer: 5000,
+                        timerProgressBar: true
+                    });
+                }
+
+                // Recargar la página después del mensaje para mostrar cambios
+                setTimeout(() => {
+                    window.location.reload();
+                }, 4000);
+
+            } else if (mensajeError) {
+                Swal.fire({
+                    title: 'Error en el Proceso',
+                    html: `
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <i class="bx bx-error-circle text-danger" style="font-size: 3rem;"></i>
+                            </div>
+                            <p class="mb-2">${mensajeError}</p>
+                            <div class="alert alert-danger mt-3">
+                                <small>
+                                    Por favor, intenta nuevamente o contacta al administrador si el problema persiste.
+                                </small>
+                            </div>
+                        </div>
+                    `,
+                    icon: 'error',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#dc3545',
+                    timer: 8000,
+                    timerProgressBar: true
+                });
+            }
+        }
+
+        // Ejecutar la función cuando la página esté lista
+        mostrarMensajesFlash();
+
+        console.log('Sistema de mensajes flash configurado correctamente');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es" class="light-style layout-compact" dir="ltr" data-theme="theme-semi-dark" data-assets-path="/" data-template="vertical-menu-template-semi-dark" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Mi Perfil</title>
+    <meta name="description" content="Perfil del coordinador" />
+    <meta name="keywords" content="perfil, coordinador">
+    <!-- Canonical SEO -->
+    <link rel="canonical" href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/">
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" th:href="@{/css/demo.css}" />
+    <link rel="stylesheet" th:href="@{/css/offcanvas-style.css}">
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/quill/typography.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/quill/katex.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/quill/editor.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/css/navbar2-estilo-coordi.css}">
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
+</head>
+<body style="background-color: #F5E8C7;">
+<div class="layout-wrapper layout-content-navbar  ">
+    <div class="layout-container">
+        <!-- Layout container -->
+        <div class="layout-page">
+            <div th:replace="~{fragments/navbar2 :: navbarFragment2}"></div>
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <div class="container-fluid flex-grow-1 container-p-y">
+                    <div class="row">
+                        <!-- Sidebar del perfil -->
+                        <div class="col-xl-4 col-lg-5 col-md-5">
+                            <!-- Sidebar del perfil -->
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="customer-avatar-section">
+                                        <div class="d-flex align-items-center flex-column">
+                                            <div class="position-relative mb-3">
+                                                <!-- Avatar con marco más elegante -->
+                                                <div class="avatar-wrapper">
+                                                    <img th:if="${session.usuario.rol.idRol == 2 and session.usuario.fotoPerfil != null and !session.usuario.fotoPerfil.isEmpty()}"
+                                                         th:src="${session.usuario.fotoPerfil}"
+                                                         alt="Foto de perfil"
+                                                         class="avatar-img rounded-circle border border-3 border-white shadow-lg"
+                                                         style="width: 120px; height: 120px; object-fit: cover;" />
+
+                                                    <div th:if="${session.usuario.rol.idRol == 2 and (session.usuario.fotoPerfil == null or session.usuario.fotoPerfil.isEmpty())}"
+                                                         class="d-flex align-items-center justify-content-center bg-gradient-primary rounded-circle border border-3 border-white shadow-lg"
+                                                         style="width: 120px; height: 120px; font-size: 42px; font-weight: 600; color: white;">
+                                                        <span th:text="${#strings.substring(session.usuario.nombres, 0, 1).toUpperCase() + #strings.substring(session.usuario.apellidos, 0, 1).toUpperCase()}">
+                                                            NA
+                                                        </span>
+                                                    </div>
+
+                                                    <!-- Badge de estado del sistema (no de conexión) -->
+                                                    <span class="position-absolute bottom-0 end-0 badge rounded-pill border border-2 border-white"
+                                                          style="padding: 8px;"
+                                                          th:classappend="${coordinador.estado.estado == 'Activo' ? 'bg-success' :
+                                                                             coordinador.estado.estado == 'Desactivado' ? 'bg-secondary' : 'bg-warning'}">
+                                                            <i class="bx"
+                                                               th:classappend="${coordinador.estado.estado == 'Activo' ? 'bx-check' :
+                                                                               coordinador.estado.estado == 'Desactivado' ? 'bx-x' : 'bx-time'}"
+                                                               style="font-size: 14px;"></i>
+                                                        </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Info del usuario con mejor diseño -->
+                                            <div class="customer-info text-center">
+                                                <h4 class="mb-1 fw-bold" th:text="${session.usuario.nombres + ' ' + session.usuario.apellidos}">
+                                                    Nombre Apellido
+                                                </h4>
+                                                <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+                                                    <span class="badge bg-label-primary fs-7 px-3 py-1">
+                                                        <i class="bx bx-user-check me-1"></i>Coordinador
+                                                    </span>
+                                                </div>
+                                                <p class="text-muted mb-0">
+                                                    <i class="bx bx-calendar me-1"></i>
+                                                    Miembro desde <span th:text="${#temporals.format(coordinador.fechaCreacion.toLocalDateTime(), 'MMMM yyyy', T(java.util.Locale).forLanguageTag('es'))}">marzo 2024</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <!-- Lugares asignados -->
+                                        <div class="col col-md-6 mb-3">
+                                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                                <div class="avatar">
+                                                    <div class="avatar-initial rounded bg-label-primary rounded p-2">
+                                                        <i class='bx bx-map-pin bx-sm text-primary'></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h5 class="mb-0 text-primary" th:text="${lugaresAsignados}">0</h5>
+                                                    <small class="text-muted">Lugares asignados</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Reservas a cargo -->
+                                        <div class="col col-md-6 mb-3">
+                                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                                <div class="avatar">
+                                                    <div class="avatar-initial rounded bg-label-primary rounded p-2">
+                                                        <i class='bx bx-calendar bx-sm text-primary'></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h5 class="mb-0 text-primary" th:text="${reservasACargo}">0</h5>
+                                                    <small class="text-muted">Reservas a cargo</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info-container">
+                                        <div class="d-flex align-items-center justify-content-between pt-4 border-top my-3">
+                                            <small class="fw-normal text-uppercase text-muted">INFORMACIÓN PERSONAL</small>
+                                            <i class="bx bx-user text-muted"></i>
+                                        </div>
+
+                                        <div class="list-group list-group-flush">
+                                            <div class="list-group-item d-flex align-items-center px-0 py-3 border-0">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <div class="avatar-initial rounded bg-label-primary">
+                                                        <i class="bx bx-user text-primary"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">Nombre completo</h6>
+                                                    <small class="text-muted" th:text="${coordinador.nombres} + ' ' + ${coordinador.apellidos}">
+                                                        Fernando Godoy
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <div class="list-group-item d-flex align-items-center px-0 py-3 border-0">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <div class="avatar-initial rounded bg-label-info">
+                                                        <i class="bx bx-envelope text-info"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">Correo electrónico</h6>
+                                                    <small class="text-muted" th:text="${coordinador.correo}">
+                                                        fernando@sanmiguel.gob.pe
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <div class="list-group-item d-flex align-items-center px-0 py-3 border-0">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <div class="avatar-initial rounded bg-label-success">
+                                                        <i class="bx bx-phone text-success"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">Teléfono</h6>
+                                                    <small class="text-muted" th:text="${coordinador.telefono ?: 'No registrado'}">
+                                                        987654322
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <div class="list-group-item d-flex align-items-center px-0 py-3 border-0">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <div class="avatar-initial rounded bg-label-warning">
+                                                        <i class="bx bx-id-card text-warning"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">DNI</h6>
+                                                    <small class="text-muted" th:text="${coordinador.dni}">
+                                                        12345678
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Estado del coordinador en el sistema -->
+                                            <div class="list-group-item d-flex align-items-center px-0 py-3 border-0">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <div class="avatar-initial rounded"
+                                                         th:classappend="${coordinador.estado.estado == 'Activo' ? 'bg-label-success' :
+                                                             coordinador.estado.estado == 'Inactivo' ? 'bg-label-secondary' :
+                                                             coordinador.estado.estado == 'Suspendido' ? 'bg-label-danger' : 'bg-label-warning'}">
+                                                        <i class="bx"
+                                                           th:classappend="${coordinador.estado.estado == 'Activo' ? 'bx-check-shield text-success' :
+                                                               coordinador.estado.estado == 'Inactivo' ? 'bx-shield-x text-secondary' :
+                                                               coordinador.estado.estado == 'Suspendido' ? 'bx-shield-minus text-danger' : 'bx-shield-quarter text-warning'}"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">Estado en el sistema</h6>
+                                                    <small class="text-muted">
+                                                        <span th:text="${coordinador.estado.estado}">Activo</span>
+                                                        <span th:if="${coordinador.estado.estado == 'Activo'}" class="text-success"> - Operativo</span>
+                                                        <span th:if="${coordinador.estado.estado == 'Inactivo'}" class="text-secondary"> - No operativo</span>
+                                                        <span th:if="${coordinador.estado.estado == 'Suspendido'}" class="text-danger"> - Suspendido</span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Botón de editar mejorado -->
+                                        <div class="d-grid gap-2 mt-4">
+                                            <button class="rounded-pill btn-primary btn" data-bs-target="#editUser" data-bs-toggle="modal">
+                                                <i class="bx bx-pencil me-2"></i>Editar Perfil
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Sidebar del perfil -->
+                        <!-- Contenido -->
+                        <div class="col-xl-8 col-lg-7 col-md-7">
+                            <!-- / Mini dashboard -->
+                            <div class="row">
+                                <!-- Espacios Deportivos -->
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body">
+                                            <div class="card-icon mb-3">
+                                                <div class="avatar">
+                                                    <div class="avatar-initial rounded bg-label-info">
+                                                        <i class='bx bx-dumbbell bx-sm'></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-info">
+                                                <h4 class="card-title mb-2">Espacios a cargo</h4>
+                                                <div class="d-flex align-items-end mb-1 gap-1">
+                                                    <h4 class="text-info mb-0 counter"
+                                                        th:attr="data-target=${espaciosAsignados ?: 0}"
+                                                        th:text="0">0</h4>
+                                                    <p class="mb-0">activos</p>
+                                                </div>
+                                                <p class="text-muted mb-0 text-truncate">Espacios deportivos administrados</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Reembolsos -->
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body">
+                                            <div class="card-icon mb-3">
+                                                <div class="avatar">
+                                                    <div class="avatar-initial rounded bg-label-success">
+                                                        <i class='bx bx-money bx-sm'></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-info">
+                                                <h4 class="card-title mb-2">Reembolsos</h4>
+                                                <div class="d-flex align-items-end mb-1 gap-1">
+                                                    <h4 class="text-success mb-0 counter"
+                                                        th:attr="data-target=${reembolsosMes ?: 0}"
+                                                        th:text="0">0</h4>
+                                                    <p class="mb-0">este mes</p>
+                                                </div>
+                                                <p class="text-muted mb-0 text-truncate">Solicitudes procesadas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Última Asistencia -->
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body">
+                                            <div class="card-icon mb-3">
+                                                <div class="avatar">
+                                                    <div class="avatar-initial rounded bg-label-secondary">
+                                                        <i class='bx bx-history bx-sm'></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-info">
+                                                <h4 class="card-title mb-2">Última Asistencia</h4>
+                                                <div class="d-flex align-items-end mb-1 gap-2">
+                                                    <h5 class="text-secondary mb-0"
+                                                        th:text="${ultimaAsistencia != null ? #temporals.format(ultimaAsistencia.fecha, 'EEEE dd MMMM yyyy', T(java.util.Locale).forLanguageTag('es')) : '—'}">
+                                                        Lunes 15 Julio 2025
+                                                    </h5>
+                                                    <span th:if="${ultimaAsistencia != null}" class="badge"
+                                                          th:classappend="'bg-' + (ultimaAsistencia.estado.estado == 'Asistió' ? 'success' : 'warning')"
+                                                          th:text="${ultimaAsistencia.estado.estado}">Asistió</span>
+                                                </div>
+                                                <p class="text-muted mb-0 text-truncate">Último registro marcado</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Observaciones -->
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body">
+                                            <div class="card-icon mb-3">
+                                                <div class="avatar">
+                                                    <div class="avatar-initial rounded bg-label-danger">
+                                                        <i class='bx bx-note bx-sm'></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-info">
+                                                <h4 class="card-title mb-2">Observaciones</h4>
+                                                <div class="d-flex align-items-end mb-1 gap-1">
+                                                    <h4 class="text-danger mb-0 counter"
+                                                        th:attr="data-target=${totalObservaciones ?: 0}"
+                                                        th:text="0">0</h4>
+                                                    <p class="mb-0">en total</p>
+                                                </div>
+                                                <p class="text-muted mb-0 text-truncate">Hechas en los espacios</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / Mini dashboard -->
+                            <!-- Actividad reciente -->
+                            <div class="card card-action mb-4">
+                                <div class="card-header align-items-center">
+                                    <h4 class="card-action-title mb-0"><i class='bx bx-list-ul me-2'></i>Actividad Reciente</h4>
+                                    <div class="card-action-element">
+                                        <div class="dropdown">
+                                            <div th:replace="~{fragments/export-dropdown :: exportDropdown('actividad-coordinadores')}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="timeline ms-2">
+                                        <li th:each="actividad : ${actividades}">
+                                            <div class="timeline-item timeline-item-transparent">
+                                                <span class="timeline-point-wrapper">
+                                                    <span class="timeline-point" th:classappend="${actividad.colorClass}"></span>
+                                                </span>
+                                                <div class="timeline-event">
+                                                    <div class="timeline-header mb-1">
+                                                        <h6 class="mb-0" th:text="${actividad.descripcion}"></h6>
+                                                        <small class="text-muted d-block" th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}">18/07/2025 14:32</small>
+                                                    </div>
+                                                    <p th:text="${actividad.detalle}"></p>
+                                                </div>
+                                            </div>
+
+                                        </li>
+                                        <li class="timeline-end-indicator">
+                                            <i class="bx bx-check-circle"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Contenido -->
+                    </div>
+                    <!-- Modal Editar Perfil -->
+                    <div class="modal fade" id="editUser" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                            <div class="modal-content p-3 p-md-5">
+                                <div class="modal-body">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                                    <div class="text-center mb-4">
+                                        <h3>Editar Perfil</h3>
+                                        <p>Actualiza tus datos personales y foto de perfil</p>
+                                    </div>
+
+                                    <!-- Formulario 1: Correo y Teléfono -->
+                                    <form id="editUserForm"
+                                          th:action="@{/coordinador/actualizar-perfil}"
+                                          method="post"
+                                          class="row g-3">
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Correo</label>
+                                            <input type="email" name="correo" class="form-control"
+                                                   th:value="${session.usuario.correo}" required />
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Teléfono</label>
+                                            <div class="input-group input-group-merge">
+                                                <span class="input-group-text">+51</span>
+                                                <input type="text" name="telefono" class="form-control"
+                                                       th:value="${session.usuario.telefono}" required />
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- Formulario 2: Dropzone para subir foto -->
+                                    <div class="col-12 col-md-12 mt-4">
+                                        <label class="form-label">Foto de perfil:</label>
+                                        <form method="post"
+                                              enctype="multipart/form-data"
+                                              id="dropzone-basic"
+                                              th:action="@{/coordinador/actualizar-foto}"
+                                              class="dropzone needsclick mb-4">
+                                            <div class="dz-message needsclick my-5">
+                                                <p class="fs-4 note needsclick my-2">Arrastra y suelta tu imagen aquí</p>
+                                                <small class="text-muted d-block fs-6 my-2">o</small>
+                                                <span class="note needsclick btn bg-label-primary d-inline">Buscar imagen</span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <button type="button" id="btnActualizarPerfil" class="btn btn-primary me-sm-3 me-1">
+                                            <span class="spinner-border spinner-border-sm d-none me-2" role="status" id="spinnerEditar"></span>
+                                            <span id="textoEditar">Editar</span>
+                                        </button>
+                                        <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ Modal Editar perfil -->
+                </div>
+                <!-- / Content -->
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+    <div class="drag-target"></div>
+
+    <div th:replace="~{fragments/offcanvas-navbar :: offcanvasNavbar}"></div>
+
+</div>
+<!-- / Layout wrapper -->
+<script th:inline="javascript">
+    window.fotoPerfilActual = /*[[${session.usuario.fotoPerfil}]]*/ null;
+</script>
+<script>
+    window.addEventListener("load", function () {
+        const counters = document.querySelectorAll(".counter");
+        const speed = 200; // mas alto mas lento
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute("data-target")) || 0;
+            let count = 0;
+            const updateCount = () => {
+                const increment = Math.max(1, Math.floor(target / speed));
+                count += increment;
+                if (count < target) {
+                    counter.innerText = count;
+                    setTimeout(updateCount, 40);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            updateCount();
+        });
+    });
+</script>
+<script th:src="@{/js/offcanvas-navbar.js}"></script>
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/i18n/i18n.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script th:src="@{/vendor/libs/quill/katex.js}"></script>
+<script th:src="@{/vendor/libs/quill/quill.js}"></script>
+<script th:src="@{/vendor/libs/select2/select2.js}"></script>
+<script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
+<script th:src="@{/vendor/libs/jquery-repeater/jquery-repeater.js}"></script>
+<script th:src="@{/vendor/libs/select2/select2.js}"></script>
+<script th:src="@{/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+
+<!-- Main JS -->
+<script th:src="@{/js/main.js}"></script>
+<!-- Page JS -->
+<script th:src="@{/js/editar-perfil.js}"></script>
+</body>
+</html>

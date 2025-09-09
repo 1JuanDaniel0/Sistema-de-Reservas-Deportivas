@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Navbar Fragment</title>
+</head>
+<body>
+<!-- ESTA NAVBAR ES PARA LAS DEMÁS VISTAS-->
+<nav style="z-index: 1000;" class="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar" th:fragment="navbarFragment2">
+    <div class="navbar-nav-right d-flex align-items-center px-0 px-md-8 justify-content-between w-100" id="navbar-collapse">
+        <!-- Sección Izquierda: Botón hamburguesa + Logo -->
+        <div class="d-flex align-items-center">
+            <!-- Botón hamburguesa solo visible en móviles -->
+            <button class="navbar-toggler border-0 shadow-none px-0 me-2 d-xl-none opacity-100">
+                <i class="bx bx-menu bx-sm"></i>
+            </button>
+            <!-- Logo -->
+            <div class="navbar-brand app-brand demo d-flex align-items-center py-0">
+                <a th:href="@{/}" class="app-brand-link d-flex align-items-center">
+                    <span class="app-brand-logo demo">
+                        <!-- Logo para móviles MUY pequeños (solo ícono) -->
+                        <img th:src="@{/img/logo-sanM.png}"
+                             style="width: 110px"
+                             alt="Logo San Miguel"
+                             class="d-inline d-sm-none">
+
+                        <!-- Logo para móviles normales (horizontal) -->
+                        <img th:src="@{/img/logo-sanM-linea-SIN-FONDO.png}"
+                             style="width: 140px"
+                             alt="Logo San Miguel"
+                             class="d-none d-sm-inline d-md-none">
+
+                        <!-- Logo para tablets/desktop (ícono) -->
+                        <img th:src="@{/img/icono-sanM.png}"
+                             style="width: 45px"
+                             alt="Logo San Miguel"
+                             class="d-none d-md-inline">
+                    </span>
+                    <!-- Texto del logo: visible en tablet+ pero no en móviles -->
+                    <span class="app-brand-text demo menu-text fw-bold ms-2 ps-1 d-none d-md-inline">San Miguel</span>
+                </a>
+            </div>
+        </div>
+        <!-- /Sección Izquierda -->
+
+        <!-- Opciones Navbar (solo desktop) -->
+        <div class="justify-content-center collapse navbar-collapse landing-nav-menu d-none d-xl-flex" id="navbarSupportedContent">
+            <ul class="navbar-nav" th:if="${session.usuario?.rol?.rol == 'Usuario final'}">
+                <li class="nav-item px-3">
+                    <a class="nav-link fw-medium" th:href="@{/}">Inicio</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link fw-medium" th:href="@{/vecino/espacios-disponibles}">Canchas</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link fw-medium" th:href="@{/vecino/mis-reservas}">Reservas</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link fw-medium" th:href="@{/vecino/mis-pagos}">Pagos</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link fw-medium" th:href="@{/vecino/editar-perfil}">Perfil</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link fw-medium" th:href="@{/vecino/seguridad}">Seguridad</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" th:if="${session.usuario?.rol?.rol == 'Coordinador'}">
+                <!-- Opciones para Coordinador -->
+                <li class="nav-item px-1">
+                    <a class="nav-link fw-medium" th:href="@{/}">Inicio</a>
+                </li>
+                <li class="nav-item px-1">
+                    <a class="nav-link fw-medium" th:href="@{/coordinador/espacios}">Espacios Deportivos</a>
+                </li>
+                <li class="nav-item px-1">
+                    <a class="nav-link fw-medium" th:href="@{/coordinador/asistencia}">Asistencia</a>
+                </li>
+                <li class="nav-item px-1">
+                    <a class="nav-link fw-medium" th:href="@{/coordinador/verificar-reservas}">Confirmar Reservas</a>
+                </li>
+                <li class="nav-item px-1">
+                    <a class="nav-link fw-medium" th:href="@{/coordinador/ver-solicitudes-reembolso}">Reembolsos</a>
+                </li>
+                <li class="nav-item px-1">
+                    <a class="nav-link fw-medium" th:href="@{/coordinador/mi-perfil}">Perfil</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" th:if="${session.usuario == null}">
+                <!-- Opciones para usuarios NO logueados -->
+                <li class="nav-item px-3">
+                    <a class="nav-link fw-medium" th:href="@{/}">Inicio</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link fw-medium" th:href="@{/login}">Canchas</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link fw-medium" th:href="@{/}">Contáctanos</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /Opciones Navbar-->
+
+        <!-- Sección Derecha -->
+        <div class="d-flex align-items-center ms-auto">
+
+            <!-- Información del Usuario (solo para móviles y tablets) -->
+            <div class="d-flex align-items-center d-xl-none" sec:authorize="isAuthenticated()">
+                <!-- Nombre del usuario (visible en tablets, oculto en móviles pequeños) -->
+                <span class="text-uppercase text-heading text-end me-2 d-none d-sm-inline small fw-medium"
+                      style="font-size: 0.75rem; color: #6c757d;"
+                      th:with="primerNombre=${session.usuario?.nombres != null ? #strings.listSplit(session.usuario.nombres, ' ')[0] : ''},
+                               primerApellido=${session.usuario?.apellidos != null ? #strings.listSplit(session.usuario.apellidos, ' ')[0] : ''}"
+                      th:text="${session.usuario?.nombres != null ? primerNombre + ' ' + primerApellido : 'Vecino'}">
+                </span>
+
+                <!-- Rol del usuario (solo en móviles) -->
+                <span class="badge d-inline d-sm-none small me-2" style="font-size:.6rem;"
+                      th:classappend="${session.usuario.rol.rol == 'Usuario final'} ? 'bg-label-primary' :
+                                      (${session.usuario.rol.rol == 'Coordinador'} ? 'bg-label-warning' : 'bg-label-danger')"
+                      th:text="${session.usuario.rol.rol == 'Usuario final'} ? 'Vecino' : ${session.usuario.rol.rol}">
+                </span>
+            </div>
+
+            <!-- Dropdown del Usuario (todos los tamaños) -->
+            <ul class="navbar-nav flex-row align-items-center" sec:authorize="isAuthenticated()">
+                <!-- Nombre (solo desktop) -->
+                <li class="nav-item d-none d-xl-block">
+                    <span class="text-uppercase text-heading text-end" style="font-weight: bold;"
+                          th:with="primerNombre=${session.usuario?.nombres != null ? #strings.listSplit(session.usuario.nombres, ' ')[0] : ''},
+                                   primerApellido=${session.usuario?.apellidos != null ? #strings.listSplit(session.usuario.apellidos, ' ')[0] : ''}"
+                          th:text="${session.usuario?.nombres != null ? primerNombre + ' ' + primerApellido : 'Vecino'}">
+                    </span>
+                </li>
+
+                <!-- User Dropdown -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                        <div class="avatar">
+                            <!-- Si tiene foto -->
+                            <img th:if="${session.usuario.fotoPerfil != null}"
+                                 th:src="${session.usuario.fotoPerfil}"
+                                 class="rounded-circle"
+                                 style="width: 40px; height: 40px; object-fit: cover;" />
+
+                            <!-- Si no tiene foto, mostrar iniciales -->
+                            <span th:unless="${session.usuario.fotoPerfil != null}"
+                                  class="avatar-initial rounded-circle"
+                                  th:classappend="${session.usuario.rol.rol == 'Usuario final'} ? 'bg-label-primary' :
+                                                    (${session.usuario.rol.rol == 'Coordinador'} ? 'bg-label-warning' : 'bg-label-danger')"
+                                  th:text="${#strings.substring(session.usuario?.nombres, 0, 1).toUpperCase() + #strings.substring(session.usuario?.apellidos, 0, 1).toUpperCase()}">
+                                NA
+                            </span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li th:if="${session.usuario.rol.rol == 'Usuario final'}">
+                            <a class="dropdown-item" th:href="@{/vecino/editar-perfil}">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar">
+                                            <span class="avatar-initial rounded-circle bg-label-primary"
+                                                  th:text="${#strings.substring(session.usuario?.nombres, 0, 1).toUpperCase() + #strings.substring(session.usuario?.apellidos, 0, 1).toUpperCase()}">
+                                                NA
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <span class="fw-medium d-block" th:text="${session.usuario.nombres} + ' ' + ${session.usuario.apellidos}"></span>
+                                        <small th:if="${session.usuario.rol.rol == 'Usuario final'}" class="text-muted">Vecino</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{/vecino/editar-perfil}"> <i class="bx bx-user me-2"></i>
+                                <span class="align-middle">Perfil</span>
+                            </a>
+                            <a class="dropdown-item" th:href="@{/vecino/seguridad}"> <i class="bx bx-lock me-2"></i>
+                                <span class="align-middle">Seguridad</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        </li>
+
+                        <li th:if="${session.usuario.rol.rol == 'SuperAdmin'}">
+                            <a class="dropdown-item" th:href="@{/superadmin/home}">
+                                <i class="bx bx-home me-2"></i>
+                                <span class="align-middle">Inicio</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        </li>
+
+                        <li th:if="${session.usuario.rol.rol == 'Coordinador'}">
+                            <a class="dropdown-item" th:href="@{/coordinador/mi-perfil}">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar">
+                                            <!-- Si tiene foto -->
+                                            <img th:if="${session.usuario.fotoPerfil != null}"
+                                                 th:src="${session.usuario.fotoPerfil}"
+                                                 class="rounded-circle"
+                                                 style="width: 40px; height: 40px; object-fit: cover;" />
+
+                                            <!-- Si no tiene foto, mostrar iniciales -->
+                                            <span th:unless="${session.usuario.fotoPerfil != null}"
+                                                  class="avatar-initial rounded-circle bg-label-warning"
+                                                  th:text="${#strings.substring(session.usuario?.nombres, 0, 1).toUpperCase() + #strings.substring(session.usuario?.apellidos, 0, 1).toUpperCase()}">
+                                                NA
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <span class="fw-medium d-block" th:text="${session.usuario.nombres} + ' ' + ${session.usuario.apellidos}"></span>
+                                        <small class="text-muted" th:text="${session.usuario.rol.rol}"></small>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{/coordinador/mi-perfil}"> <i class="bx bx-user me-2"></i>
+                                <span class="align-middle">Perfil</span>
+                            </a>
+                            <a class="dropdown-item" th:href="@{/coordinador/asistencia}">
+                                <i class="bx bx-calendar-check me-2"></i>
+                                <span class="align-middle">Asistencia</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        </li>
+
+                        <li th:if="${session.usuario.rol.rol == 'Administrador'}">
+                            <a class="dropdown-item" th:href="@{/admin/mi-perfil}"> <i class="bx bx-user me-2"></i>
+                                <span class="align-middle">Perfil</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        </li>
+
+                        <!-- Botón Volver a SuperAdmin (solo si está en modo impersonación) -->
+                        <li th:if="${session.originalSuperAdminId != null}">
+                            <form th:action="@{/impersonation-logout}" method="post">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <button type="submit" class="dropdown-item" style="color: #0d6efd; font-weight: bold;">
+                                    <i class="bx bx-user-check me-2" style="color: #0d6efd;"></i>
+                                    <span class="align-middle">Volver a SuperAdmin</span>
+                                </button>
+                            </form>
+                            <div class="dropdown-divider"></div>
+                        </li>
+
+                        <!-- Botón Cerrar Sesión -->
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <button type="submit" class="dropdown-item">
+                                    <i class="bx bx-power-off me-2"></i>
+                                    <span class="align-middle" style="color: rgb(231, 0, 0);">Cerrar Sesión</span>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Botón Login para usuarios no autenticados -->
+            <div sec:authorize="isAnonymous()" class="d-flex align-items-center">
+                <a th:href="@{/login}" class="btn btn-primary">
+                    <span class="tf-icons icon-base bx bx-log-in-circle scaleX-n1-rtl me-1 d-none d-sm-inline"></span>
+                    <!-- Texto completo en tablets+, solo "Login" en móviles -->
+                    <span class="d-none d-md-inline">Iniciar Sesión / Registro</span>
+                    <span class="d-inline d-md-none">Login</span>
+                </a>
+            </div>
+        </div>
+        <!-- /Sección Derecha -->
+
+    </div>
+</nav>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        if ([[${session.originalSuperAdminId != null}]]) {
+            // Prevenir navegación hacia atrás
+            history.pushState(null, '', location.href);
+            window.addEventListener('popstate', function() {
+                history.pushState(null, '', location.href);
+                // Redirigir a la página actual
+                window.location.replace(location.href);
+            });
+
+            // Deshabilitar la tecla backspace para navegación
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && !e.target.matches('input, textarea')) {
+                    e.preventDefault();
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

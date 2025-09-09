@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" class="light-style layout-compact " dir="ltr" data-theme="theme-semi-dark" data-assets-path="/" data-template="vertical-menu-template-semi-dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Superadmin</title>
+  <meta name="description" content="Vista de superadmin" />
+  <!-- Canonical SEO -->
+  <link rel="canonical" href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/">
+  <!--Datatables-->
+  <link href="https://cdn.datatables.net/v/dt/dt-2.3.0/datatables.min.css" rel="stylesheet" integrity="sha384-b6zpX2e8uzvhWek1oBTKdifu88SXYijvZlp44itAjiEbD8ic6XRiVFQ9F6u4gspj" crossorigin="anonymous">
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+  <!-- Core CSS -->
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" th:href="@{/css/demo.css}" />
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/apex-charts/apex-charts.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}">
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/app-pages.css}">
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap5.min.css">
+  <!-- Page CSS -->
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/card-analytics.css}" />
+  <link rel="stylesheet" th:href="@{/vendor/css/pages/app-logistics-dashboard.css}" />
+  <!-- Helpers -->
+  <script th:src="@{/vendor/js/helpers.js}"></script>
+  <script th:src="@{/js/config.js}"></script>
+  <style>
+/* Fondo con gradiente más llamativo y profesional */
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(216, 241, 230, 0.46) 0%, rgba(255, 255, 255, 0.1) 90.2%),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(201, 215, 255, 0.2) 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Mejoras visuales para las cards con efectos 3D y gradientes */
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 15px;
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.08),
+    0 0 0 1px rgba(255,255,255,0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #696cff, #ff4d4d);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.005);
+  box-shadow:
+    0 20px 30px rgba(0,0,0,0.12),
+    0 0 0 1px rgba(255,255,255,0.2);
+}
+
+/* Efectos para los iconos y badges */
+.avatar-initial, .badge {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+
+.card:hover .avatar-initial {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.badge {
+  padding: 0.6em 1em;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Efectos mejorados para las tablas */
+.table {
+  border-radius: 12px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: rgba(255,255,255,0.8);
+}
+
+.table thead th {
+  background: linear-gradient(45deg, rgba(105,108,255,0.1), rgba(105,108,255,0.05));
+  border-bottom: 2px solid rgba(105,108,255,0.2);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #566a7f;
+}
+
+.table tbody tr {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(105,108,255,0.1);
+}
+
+.table tbody tr:hover {
+  background: rgba(105,108,255,0.05);
+  transform: scale(1.01);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* Mejoras para los gráficos */
+#totalBalanceChart, #salesActivityChart {
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: linear-gradient(to right bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+  box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
+}
+
+/* Efectos para botones */
+.btn {
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.btn:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #696cff, #8789ff);
+  box-shadow: 0 4px 15px rgba(105,108,255,0.3);
+}
+
+.btn-success {
+  background: linear-gradient(45deg, #71dd37, #86e255);
+  box-shadow: 0 4px 15px rgba(113,221,55,0.3);
+}
+
+/* Efectos para los inputs */
+.form-control {
+  border-radius: 10px;
+  border: 2px solid rgba(105,108,255,0.1);
+  transition: all 0.3s ease;
+  background: rgba(255,255,255,0.9);
+}
+
+.form-control:focus {
+  transform: translateY(-2px);
+  border-color: rgba(105,108,255,0.5);
+  box-shadow:
+    0 5px 15px rgba(105,108,255,0.1),
+    0 0 0 3px rgba(105,108,255,0.1);
+}
+
+/* Animaciones para los números y textos importantes */
+.card-title, .h3, .h4, .h6 {
+  background: linear-gradient(120deg, #1a1a1a, #4a4a4a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+
+.card-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, #696cff, transparent);
+  transition: width 0.3s ease;
+}
+
+.card:hover .card-title::after {
+  width: 100px;
+}
+
+/* Animación de carga para progress bars */
+.progress-bar {
+  background: linear-gradient(45deg, #696cff, #8789ff);
+  box-shadow: 0 2px 8px rgba(105,108,255,0.3);
+  animation: progressAnimation 1.5s ease-in-out infinite;
+}
+
+@keyframes progressAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+</style>
+</head>
+<body>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar  ">
+  <!-- Layout container -->
+  <div class="layout-container">
+    <!-- Layout page -->
+    <div class="layout-page">
+      <!-- Navbar -->
+      <div th:replace="~{fragments/navbar2 :: navbarFragment2}"></div>
+      <!-- / Navbar -->
+      <!-- Content wrapper -->
+      <div class="content-wrapper">
+        <!-- Content -->
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <!-- Card Border Shadow -->
+          <div class="row">
+            <div class="col-sm-6 col-lg-3 mb-4">
+              <div class="card card-border-shadow-primary h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-2 pb-1">
+                    <div class="avatar me-2">
+                      <span class="avatar-initial rounded bg-label-primary"><i class="bx bxs-truck"></i></span>
+                    </div>
+                    <h4 class="ms-1 mb-0" th:text="${cantidadActivos}"></h4>
+                  </div>
+                  <p class="mb-1">Espacios Disponibles</p>
+                  <p class="mb-0">
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+              <div class="card card-border-shadow-warning h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-2 pb-1">
+                    <div class="avatar me-2">
+                      <span class="avatar-initial rounded bg-label-warning"><i class='bx bx-error'></i></span>
+                    </div>
+                    <h4 class="ms-1 mb-0" th:text="${cantidadEnMantenimiento}"></h4>
+                  </div>
+                  <p class="mb-1">Espacios en Mantenimiento</p>
+                  <p class="mb-0">
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+              <div class="card card-border-shadow-danger h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-2 pb-1">
+                    <div class="avatar me-2">
+                      <span class="avatar-initial rounded bg-label-danger"><i class='bx bx-git-repo-forked'></i></span>
+                    </div>
+                    <h4 class="ms-1 mb-0" th:text="${cantidadCerrados}"></h4>
+                  </div>
+                  <p class="mb-1" >Espacios Cerrados</p>
+                  <p class="mb-0">
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+              <div class="card card-border-shadow-info h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-2 pb-1">
+                    <div class="avatar me-2">
+                      <span class="avatar-initial rounded bg-label-info"><i class='bx bx-time-five'></i></span>
+                    </div>
+                    <h4 class="ms-1 mb-0" th:text="${cantidadPrestados}">5</h4>
+                  </div>
+                  <p class="mb-1">Espacios Prestados</p>
+                  <p class="mb-0">
+                    <!--span class="fw-medium me-1">+3</span>
+                    <small class="text-muted">desde la última actualización</small-->
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--/ Card Border Shadow -->
+          <div class="row">
+            <!-- Total Balance -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                  <h5 class="card-title m-0 me-2">Balance Total</h5>
+                  <div class="dropdown">
+                    <button class="btn p-0" type="button" id="totalBalance" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex justify-content-start">
+                    <div class="d-flex pe-4">
+                      <div class="me-3">
+                        <span class="badge bg-label-warning p-2"><i class="bx bx-wallet text-warning"></i></span>
+                      </div>
+                      <div>
+                        <h6 class="mb-0" th:text="'s/'+${ingresoTotalEnLinea}">s/0</h6>
+                        <small>En línea</small>
+                      </div>
+                    </div>
+                    <div class="d-flex">
+                      <div class="me-3">
+                        <span class="badge bg-label-secondary p-2"><i class="bx bx-dollar text-secondary"></i></span>
+                      </div>
+                      <div>
+                        <h6 class="mb-0" th:text="'s/'+${ingresoTotalEnBanco}">s/0</h6>
+                        <small>Depósitos</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="totalBalanceChart" class="border-bottom mb-3"></div>
+                  <div class="d-flex justify-content-between">
+                    <!--small class="text-muted">Has hecho un <span class="fw-medium">57.6%</span> más de ventas.</small-->
+                    <!--div>
+                      <span class="badge bg-label-warning p-2"><i class="bx bx-chevron-right text-warning scaleX-n1-rtl"></i></span>
+                    </div-->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--/ Total Balance -->
+
+            <!-- Overview & Sales Activity -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Actividad de Pagos</h5>
+                  <small class="card-subtitle">Para más información, consulte cada columna</small>
+                </div>
+                <div id="salesActivityChart"></div>
+              </div>
+            </div>
+            <!--/ Overview & Sales Activity -->
+            <div class="col-12 col-md-12 col-lg-4">
+              <div class="row">
+                <div class="col-sm-6 col-md-3 col-lg-6 mb-4">
+                  <div class="card">
+                    <div class="card-body ">
+                      <span class="d-block fw-medium mb-1">Usuarios</span>
+                      <h3 class="card-title mb-2" th:text="${cantidadTotal}"></h3>
+                    </div>
+                    <!--div class="mb-3">&nbsp</div-->
+                    <span class="mb-3">&nbsp</span>
+                    <span class="mb-3">&nbsp</span>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-6 mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="card-title d-flex align-items-start justify-content-between mb-4">
+                        <div class="avatar flex-shrink-0">
+                          <img th:src="@{/img/icons/unicons/cube-secondary.png}" alt="cube" class="rounded">
+                        </div>
+
+                      </div>
+                      <span class="fw-medium d-block mb-1">Total Reservas</span>
+                      <h4 class="card-title mb-2" th:text="${totalReservas}"></h4>
+                      <!--small class="text-danger fw-medium"><i class='bx bx-down-arrow-alt'></i> -4.24%</small-->
+                      <small class="text-danger fw-medium">.</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-3 col-6 mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="card-title d-flex align-items-start justify-content-between mb-4">
+                        <div class="avatar flex-shrink-0">
+                          <img th:src="@{/img/icons/unicons/wallet-info.png}" alt="Credit Card" class="rounded">
+                        </div>
+
+                      </div>
+                      <span class="d-block">Ingreso de este mes</span>
+                      <h4 class="card-title mb-1" th:text="'s/'+${cantidadesMes.get(5)}"></h4>
+                      <!--small class="text-success fw-medium"><i class='bx bx-up-arrow-alt'></i> +28.42%</small-->
+                      <small class="text-success fw-medium">&nbsp</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-6 col-6 mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <span class="d-block fw-medium">Ingreso total</span>
+                      <h3 class="card-title mb-1" th:text="'s/'+${ingresoTotal}"></h3>
+                      <span class="mb-3">&nbsp</span>
+                      <span class="mb-3">&nbsp</span>
+                      <smal class="d-block">&nbsp</smal>
+
+                      <div class="d-flex align-items-center">
+                        <div class="progress w-75 me-2" style="height: 8px;">
+                          <div class="progress-bar bg-info" style="width: 100%" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <span>&nbsp</span>
+                        <span>&nbsp</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Customer Table -->
+          <div class="col-md-12 col-lg-12 mb-0">
+            <div class="card mb-4" style="padding: 24px;">
+              <div class="card-datatable table-responsive">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <h3>Reservas Recientes</h3>
+                  <button id="exportarExcelBtn" class="btn btn-success" style="margin-right: 10px;">
+                    <i class="bx bx-download"></i> Exportar Excel
+                  </button>
+                </div>
+                <!-- Modificar la tabla de Reservas Recientes -->
+                <table id="tablaUno" class="table table-bordered table-striped datatables-reservas">
+                  <thead>
+                    <tr>
+                      <th>#</th>  <!-- Mantenemos solo esta columna para el índice -->
+                      <th>Usuario</th>
+                      <th>Monto</th>
+                      <th>Estado</th>
+                      <th class="cell-fit">Forma de pago</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="reservaUsuario,iterStat : ${listaReservas}">
+                      <td th:text="${iterStat.index + 1}"></td>
+                      <td>
+                        <div class="d-flex justify-content-start align-items-center">
+                          <div class="avatar-wrapper">
+                            <!--div class="avatar avatar-sm me-2"><img th:src="@{/img/avatars/7.png}" alt="Avatar" class="rounded-circle"></div-->
+                          </div>
+                          <div class="d-flex flex-column">
+                            <a class="text-body text-truncate fw-medium" th:text="${reservaUsuario.vecino.nombres}+' '+${reservaUsuario.vecino.apellidos}"></a>
+                            <small class="text-truncate text-muted" th:text="${reservaUsuario.vecino.dni}"></small>
+                          </div>
+                        </div>
+                      </td>
+                      <td th:text="'s/ '+ ${reservaUsuario.costo}"></td>
+                      <td th:if="${reservaUsuario.estado.idEstadoReserva == 1}"><span class="badge bg-label-success">PAGADO</span></td>
+                      <td th:if="${reservaUsuario.estado.idEstadoReserva == 2}"><span class="badge bg-label-warning">PENDIENTE</span></td>
+                      <td th:if="${reservaUsuario.estado.idEstadoReserva == 3}"><span class="badge bg-label-success">PASADA</span></td>
+                      <td th:if="${reservaUsuario.estado.idEstadoReserva == 4}"><span class="badge bg-label-warning">CANCELADA</span></td>
+                      <td th:if="${reservaUsuario.estado.idEstadoReserva == 5}"><span class="badge bg-label-primary">REEMBOLSADA</span></td>
+                      <td th:if="${reservaUsuario.estado.idEstadoReserva == 6}"><span class="badge bg-label-info">SOLICITUD</span></td>
+
+
+                      <!--td><img th:src="@{/img/icons/payments/master-light.png}" class="img-fluid" width="50" alt="masterCard" data-app-light-img="icons/payments/master-light.png" data-app-dark-img="icons/payments/master-dark.html"></td-->
+                      <!--td  th:unless="${reservaUsuario.captura == null}">Pago en línea</td-->
+                      <td th:if="${reservaUsuario.tipoPago== 'En banco'}">Pago en banco</td>
+                      <td th:unless="${reservaUsuario.tipoPago== 'En banco'}">Pago en línea</td>
+                      <!--td>
+                        <div class="d-flex align-items-center">
+                          <div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow text-body p-0" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                              <a href="javascript:void(0);" class="dropdown-item">Ver Boleta</a>
+                              <a href="javascript:;" class="dropdown-item">Descargar Comprobante</a>
+                              <div class="dropdown-divider"></div>
+                              <a href="javascript:;" class="dropdown-item delete-record text-danger">Reembolsar</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td-->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!--/ Customer Table -->
+          <div class="col-md-12 col-lg-12 mb-0">
+            <div class="card mb-4" style="padding: 24px;">
+              <div class="table-responsive mb-3">
+                <h3>Lista de Usuarios</h3>
+                <!-- Modificar la tabla de Usuarios -->
+                <table id="tablaUsuarios" class="table table-bordered table-striped datatables-usuarios">
+                  <thead class="border-top">
+                  <tr>
+                    <th>#</th>  <!-- Mantenemos solo esta columna para el índice -->
+                    <th>Usuario</th>
+                    <!--th>Creado en</th-->
+                    <th class="w-25">Tipo de Usuario</th>
+                    <th class="w-25">Estado</th>
+                    <th class="w-25">Acción</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="usuario,iterStat : ${listaUsuarios}">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${usuario.nombres}+' '+${usuario.apellidos}"></td>
+                    <td th:text="${usuario.rol.rol}"></td>
+                    <td th:text="${usuario.estado.estado}"></td>
+                    <td style="display:flex;justify-content: space-between">
+                      <form th:action="@{/superadmin/impersonate}" method="post" style="display: inline;">
+                        <input type="hidden" name="userId" th:value="${usuario.idUsuarios}" />
+                        <button type="submit" class="btn btn-sm btn-outline-secondary" title="Entrar en la sesión de este usuario">
+                          <i class='bx bx-key'></i>
+                        </button>
+                      </form>
+                      <a th:href="@{'/superadmin/en?id='+${usuario.idUsuarios}}">
+                        <button th:if="${usuario.estado.estado != 'Activo'}" type="button" class="btn btn-sm btn-outline-success" title="Habilitar">
+                          <i class='bx bx-lock-open-alt'></i>
+                        </button>
+                        <button th:unless="${usuario.estado.estado != 'Activo'}" type="button" class="btn btn-sm btn-success">
+                          <i class='bx bx-lock-open-alt'></i>
+                        </button>
+                      </a>
+                      <a th:href="@{'/superadmin/de?id='+${usuario.idUsuarios}}">
+                        <button th:if="${usuario.estado.estado == 'Activo'}" type="button" class="btn btn-sm btn-outline-danger" title="Deshabilitar">
+                          <i class='bx bx-lock'></i>
+                        </button>
+                        <button th:unless="${usuario.estado.estado == 'Activo'}" type="button" class="btn btn-sm btn-danger">
+                          <i class='bx bx-lock'></i>
+                        </button>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- Card de Cambiar Credenciales (restaurado como antes, igual que reservas y usuarios) -->
+          <div class="col-md-12 col-lg-12 mb-0">
+            <div class="card mb-4" style="padding: 24px;">
+              <div class="card-body">
+                <h3 class="mb-4 d-flex align-items-center">
+                  <i class="bx bx-lock me-2"></i>
+                  Cambiar Credenciales
+                </h3>
+                <form id="formRecuperarCredenciales" th:action="@{/superadmin/cambiar-credenciales}" method="post" autocomplete="off">
+                  <div class="row g-3 align-items-end">
+                    <div class="col-md-6 col-lg-4">
+                      <label for="contrasenaActual" class="form-label">Contraseña actual</label>
+                      <input type="password" class="form-control" id="contrasenaActual" name="contrasenaActual" placeholder="Ingrese su contraseña actual" required>
+                      <div id="mensajeCodigo" class="form-text text-danger"></div>
+                    </div>
+                    <div class="col-12 col-md-3 col-lg-6">
+                      <div id="mensajeRecuperacion" class="form-text"></div>
+                    </div>
+                  </div>
+                  <div id="bloqueCredenciales" style="display:none;">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label for="nuevoCorreo" class="form-label">Nuevo correo</label>
+                        <input type="email" class="form-control" id="nuevoCorreo" name="nuevoCorreo" th:value="${usuario.correo}" placeholder="Nuevo correo">
+                      </div>
+                      <div class="col-md-6">
+                        <label for="nuevoNumero" class="form-label">Nuevo número</label>
+                        <input type="text" class="form-control" id="nuevoNumero" name="nuevoNumero" th:value="${usuario.telefono}" placeholder="Nuevo número">
+                      </div>
+                      <div class="col-md-6">
+                        <label for="nuevaContrasena" class="form-label">Nueva contraseña</label>
+                        <input type="password" class="form-control" id="nuevaContrasena" name="nuevaContrasena" placeholder="Nueva contraseña">
+                      </div>
+                      <div class="col-md-6">
+                        <label for="confirmarContrasena" class="form-label">Confirmar contraseña</label>
+                        <input type="password" class="form-control" id="confirmarContrasena" name="confirmarContrasena" placeholder="Confirmar contraseña">
+                      </div>
+                    </div>
+                    <div class="row mt-4">
+                      <div class="col-12">
+                        <button type="submit" class="btn btn-primary w-100"><i class="bx bx-save"></i> Actualizar credenciales</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Mensajes de éxito o error del backend -->
+          <div th:if="${success}" class="alert alert-success" role="alert">
+            <span th:text="${success}"></span>
+          </div>
+          <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+          </div>
+          <div class="col-md-12 col-lg-12 mb-0">
+            <div class="card mb-4" style="padding: 24px;">
+              <div class="card-body">
+                <h3 class="mb-4 d-flex align-items-center">
+                  <i class="bx bx-user-plus me-2"></i>
+                  Crear Nuevo Administrador
+                </h3>
+                <form id="formCrearAdmin" th:action="@{/superadmin/crear-admin}" method="post" autocomplete="off">
+                  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="nombres" class="form-label">Nombres</label>
+                      <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="apellidos" class="form-label">Apellidos</label>
+                      <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="correo" class="form-label">Correo</label>
+                      <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo electrónico" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="dni" class="form-label">DNI</label>
+                      <input type="text" class="form-control" id="dni" name="dni" placeholder="DNI" pattern="[0-9]{8}" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="contrasena" class="form-label">Contraseña</label>
+                      <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" required>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-primary w-100"><i class="bx bx-save"></i> Crear Administrador</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / Content -->
+      <div class="content-backdrop fade"></div>
+    </div>
+    <!-- Content wrapper -->
+  </div>
+  <!-- / Layout page -->
+</div>
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+<div class="drag-target"></div>
+<!-- / Layout wrapper -->
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+
+<!-- Vendors JS -->
+<script th:src="@{/vendor/libs/apex-charts/apexcharts.js}"></script>
+<script th:src="@{/vendor/libs/moment/moment.js}"></script>
+
+<!-- Main JS -->
+<script th:src="@{/js/main.js}"></script>
+
+<!-- Page JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script th:src="@{/js/app-academy-dashboard.js}"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
+<!-- Validación de contraseña y mostrar formulario -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contrasenaInput = document.getElementById('contrasenaActual');
+    const bloqueCredenciales = document.getElementById('bloqueCredenciales');
+    const mensajeCodigo = document.getElementById('mensajeCodigo');
+    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+    contrasenaInput.addEventListener('input', function() {
+        const contrasena = this.value.trim();
+        if (!contrasena) {
+            bloqueCredenciales.style.display = 'none';
+            mensajeCodigo.textContent = '';
+            return;
+        }
+        fetch('/superadmin/validar-contrasena', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: 'contrasenaActual=' + encodeURIComponent(contrasena)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Respuesta del servidor:', data); // Para debug
+            if (data.valida === true) {
+                bloqueCredenciales.style.display = 'block';
+                mensajeCodigo.textContent = '';
+            } else {
+                bloqueCredenciales.style.display = 'none';
+                mensajeCodigo.textContent = 'Contraseña incorrecta';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mensajeCodigo.textContent = 'Error al validar la contraseña';
+        });
+    });
+});
+</script>
+<script src="https://cdn.datatables.net/v/dt/dt-2.3.0/datatables.min.js" integrity="sha384-AFcRPcI5tCh/IuCki8nD5IrM9bWey0NmCM+Gyq+zHDmYZq9QlZ418kOdfglyNTWt" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script>
+$(document).ready(function() {
+    var tabla = $('#tablaUno').DataTable({
+        responsive: true,
+        language: {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+        dom: 'Bfrtip',
+        columnDefs: [
+            {
+                className: 'dtr-control',
+                orderable: false,
+                targets: 0
+            }
+        ],
+    });
+    $('#exportarExcelBtn').on('click', function(e) {
+        e.preventDefault();
+        var reservas = [];
+
+        $('#tablaUno tbody tr:visible').each(function() {
+            var tds = $(this).find('td');
+            if (tds.length >= 5) {
+                var usuario = $(tds[1]).text().trim();
+                var monto = $(tds[2]).text().replace('s/','').trim();
+                var estado = $(tds[3]).text().trim();
+                var formaPago = $(tds[4]).text().trim();
+                reservas.push({
+                    usuario: usuario,
+                    monto: monto,
+                    estado: estado,
+                    formaPago: formaPago
+                });
+            }
+        });
+
+        if (reservas.length === 0) {
+            alert('No hay reservas para exportar.');
+            return;
+        }
+
+        // Obtener el token CSRF
+        var token = $("input[name='_csrf']").val();
+
+        $.ajax({
+            url: '/superadmin/exportar-reservas-excel',
+            type: 'POST',
+            data: {
+                reservas: JSON.stringify(reservas),
+                _csrf: token
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(blob, status, xhr) {
+                // Crear URL del blob
+                var url = window.URL.createObjectURL(blob);
+
+                // Crear link temporal
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reservas_filtradas.xlsx';
+
+                // Anexar el link al documento
+                document.body.appendChild(a);
+
+                // Simular click
+                a.click();
+
+                // Limpiar
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al exportar:', error);
+                alert('Error al exportar el archivo. Por favor, intente nuevamente.');
+            }
+        });
+    });
+});
+</script>
+
+<script>
+  // Validar contraseña actual por AJAX antes de mostrar el bloque de credenciales
+  document.getElementById('contrasenaActual').addEventListener('input', function() {
+    const val = this.value.trim();
+    const mensaje = document.getElementById('mensajeCodigo');
+    const bloque = document.getElementById('bloqueCredenciales');
+    if (val.length === 0) {
+      bloque.style.display = 'none';
+      mensaje.textContent = '';
+      return;
+    }
+    fetch('/superadmin/validar-contrasena', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'contrasenaActual=' + encodeURIComponent(val)
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      if (data.valida) {
+        bloque.style.display = '';
+        mensaje.textContent = '';
+      } else {
+        bloque.style.display = 'none';
+        mensaje.textContent = 'Contraseña incorrecta';
+      }
+    });
+  });
+
+  // Validación simple de contraseñas en el cliente
+  document.getElementById('formRecuperarCredenciales').onsubmit = function(e) {
+    const pass = document.getElementById('nuevaContrasena').value;
+    const conf = document.getElementById('confirmarContrasena').value;
+    if (pass && pass !== conf) {
+      alert('Las contraseñas no coinciden.');
+      e.preventDefault();
+    }
+  };
+</script>
+
+<!-- Agrega los scripts de Bootstrap y Popper.js antes de </body> -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-zDaJ6B1Q5VnXQnQzQp1Z4qVakiobP6KyHR+Y6z+4PSJVpaz6RtZpmFNpKbyN6D2z" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6VKHr7Wl9EXe1z9gk5A1hK7E4l1rZ/+4vYX0f5H1mu1+" crossorigin="anonymous"></script>
+
+<!-- Script para los gráficos -->
+<script th:inline="javascript">
+  !(function () {
+  let o, e, r, t, s, a, i, n, l;
+  l = isDarkStyle
+    ? ((o = config.colors_dark.cardColor),
+      (e = config.colors_dark.headingColor),
+      (r = config.colors_dark.textMuted),
+      (s = config.colors_dark.borderColor),
+      (t = "dark"),
+      (a = "#4f51c0"),
+      (i = "#595cd9"),
+      (n = "#8789ff"),
+      "#c3c4ff")
+    : ((o = config.colors.cardColor),
+      (e = config.colors.headingColor),
+      (r = config.colors.textMuted),
+      (s = config.colors.borderColor),
+      (t = ""),
+      (a = "#e1e2ff"),
+      (i = "#c3c4ff"),
+      (n = "#a5a7ff"),
+      "#696cff");
+
+  // Gráfico de Balance Total
+  let totalBalanceChartEl = document.querySelector("#totalBalanceChart");
+  if (totalBalanceChartEl) {
+    let totalBalanceChartConfig = {
+      series: [
+        {
+          name: "Ingresos",
+          data: /*[[${cantidadesMes}]]*/ []
+        }
+      ],
+      chart: {
+        height: 225,
+        parentHeightOffset: 0,
+        parentWidthOffset: 0,
+        type: "line",
+        dropShadow: {
+          enabled: true,
+          top: 10,
+          left: 5,
+          blur: 3,
+          color: config.colors.warning,
+          opacity: 0.15,
+        },
+        toolbar: { show: false },
+      },
+      dataLabels: { enabled: false },
+      stroke: { width: 3, curve: "smooth" },
+      legend: { show: false },
+      colors: [config.colors.warning],
+      markers: {
+        size: 6,
+        colors: "transparent",
+        strokeColors: "transparent",
+        strokeWidth: 4,
+        discrete: [
+          {
+            fillColor: config.colors.white,
+            seriesIndex: 0,
+            dataPointIndex: 5,
+            strokeColor: config.colors.warning,
+            strokeWidth: 8,
+            size: 6,
+            radius: 8,
+          },
+        ],
+        hover: { size: 7 },
+      },
+      grid: { show: false, padding: { top: -10, left: 0, right: 0, bottom: 10 } },
+      xaxis: {
+        categories: /*[[${meses}]]*/ [],
+        axisBorder: { show: false },
+        axisTicks: { show: false },
+        labels: { show: true, style: { fontSize: "13px", colors: r } },
+      },
+      yaxis: {
+        labels: {
+          formatter: function(value) {
+            return 's/ ' + value;
+          }
+        }
+      }
+    };
+    new ApexCharts(totalBalanceChartEl, totalBalanceChartConfig).render();
+  }
+
+  // Gráfico de Actividad de Pagos
+  let salesActivityChartEl = document.querySelector("#salesActivityChart");
+  if (salesActivityChartEl) {
+    let salesActivityChartConfig = {
+      chart: {
+        type: "bar",
+        height: 275,
+        stacked: true,
+        toolbar: { show: false }
+      },
+      series: [
+        {
+          name: "EN LÍNEA",
+          data: /*[[${cantidadesEnLinea}]]*/ []
+        },
+        {
+          name: "DEPÓSITO",
+          data: /*[[${cantidadesBanco}]]*/ []
+        }
+      ],
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "40%",
+          borderRadius: 10,
+          startingShape: "rounded",
+          endingShape: "rounded"
+        }
+      },
+      dataLabels: { enabled: false },
+      stroke: {
+        curve: "smooth",
+        width: 6,
+        lineCap: "round",
+        colors: [o]
+      },
+      legend: {
+        show: true,
+        position: 'top',
+        horizontalAlign: 'left',
+        fontSize: '14px',
+        markers: {
+          radius: 12
+        }
+      },
+      colors: [config.colors.danger, "#435971"],
+      fill: { opacity: 1 },
+      grid: {
+        show: true,
+        borderColor: s,
+        strokeDashArray: 7,
+        padding: { top: 0, bottom: 0, left: 0, right: 0 }
+      },
+      xaxis: {
+        categories: /*[[${dias}]]*/ [],
+        labels: {
+          style: {
+            colors: r,
+            fontSize: "13px"
+          }
+        },
+        axisBorder: { show: false },
+        axisTicks: { show: false }
+      },
+      yaxis: {
+        show: true,
+        labels: {
+          formatter: function(value) {
+            // Formatear el valor con 2 decimales
+            return 's/ ' + parseFloat(value).toFixed(2);
+          },
+          style: {
+            colors: r
+          }
+        },
+        // Configuración adicional para el eje Y
+        tickAmount: 4, // Número de marcas en el eje Y
+        min: 0, // Valor mínimo
+        forceNiceScale: true, // Forzar escala agradable
+        decimalsInFloat: 2 // Mostrar 2 decimales
+      }
+    };
+    new ApexCharts(salesActivityChartEl, salesActivityChartConfig).render();
+  }
+})();
+</script>
+</body>
+</html>

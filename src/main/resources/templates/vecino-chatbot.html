@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot con Mistral</title>
+</head>
+<body>
+<h1>Chatbot Mistral</h1>
+<textarea id="mensaje" rows="4" cols="50"></textarea><br>
+<button onclick="enviar()">Enviar</button>
+<div id="respuesta" style="white-space: pre-wrap; margin-top: 10px;"></div>
+
+<script>
+    async function enviar() {
+        const mensaje = document.getElementById('mensaje').value;
+        const div = document.getElementById('respuesta');
+        try {
+            const resp = await fetch('/vecino/api/chatbot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensaje })
+            });
+            const data = await resp.json();
+            if (resp.ok) {
+                div.textContent = data.respuesta;
+            } else {
+                div.textContent = data.error || 'Error desconocido';
+            }
+        } catch (e) {
+            div.textContent = 'Error de conexión con el servidor.';
+        }
+    }
+</script>
+</body>
+</html>

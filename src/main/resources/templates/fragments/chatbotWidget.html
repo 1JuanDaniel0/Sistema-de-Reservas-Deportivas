@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot Fragment</title>
+</head>
+<body>
+<div th:fragment="chatbotWidgetFragment" style="z-index: 999;">
+    <!-- Botón flotante principal -->
+    <button id="chatbot-toggle" title="Chat Asistente Virtual" aria-label="Abrir chat">
+        <i class="bx bx-message-rounded-dots"></i>
+    </button>
+
+    <!-- Ventana principal del chatbot -->
+    <div class="app-chat app-chat-history bg-body border" id="chatbot-window" role="dialog" aria-labelledby="chatbot-title">
+        <div class="chat-history-wrapper d-flex flex-column h-100">
+
+            <!-- Header corregido -->
+            <div class="chat-history-header p-3 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <div class="position-relative">
+                            <img alt="Asistente Virtual" class="rounded-circle" src="https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/asistente2.webp" width="45" height="45"/>
+                            <!-- Indicador de estado online -->
+                            <span class="position-absolute bottom-0 end-0 bg-success rounded-circle"
+                                  style="width: 12px; height: 12px; border: 2px solid white;"></span>
+                        </div>
+                    </div>
+                    <div class="chat-contact-info">
+                        <h6 class="m-0 fw-bold" id="chatbot-title">
+                            <i class="bx bx-bot me-1"></i>
+                            Asistente Virtual
+                        </h6>
+                        <small class="opacity-75">
+                            <i class="bx bx-circle text-success me-1" style="font-size: 0.6rem;"></i>
+                            Siempre disponible para ayudarte
+                        </small>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Botón de minimizar corregido -->
+                    <button class="btn btn-sm btn-outline-light rounded-circle p-1"
+                            id="chatbot-minimize"
+                            title="Minimizar">
+                        <i class="bx bx-minus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Área de mensajes con indicador de escritura dentro -->
+            <div class="position-relative flex-grow-1" style="min-height: 300px;">
+                <ul class="list-unstyled chat-history m-0 p-3 h-100 overflow-auto">
+                    <!-- Los mensajes se insertan aquí dinámicamente -->
+                </ul>
+
+                <!-- Indicador de escritura DENTRO del área de mensajes -->
+                <div class="typing-indicator d-none position-absolute bottom-0 start-0 end-0 p-3" id="typing-indicator" style="background: rgba(255,255,255,0.95); border-top: 1px solid rgba(0,0,0,0.05);">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar flex-shrink-0 me-2">
+                            <img alt="Bot escribiendo" class="rounded-circle" src="https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/asistente2.webp" width="24" height="24"/>
+                        </div>
+                        <div class="typing-dots">
+                            <i class="bx bx-loader-alt bx-spin me-1"></i>
+                            Asistente escribiendo
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comandos rápidos -->
+            <div class="chatbot-quick-commands-container pt-1">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                    <small class="text-muted fw-semibold">
+                        <i class="bx bx-lightning me-1"></i>
+                        Accesos rápidos
+                    </small>
+                    <div class="d-flex gap-1">
+                        <button class="scroll-btn" onclick="scrollQuickCommands(-1)" title="Anterior">
+                            <i class="bx bx-chevron-left"></i>
+                        </button>
+                        <button class="scroll-btn" onclick="scrollQuickCommands(1)" title="Siguiente">
+                            <i class="bx bx-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chatbot-quick-commands" id="quickCommandScroll">
+                    <button onclick="enviarComando('Quiero hacer una reserva')" class="quick-cmd-btn">
+                        <i class="bx bx-calendar-plus me-1"></i>
+                        Reservar
+                    </button>
+                    <button onclick="enviarComando('Quiero ver mis reservas')" class="quick-cmd-btn">
+                        <i class="bx bx-list-ul me-1"></i>
+                        Mis reservas
+                    </button>
+                    <button onclick="enviarComando('Quiero ver los lugares')" class="quick-cmd-btn">
+                        <i class="bx bx-building me-1"></i>
+                        Lugares
+                    </button>
+                    <button onclick="enviarComando('Consultar disponibilidad')" class="quick-cmd-btn">
+                        <i class="bx bx-calendar-check me-1"></i>
+                        Disponibilidad
+                    </button>
+                    <button onclick="enviarComando('Quiero cancelar una reserva')" class="quick-cmd-btn">
+                        <i class="bx bx-calendar-x me-1"></i>
+                        Cancelar
+                    </button>
+                    <button onclick="enviarComando('Necesito ayuda')" class="quick-cmd-btn">
+                        <i class="bx bx-help-circle me-1"></i>
+                        Ayuda
+                    </button>
+                    <button onclick="enviarComando('Información de contacto')" class="quick-cmd-btn">
+                        <i class="bx bx-phone me-1"></i>
+                        Contacto
+                    </button>
+                    <button onclick="enviarComando('Precios y tarifas')" class="quick-cmd-btn">
+                        <i class="bx bx-money me-1"></i>
+                        Precios
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer con formulario -->
+            <div class="chat-history-footer">
+                <form class="d-flex align-items-center gap-3" id="chatbot-form">
+                    <!-- Input con diseño moderno -->
+                    <div class="position-relative flex-grow-1">
+                        <input autocomplete="off"
+                               class="form-control border-0 shadow-none pe-5"
+                               id="chatbot-message"
+                               placeholder="Escribe tu mensaje aquí..."
+                               maxlength="500"
+                               aria-label="Mensaje para el chatbot"/>
+
+                        <!-- Contador de caracteres -->
+                        <small class="position-absolute end-0 bottom-0 text-muted me-2 mb-1"
+                               style="font-size: 0.7rem; opacity: 0.6;"
+                               id="char-counter">0/500</small>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="d-flex align-items-center gap-2">
+                        <!-- Botón de enviar -->
+                        <button class="btn btn-primary d-flex align-items-center justify-content-center rounded-circle"
+                                type="submit"
+                                style="width: 44px; height: 44px;"
+                                title="Enviar mensaje"
+                                aria-label="Enviar mensaje">
+                            <i class="bx bx-send fs-5"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificación de nuevo mensaje (opcional) -->
+    <div id="chatbot-notification"
+         class="position-fixed bg-primary text-white rounded-pill px-3 py-2 shadow"
+         style="bottom: 100px; right: 100px; z-index: 9998; display: none; font-size: 0.85rem;">
+        <i class="bx bx-bell me-1"></i>
+        Nuevo mensaje
+    </div>
+</div>
+
+</body>
+</html>

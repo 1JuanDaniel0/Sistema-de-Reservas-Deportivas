@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Restablecer Contraseña</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            padding: 30px;
+        }
+
+        .card {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            background-color: #007bff;
+            color: #ffffff !important;
+            padding: 14px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <img class="logo" src="https://almacenamiento-aplicacion-archivos.s3.us-east-1.amazonaws.com/publica/estaticos/logo-sanM.png" alt="Logo Municipalidad de San Miguel">
+    <h2>¿Olvidaste tu contraseña?</h2>
+    <p>Hola,</p>
+    <div style="display:none;">ID: [[${#dates.createNow().getTime()}]]</div>
+    <p>Recibimos una solicitud para restablecer tu contraseña. Puedes hacerlo haciendo clic en el siguiente botón:</p>
+    <a th:href="${link}" class="button">Restablecer contraseña</a>
+    <p style="margin-top: 20px;">Si no solicitaste este cambio, puedes ignorar este correo.</p>
+    <p style="font-size: 12px; color: #999;">
+        Este correo fue generado el [[${#dates.format(#dates.createNow(), 'dd/MM/yyyy HH:mm')}]].
+    </p>
+    <div class="footer">
+        © Municipalidad de San Miguel – Todos los derechos reservados.
+    </div>
+</div>
+</body>
+</html>

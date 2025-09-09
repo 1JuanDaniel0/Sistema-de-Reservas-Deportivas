@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es"
+      class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
+      dir="ltr"
+      data-theme="theme-semi-dark"
+      data-assets-path="/"
+      data-template="vertical-menu-template-semi-dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Servicio</title>
+    <meta name="description" content="Formulario para agregar un nuevo espacio deportivo" />
+    <meta name="keywords" content="espacio deportivo, san miguel, espacio, futbol, deporte, reservar" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <!-- Canonical SEO -->
+    <link rel="canonical" href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icono.ico}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-semi-dark.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" th:href="@{/css/demo.css}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css}" />
+
+    <!-- Helpers -->
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
+    <style>
+        /* Fondo degradado profesional */
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(216, 241, 230, 0.46) 0%, rgba(255, 255, 255, 0.1) 90.2%),
+                linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(201, 215, 255, 0.2) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 15px;
+            box-shadow:
+                0 10px 20px rgba(0,0,0,0.08),
+                0 0 0 1px rgba(255,255,255,0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #696cff, #ff4d4d);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .card:hover::before {
+            opacity: 1;
+        }
+        .card:hover {
+            transform: translateY(-5px) scale(1.005);
+            box-shadow:
+                0 20px 30px rgba(0,0,0,0.12),
+                0 0 0 1px rgba(255,255,255,0.2);
+        }
+        @media (max-width: 768px) {
+            .card {
+                border-radius: 10px;
+            }
+        }
+        .btn:disabled::before {
+            display: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #8592a3, #a8b5c8);
+            color: white;
+            box-shadow: 0 2px 8px rgba(133,146,163,0.3);
+        }
+
+        /* Animación del spinner */
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+            border-width: 0.15em;
+        }
+
+        /* Transiciones suaves para el cambio de estado del botón */
+        .btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <div th:replace="~{fragments/sidebar-admin :: sidebarAdmin('espacios', 'agregar-servicios')}"></div>
+
+        <!-- Layout container -->
+        <div class="layout-page">
+            <div th:replace="~{fragments/navbar-admin :: navbarAdmin}"></div>
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+                <div class="container-xxl flex-grow-1 container-p-y">
+                    <div class="row gy-4">
+                        <!-- Formulario -->
+                        <div class="col-xl-7">
+                            <div class="card">
+                                <div class="card-header align-content-center">
+                                    <div class="row gy-4">
+                                        <h4 class="col-md-8 align-content-center">Registro de Nuevo Espacio</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form id="form-info" th:action="@{/admin/agregar-servicios}" th:object="${espacio}" method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                        <div class="row mb-4">
+                                            <!-- Campo: Nombre -->
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <label for="nombre" class="form-label">Nombre</label>
+                                                    <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre del Espacio" required />
+                                                </div>
+                                            </div>
+                                            <!-- / Campo: Nombre -->
+
+                                            <!-- Campo: Costo -->
+                                            <div class="col-md-6">
+                                                <label for="costo" class="form-label">Costo por Hora</label>
+                                                <div class="input-group input-group-merge">
+                                                    <span class="input-group-text justify-content-center">S/</span>
+                                                    <input id="costo" name="costo" type="number" min="0" step="0.1" class="form-control" placeholder="Costo" aria-label="Costo del alquiler por hora en soles" required />
+                                                </div>
+                                            </div>
+                                            <!-- / Campo: Costo -->
+                                        </div>
+
+                                        <div class="row mb-4">
+                                            <!-- Campo: Lugar -->
+                                            <div class="col-md-6">
+                                                <label for="lugar" class="form-label">Lugar</label>
+                                                <select id="lugar" class="select2 rounded-pill form-select form-select-lg" name="lugar" required>
+                                                    <option value="">Seleccione un lugar</option>
+                                                    <option th:each="l : ${lugares}" th:value="${l.idLugar}" th:text="${l.lugar}"></option>
+                                                </select>
+
+                                            </div>
+                                            <!-- / Campo: Lugar -->
+
+                                            <!-- Campo: Estado -->
+                                            <div class="col-md-6">
+                                                <label for="estado" class="form-label">Estado del Espacio</label>
+                                                <select id="estado" class="select2 form-select form-select-lg" name="estado" required>
+                                                    <option value="">Seleccione un estado</option>
+                                                    <option th:each="e : ${estados}" th:value="${e.idEstadoEspacio}" th:text="${e.estado}"></option>
+                                                </select>
+
+                                            </div>
+                                            <!-- / Campo: Estado -->
+                                        </div>
+
+                                        <div class="row mb-4">
+                                            <!-- Campo: Deporte -->
+                                            <div class="col-md-6">
+                                                <label for="deporte" class="form-label">Deporte(s)</label>
+                                                <select id="deporte" class="select2 form-select" name="deportes" multiple required>
+                                                    <option th:each="d : ${deportes}" th:value="${d.idDeporte}" th:text="${d.nombre}"></option>
+                                                </select>
+
+                                            </div>
+                                            <!-- / Campo: Deporte -->
+
+                                            <!-- Campo: Tipo Espacio -->
+                                            <div class="col-md-6">
+                                                <label for="tipoEspacio" class="form-label">Tipo de Espacio</label>
+                                                <select id="tipoEspacio" class="select2 form-select form-select-lg" name="tipoEspacio" required>
+                                                    <option value="">Seleccione tipo</option>
+                                                    <option th:each="t : ${tiposEspacio}" th:value="${t.idTipoEspacio}" th:text="${t.nombre}"></option>
+                                                </select>
+                                            </div>
+                                            <!-- / Campo: Tipo Espacio -->
+
+                                        </div>
+
+                                        <div class="row mb-4">
+                                            <!-- Textarea Descripción -->
+                                            <div class="col-12">
+                                                <label class="form-label" for="descripcion">Descripción</label>
+                                                <textarea id="descripcion" name="descripcion" class="form-control bootstrap-maxlength-example" rows="4" maxlength="255" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div th:if="${sizeError}" class="alert alert-danger" role="alert">
+                                            El archivo excede el tamaño máximo permitido (5MB).
+                                        </div>
+
+                                    </form>
+
+                                    <div class="col-12">
+                                        <h5>Fotos</h5>
+                                        <form class="dropzone needsclick" id="dropzone-multi" onsubmit="return false;">
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                            <div class="dz-message needsclick">
+                                                <p class="fs-3 note needsclick my-0" style="user-select: none;">Arrastra una imagen</p>
+                                                <p class="text-muted fs-4 note needsclick my-0" style="user-select: none;">o</p>
+                                                <h6 class="text-primary fs-4 note needsclick my-0" style="user-select: none;">Examinar en el Dispositivo</h6>
+                                            </div>
+                                            <div class="fallback">
+                                                <input name="file" type="file" />
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-5">
+                            <div class="card">
+                                <div class="card-header align-content-center" id="preview-espacio">
+                                    <h3>Vista Previa</h3>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <h4 class="text-uppercase text-truncate align-content-center" style="margin-bottom: 0;" id="preview-nombre">(Nombre del Espacio)</h4>
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-1 text-muted text-truncate">S/ <span class="text-primary fw-medium" id="preview-costo">0.00</span> por hora</p>
+                                            </div>
+                                        </div>
+                                        <div id="preview-fotos" class="justify-content-center d-flex flex-wrap gap-2 mt-3 mb-3"></div>
+                                        <p class="mt-2 mb-3 text-muted" id="preview-descripcion">(Descripción del espacio)</p>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-1">Lugar: <span class="text-truncate" id="preview-lugar">-</span></p>
+                                            </div>
+                                            <div class="col"><p class="mb-1">Tipo: <span id="preview-tipo">-</span></p></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col"><p class="mb-1">Estado: <span id="preview-estado">-</span></p></div>
+                                            <div class="col"><p class="mb-1">Deportes: <span class="text-truncate" id="preview-deportes">-</span></p></div>
+                                        </div>
+                                        <div class="row justify-content-center mt-4">
+                                            <!-- Botón fuera del form -->
+                                            <button id="btnGuardarEspacio" class="btn btn-primary col-md-4">Crear Espacio</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    <div class="drag-target"></div>
+</div>
+<!-- / Layout wrapper -->
+
+<!-- Core JS -->
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/vendor/js/menu.js}"></script>
+<!-- Vendors JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script th:src="@{/vendor/libs/select2/select2.js}"></script>
+<script th:src="@{/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js}"></script>
+<script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
+
+<script th:src="@{/js/agregar-servicios.js}"></script>
+
+<!-- Main JS -->
+<script th:src="@{/js/main.js}"></script>
+<!-- Page JS -->
+<script th:src="@{/js/app-user-view-account.js}"></script>
+<script th:src="@{/js/forms-selects.js}"></script>
+<script th:src="@{/js/forms-extras.js}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const btn = document.getElementById("btnGuardarEspacio");
+        const form = document.getElementById("form-info");
+        if (btn && form) {
+            form.addEventListener("submit", function () {
+                btn.disabled = true;
+                btn.innerText = "Procesando...";
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

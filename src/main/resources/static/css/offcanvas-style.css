@@ -1,0 +1,500 @@
+/* Mobile Offcanvas Styles - Paleta San Miguel Suave */
+.mobile-offcanvas {
+    width: 280px !important;
+    border: none;
+    box-shadow: 0 15px 50px rgba(52, 152, 219, 0.12);
+    /* Gradiente mucho más suave y pastel */
+    background: linear-gradient(135deg, #e8f4fd 0%, #d4edfc 50%, #c2e7fb 100%);
+    color: #2c3e50;
+    z-index: 9999;
+}
+
+.mobile-offcanvas-header {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid rgba(52, 152, 219, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
+}
+
+.mobile-brand-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.mobile-brand-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    padding: 6px;
+    border: 2px solid rgba(52, 152, 219, 0.2);
+    box-shadow: 0 2px 10px rgba(52, 152, 219, 0.1);
+}
+
+.mobile-brand-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    letter-spacing: 0.5px;
+    text-shadow: none;
+}
+
+.mobile-close-btn {
+    background: rgba(52, 152, 219, 0.1);
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2c3e50;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.mobile-close-btn:hover {
+    background: rgba(52, 152, 219, 0.2);
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+}
+
+.mobile-offcanvas-body {
+    padding: 0;
+    overflow-y: auto;
+    height: calc(100vh - 90px);
+}
+
+.mobile-nav-wrapper {
+    padding: 1rem 0;
+}
+
+/* Sección de usuario con estilo San Miguel suave */
+.mobile-user-greeting,
+.mobile-guest-greeting {
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.4) 100%);
+    backdrop-filter: blur(15px);
+    margin: 0 1rem 1.5rem;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: mobileSlideInLeft 0.5s ease-out;
+    border: 1px solid rgba(52, 152, 219, 0.15);
+}
+
+.mobile-user-avatar,
+.mobile-guest-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2980b9, #3498db);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.mobile-avatar-initials {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-guest-avatar i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.mobile-user-info,
+.mobile-guest-info {
+    flex: 1;
+}
+
+.mobile-user-name,
+.mobile-guest-title {
+    display: block;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+    text-shadow: none;
+}
+
+.mobile-user-role,
+.mobile-guest-subtitle {
+    display: block;
+    font-size: 0.8rem;
+    color: #5a6c7d;
+    font-weight: 400;
+}
+
+/* Lista de navegación con estilo más amigable */
+.mobile-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-nav-item {
+    margin-bottom: 0.35rem;
+    padding: 0 1rem;
+    animation: mobileSlideInLeft 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.mobile-nav-item:nth-child(1) { animation-delay: 0.1s; }
+.mobile-nav-item:nth-child(2) { animation-delay: 0.15s; }
+.mobile-nav-item:nth-child(3) { animation-delay: 0.2s; }
+.mobile-nav-item:nth-child(4) { animation-delay: 0.25s; }
+.mobile-nav-item:nth-child(5) { animation-delay: 0.3s; }
+.mobile-nav-item:nth-child(6) { animation-delay: 0.35s; }
+.mobile-nav-item:nth-child(7) { animation-delay: 0.4s; }
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    color: #2c3e50;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(52, 152, 219, 0.1);
+}
+
+.mobile-nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(52, 152, 219, 0.15), transparent);
+    transition: left 0.6s ease;
+}
+
+.mobile-nav-link:hover::before {
+    left: 100%;
+}
+
+.mobile-nav-link:hover {
+    background: linear-gradient(135deg, #3498db 0%, #5dade2 100%);
+    transform: translateX(10px) scale(1.02);
+    color: white;
+    text-decoration: none;
+    box-shadow: 0 6px 25px rgba(52, 152, 219, 0.25);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+.mobile-nav-icon {
+    font-size: 1.3rem;
+    margin-right: 1rem;
+    width: 24px;
+    text-align: center;
+    color: #3498db;
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-link:hover .mobile-nav-icon {
+    color: white;
+    transform: scale(1.15) rotate(5deg);
+}
+
+.mobile-nav-link span {
+    flex: 1;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.mobile-nav-arrow {
+    font-size: 1rem;
+    color: #5a6c7d;
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-link:hover .mobile-nav-arrow {
+    color: white;
+    transform: translateX(8px) scale(1.1);
+}
+
+/* Enlace de contacto especial */
+.mobile-contact-link {
+    position: relative;
+}
+
+/* Sección de acciones mejorada */
+.mobile-action-section {
+    margin-top: auto;
+    padding: 1.5rem 1rem 2rem;
+    border-top: 1px solid rgba(52, 152, 219, 0.15);
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px);
+}
+
+.mobile-auth-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.mobile-action-item {
+    width: 100%;
+}
+
+.mobile-action-form {
+    width: 100%;
+    margin: 0;
+}
+
+.mobile-action-btn {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Botón SuperAdmin con colores más vibrantes */
+.mobile-superadmin-btn {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.mobile-superadmin-btn:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+/* Botón Cerrar Sesión en rojo como solicitaste */
+.mobile-logout-btn {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.mobile-logout-btn:hover {
+    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+}
+
+.mobile-logout-btn i {
+    color: white;
+}
+
+.mobile-guest-actions {
+    width: 100%;
+}
+
+/* Botón de login más atractivo */
+.mobile-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mobile-login-btn:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+/* Animaciones mejoradas */
+@keyframes mobileSlideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes mobileFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Animación de entrada del offcanvas */
+.mobile-offcanvas.show {
+    animation: mobileSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes mobileSlideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0.8;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Efecto de backdrop con colores San Miguel */
+.offcanvas-backdrop {
+    background-color: rgba(52, 152, 219, 0.1) !important;
+    backdrop-filter: blur(8px);
+}
+
+/* Scrollbar personalizado con colores San Miguel */
+.mobile-offcanvas-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.mobile-offcanvas-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.mobile-offcanvas-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.6));
+    border-radius: 3px;
+}
+
+.mobile-offcanvas-body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8));
+}
+
+/* Estados activos para los enlaces */
+.mobile-nav-link.active {
+    background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+    color: white;
+    border-left: 4px solid #1abc9c;
+    box-shadow: 0 4px 20px rgba(52, 152, 219, 0.3);
+}
+
+.mobile-nav-link.active .mobile-nav-icon {
+    color: white;
+    transform: scale(1.1);
+}
+
+.mobile-nav-link.active .mobile-nav-arrow {
+    color: white;
+}
+
+/* Efectos adicionales para mejor UX */
+.mobile-nav-item:hover {
+    transform: scale(1.02);
+}
+
+.mobile-action-btn i {
+    font-size: 1.2rem;
+}
+
+/* Efecto de pulso sutil en botones importantes */
+.mobile-login-btn::before,
+.mobile-superadmin-btn::before,
+.mobile-logout-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.mobile-login-btn:hover::before,
+.mobile-superadmin-btn:hover::before,
+.mobile-logout-btn:hover::before {
+    transform: translateX(100%);
+}
+
+/* Responsividad mejorada */
+@media (max-width: 320px) {
+    .mobile-offcanvas {
+        width: 260px !important;
+    }
+
+    .mobile-brand-text {
+        font-size: 1rem;
+    }
+
+    .mobile-nav-link {
+        padding: 0.875rem 1rem;
+    }
+}
+
+/* Asegurar compatibilidad y evitar conflictos */
+.mobile-offcanvas * {
+    box-sizing: border-box;
+}
+
+.mobile-offcanvas.showing,
+.mobile-offcanvas.hiding {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.mobile-offcanvas .offcanvas-header {
+    padding: 0 !important;
+    border-bottom: none !important;
+}
+
+.mobile-offcanvas .offcanvas-body {
+    padding: 0 !important;
+}
+
+/* Mejora en la legibilidad de texto */
+.mobile-nav-link span,
+.mobile-user-name,
+.mobile-guest-title {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

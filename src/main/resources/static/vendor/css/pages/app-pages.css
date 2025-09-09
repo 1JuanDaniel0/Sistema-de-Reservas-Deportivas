@@ -1,0 +1,58 @@
+/* Nuevo CSS para vistas internas: app-page.css */
+
+/* Body background */
+body {
+    background-color: var(--bs-paper-bg);
+}
+
+/* Navbar estática y sólida */
+nav.layout-navbar {
+    background-color: #ffffff; /* Fondo blanco */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    height: auto;
+}
+
+/* Navbar estilos */
+nav.layout-navbar .navbar.landing-navbar {
+    background-color: #ffffff;
+    border: none;
+    box-shadow: none;
+    margin-top: 0;
+    padding: 0.15rem 1.5rem;
+    border-radius: 0;
+}
+
+/* Links de navegación */
+nav.layout-navbar .navbar.landing-navbar .navbar-nav .nav-link {
+    color: var(--bs-heading-color);
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+}
+
+/* Links activos o hover */
+nav.layout-navbar .navbar.landing-navbar .navbar-nav .show > .nav-link,
+nav.layout-navbar .navbar.landing-navbar .navbar-nav .active > .nav-link,
+nav.layout-navbar .navbar.landing-navbar .navbar-nav .nav-link:hover {
+    color: var(--bs-primary);
+}
+
+/* Navbar responsive en móviles */
+@media (max-width: 991.98px) {
+    nav.layout-navbar .navbar.landing-navbar .landing-nav-menu {
+        background-color: #ffffff;
+    }
+}
+
+/* Footer para otras páginas si quieres un footer */
+.footer {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    padding: 2rem 0;
+    font-size: 0.9rem;
+}
+
+/* Eliminar blur de fondo para otras vistas */
+nav.layout-navbar::before {
+    display: none;
+}
+
