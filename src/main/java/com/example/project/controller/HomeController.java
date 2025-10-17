@@ -109,7 +109,7 @@ public class HomeController {
         return "registro/login";
     }
 
-    // --- NUEVO: API para consultar DNI y devolver nombres y apellidos ---
+    // API para consultar DNI y devolver nombres y apellidos ---
     @PostMapping(value = "/api/dni", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> consultarDni(@RequestParam("dni") String dni) {

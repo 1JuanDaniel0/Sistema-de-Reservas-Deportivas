@@ -1,6 +1,7 @@
-
 package com.example.project.config;
 
+import com.example.project.entity.Usuarios;
+import com.example.project.repository.UsuariosRepository;
 import jakarta.servlet.ServletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.project.entity.Usuarios;
-import com.example.project.repository.UsuariosRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

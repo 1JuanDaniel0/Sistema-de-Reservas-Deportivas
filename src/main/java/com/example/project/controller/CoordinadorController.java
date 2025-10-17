@@ -1166,11 +1166,10 @@ public class CoordinadorController {
     }
 
     @PostMapping("/marcarAsistencia")
-    @ResponseBody  // ← Agregar esta anotación
+    @ResponseBody
     public ResponseEntity<Map<String, Object>> marcarAsistencia(@RequestParam("latlon") String latlon,
                                                                 @RequestParam(value = "observacion", required = false) String observacion,
                                                                 HttpSession session) {
-        // Agregar este log INMEDIATAMENTE al inicio
         System.out.println("=== MARCAR ASISTENCIA LLAMADO ===");
         System.out.println("Parámetros recibidos:");
         System.out.println("latlon: " + latlon);
